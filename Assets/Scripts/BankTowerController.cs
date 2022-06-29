@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class BankTowerController : MonoBehaviour
 {
     [SerializeField]
-    private int _towerData;
+    private TowerData _towerData;
 
     [SerializeField]
     private TMP_Text nameText;
@@ -14,8 +14,8 @@ public class BankTowerController : MonoBehaviour
     [SerializeField]
     private Image iconSprite;
 
-    public int TowerData
-    {
+    public TowerData towerData
+    {   
         get => _towerData;
         set
         {
@@ -26,8 +26,9 @@ public class BankTowerController : MonoBehaviour
 
     public void init()
     {
-        iconSprite.sprite = iconSprite.sprite;
-        priceText.text = TowerData.ToString();
-        nameText.text = TowerData.ToString();
+        iconSprite.sprite = towerData.Icon;
+        priceText.text = towerData.Price.ToString();
+        nameText.text = towerData.NameTower;
+        Debug.Log("Hello");
     }
 }
