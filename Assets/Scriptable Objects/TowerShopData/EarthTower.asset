@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ce4de70ef87de3448e028cc292c8cbf, type: 3}
-  m_Name: Test
+  m_Name: EarthTower
   m_EditorClassIdentifier: 
-  nameTower: Fire
-  icon: {fileID: -1311201550, guid: 5d8321b01841bf04f871fabfb455f1ca, type: 3}
-  price: 100
+  nameTower: Earth
+  icon: {fileID: -1831689603, guid: 5d8321b01841bf04f871fabfb455f1ca, type: 3}
+  price: 500
