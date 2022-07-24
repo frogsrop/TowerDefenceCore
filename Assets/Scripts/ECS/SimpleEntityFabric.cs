@@ -3,12 +3,13 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
-
+using Unity.Jobs;
 namespace ECS
 {
-    [BurstCompile]
     public partial class MovingSystem : SystemBase
     {
+        
+        [BurstCompile]
         protected override void OnUpdate()
         {
             var dt = Time.DeltaTime;
@@ -20,9 +21,9 @@ namespace ECS
                     {
                         dir.direction *= -1;
                     }
-
+            
                     translation.Value += new float3(dt * dir.direction, 0, 0);
-                }).Run();
+                }).WithBurst().ScheduleParallel();
         }
     }
 }
