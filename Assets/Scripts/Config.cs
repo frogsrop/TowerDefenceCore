@@ -7,7 +7,7 @@ public class Config : MonoBehaviour
 {
     void Start()
     {
-        Application.targetFrameRate = 60;
+       // Application.targetFrameRate = 60;
     }
 
     [SerializeField] private TMP_Text fpsText;

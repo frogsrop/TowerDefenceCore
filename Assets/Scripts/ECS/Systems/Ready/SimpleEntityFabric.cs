@@ -16,8 +16,8 @@ namespace ECS
             Entities.WithAll<SpriteRenderer>()
                 .ForEach((ref Translation translation, ref DirectionComponent dir) =>
                 {
-                    if ((translation.Value.x > 5 && dir.direction > 0) ||
-                        (translation.Value.x < -5 && dir.direction < 0))
+                    if ((translation.Value.x > 2 && dir.direction > 0) ||
+                        (translation.Value.x < -2 && dir.direction < 0))
                     {
                         dir.direction *= -1;
                     }

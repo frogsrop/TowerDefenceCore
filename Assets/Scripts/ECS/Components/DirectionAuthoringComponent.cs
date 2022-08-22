@@ -5,8 +5,8 @@ using Unity.Mathematics;
 using UnityEngine;
 
 
-[AddComponentMenu("DOTS Samples/IJobEntityBatch/Rotation Speed")]
-[ConverterVersion("joe", 1)]
+//[AddComponentMenu("DOTS Samples/IJobEntityBatch/Rotation Speed")]
+//[ConverterVersion("joe", 1)]
 public class DirectionAuthoringComponent : MonoBehaviour, IConvertGameObjectToEntity
 {
     public float direction;
