@@ -17226,7 +17226,7 @@ GameObject:
   - component: {fileID: 255140097}
   - component: {fileID: 255140096}
   m_Layer: 0
-  m_Name: randomMap
+  m_Name: RandomMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23573,7 +23573,6 @@ GameObject:
   - component: {fileID: 361169374}
   - component: {fileID: 361169372}
   - component: {fileID: 361169376}
-  - component: {fileID: 361169378}
   - component: {fileID: 361169379}
   m_Layer: 0
   m_Name: Creep
@@ -23675,19 +23674,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 2
---- !u!114 &361169378
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 361169371}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbcaf570d2be9814bbffda8639ef2c36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  creepPos: {x: 0, y: 0, z: 0}
 --- !u!114 &361169379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25509,7 +25495,6 @@ GameObject:
   - component: {fileID: 382398298}
   - component: {fileID: 382398297}
   - component: {fileID: 382398299}
-  - component: {fileID: 382398300}
   - component: {fileID: 382398301}
   m_Layer: 0
   m_Name: Tower
@@ -25598,19 +25583,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConversionMode: 0
---- !u!114 &382398300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 382398296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b0fd1c43402c2542a944b01733d5fb7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnPos: {x: 0, y: 0, z: 0}
 --- !u!114 &382398301
 MonoBehaviour:
   m_ObjectHideFlags: 0

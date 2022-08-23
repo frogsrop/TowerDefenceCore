@@ -1,4 +1,4 @@
 using Unity.Entities;
 
 [GenerateAuthoringComponent]
-public class CreepTag : IComponentData {}
+public struct CreepTag : IComponentData {}

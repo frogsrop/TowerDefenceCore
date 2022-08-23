@@ -1,7 +1,7 @@
 using Unity.Entities;
 
 [GenerateAuthoringComponent]
-public struct BulletSpawnAuthoring : IComponentData
+public struct BulletSetPrefab : IComponentData
 {
     public Entity Prefab;
 }
