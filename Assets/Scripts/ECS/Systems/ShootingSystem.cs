@@ -1,7 +1,7 @@
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Transforms;
 using Unity.Mathematics;
+using Unity.Transforms;
 
 public partial class ShootingSystem : SystemBase
 {
@@ -17,6 +17,7 @@ public partial class ShootingSystem : SystemBase
         queryBullet = GetEntityQuery(ComponentType.ReadOnly<BulletTag>(), ComponentType.ReadOnly<Translation>());
         queryCreep = GetEntityQuery(ComponentType.ReadOnly<CreepTag>(), ComponentType.ReadOnly<Translation>());
     }
+
     protected override void OnStartRunning()
     {
         bulletPrefab = GetSingleton<BulletSetPrefab>().Prefab;
@@ -29,11 +30,10 @@ public partial class ShootingSystem : SystemBase
         {
             newBullet = EntityManager.Instantiate(bulletPrefab);
             var towerTranslation = queryTower.ToComponentDataArray<Translation>(Allocator.Temp)[0];
-            var towerPosition = new float3(towerTranslation.Value.x, towerTranslation.Value.y + 0.5f, towerTranslation.Value.z - 1f);
-            var setSpawnPoition = new Translation() { Value = towerPosition };
-            
-
-            EntityManager.SetComponentData(newBullet, setSpawnPoition); 
+            var towerPosition = new float3(towerTranslation.Value.x, towerTranslation.Value.y + 0.5f,
+                towerTranslation.Value.z);
+            var setSpawnPosition = new Translation { Value = towerPosition };
+            EntityManager.SetComponentData(newBullet, setSpawnPosition);
         }
 
         var firstBulletPos = queryBullet.ToComponentDataArray<Translation>(Allocator.Temp)[0];

@@ -10,7 +10,7 @@ namespace Editor
             if (DrawDefaultInspector()) 
             {
                 BankTowerController behaviour = (BankTowerController)target; 
-                behaviour.init();
+                behaviour.Init();
                 serializedObject.ApplyModifiedProperties();
             }
         }

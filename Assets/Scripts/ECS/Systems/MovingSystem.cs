@@ -1,9 +1,7 @@
+using Unity.Collections;
 using Unity.Entities;
-using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
-using Unity.Collections;
-
 public partial class MovingSystem : SystemBase
 {
     private EntityQuery enemy;

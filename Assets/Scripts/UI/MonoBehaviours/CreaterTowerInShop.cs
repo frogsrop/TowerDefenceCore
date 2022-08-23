@@ -1,4 +1,5 @@
 using UnityEngine;
+
 [ExecuteInEditMode]
 public class CreaterTowerInShop : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class CreaterTowerInShop : MonoBehaviour
         {
             var node = Instantiate(Pref, Grid);
             node.transform.localScale = Vector3.one;
-            node.GetComponent<BankTowerController>().towerData = MyScriptableObjects[i];
+            node.GetComponent<BankTowerController>().TowerData = MyScriptableObjects[i];
         }
     }
 }

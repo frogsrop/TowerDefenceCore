@@ -1,11 +1,12 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 [ExecuteInEditMode]
 public class BankTowerController : MonoBehaviour
 {
     [SerializeField]
-    private TowerData _towerData;
+    private TowerData towerData;
 
     [SerializeField]
     private TMP_Text nameText;
@@ -13,27 +14,26 @@ public class BankTowerController : MonoBehaviour
     private TMP_Text priceText;
     [SerializeField]
     private Image iconSprite;
-
-
+    
     private void Start()
     {
-        init(); 
+        Init(); 
     }
-    public TowerData towerData
+    public TowerData TowerData
     {   
-        get => _towerData;
+        get => towerData;
         set
         {
-            _towerData = value;
-            init();
+            towerData = value;
+            Init();
         }
         
     }
     
-    public void init()
+    public void Init()
     {
-        iconSprite.sprite = towerData.Icon;
-        priceText.text = towerData.Price.ToString();
-        nameText.text = towerData.NameTower;
+        iconSprite.sprite = TowerData.Icon;
+        priceText.text = TowerData.Price.ToString();
+        nameText.text = TowerData.NameTower;
     }
 }
