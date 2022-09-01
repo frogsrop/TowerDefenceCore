@@ -1,4 +1,4 @@
-using Unity.Collections;
+/*using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -44,4 +44,4 @@ public partial class ShootingSystem : SystemBase
             EntityManager.DestroyEntity(newBullet);
         }
     }
-}
+}*/
