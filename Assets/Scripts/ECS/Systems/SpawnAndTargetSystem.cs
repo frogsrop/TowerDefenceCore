@@ -39,7 +39,7 @@ public partial class SpawnAndTargetSystem : SystemBase
 
             var readEnemyID = queryCreep.ToComponentDataArray<IDEnemy>(Allocator.Temp)[0]; //считали айди перовго крипа
             var enemyID = readEnemyID.value;
-            EntityManager.AddComponentData(newBullet, new IDEnemy { value = enemyID }); //добавили айдишку моба на пулю
+            EntityManager.AddComponentData(newBullet, new IDTarget { value = enemyID }); //добавили айдишку моба на пулю
         }
     }
 }

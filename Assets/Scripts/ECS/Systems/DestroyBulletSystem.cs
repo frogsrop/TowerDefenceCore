@@ -12,7 +12,7 @@ public partial class DestroyBulletSystem : SystemBase
     protected override void OnUpdate()
     {
         queryBullet = GetEntityQuery(ComponentType.ReadOnly<BulletTag>(), ComponentType.ReadOnly<Translation>(),
-            ComponentType.ReadOnly<IDEnemy>());   //список пуль
+            ComponentType.ReadOnly<IDTarget>());   //список пуль
         queryCreep = GetEntityQuery(ComponentType.ReadOnly<CreepTag>(), ComponentType.ReadOnly<Translation>(),
             ComponentType.ReadOnly<IDEnemy>()); //список крипов
         newBullet = queryBullet.ToEntityArray(Allocator.Temp)[0];
