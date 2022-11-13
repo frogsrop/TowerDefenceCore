@@ -3,14 +3,15 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-
 public partial class SpawnBulletSystem : SystemBase
 {
     private Random _random;
     private Timer timer = new(0.5f);
+    private NearestTargetingStrategy _targetingStrategy;
 
     protected override void OnCreate()
     {
+        _targetingStrategy = new NearestTargetingStrategy(EntityManager);
         _random.InitState();
     }
 
@@ -21,12 +22,15 @@ public partial class SpawnBulletSystem : SystemBase
             return;
         }
 
-        var queryEnemies = GetEntityQuery(ComponentType.ReadOnly<Enemy>(), ComponentType.ReadOnly<IDEnemy>());
+        var queryEnemies = GetEntityQuery(ComponentType.ReadOnly<Enemy>(), ComponentType.ReadOnly<IDEnemy>(),
+            ComponentType.ReadOnly<LocalToWorldTransform>());
         var enemyIds = queryEnemies.ToComponentDataArray<IDEnemy>(Allocator.Temp);
-        var enemyId = enemyIds[(int)(_random.NextUInt() % enemyIds.Length)];
+        // var enemyId = enemyIds[(int)(_random.NextUInt() % enemyIds.Length)];
         Entities.WithStructuralChanges().WithAll<Tower>().ForEach(
-            (in LocalToWorldTransform towerTransform, in Tower tower) =>
+            (Entity entity, in LocalToWorldTransform towerTransform, in Tower tower) =>
             {
+                var enemy = _targetingStrategy.ChooseTarget(entity, queryEnemies);
+                var enemyId = GetComponent<IDEnemy>(enemy);
                 var newBullet = EntityManager.Instantiate(tower.BulletPrefab);
                 var towerFirePosition = new float3(towerTransform.Value.Position.x,
                     towerTransform.Value.Position.y + 0.5f,

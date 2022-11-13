@@ -2,6 +2,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using UnityEngine.SocialPlatforms;
 
 public partial class MoveBulletSystem : SystemBase
 {
@@ -11,7 +12,6 @@ public partial class MoveBulletSystem : SystemBase
             ComponentType.ReadOnly<LocalToWorldTransform>(),
             ComponentType.ReadOnly<IDEnemy>());
         var dt = SystemAPI.Time.DeltaTime;
-
         var enemyIds = queryEnemy.ToComponentDataArray<IDEnemy>(Allocator.Temp);
         var enemyTransforms = queryEnemy.ToComponentDataArray<LocalToWorldTransform>(Allocator.Temp);
         if (enemyIds.Length > 0)
