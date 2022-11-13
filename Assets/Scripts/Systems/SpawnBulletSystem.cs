@@ -7,7 +7,7 @@ public partial class SpawnBulletSystem : SystemBase
 {
     private Random _random;
     private Timer timer = new(0.5f);
-    private NearestTargetingStrategy _targetingStrategy;
+    private ITargetingStrategy _targetingStrategy;
 
     protected override void OnCreate()
     {
