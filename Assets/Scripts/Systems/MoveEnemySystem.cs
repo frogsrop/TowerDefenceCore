@@ -3,6 +3,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
+[BurstCompile]
 partial struct EnemyJob : IJobEntity
 {
     public float dt;
@@ -24,7 +25,6 @@ partial class MoveEnemySystem : SystemBase
     protected override void OnUpdate()
     {
         var dt = SystemAPI.Time.DeltaTime;
-        UnityEngine.Debug.Log(dt);
         new EnemyJob { dt = dt }.ScheduleParallel();
     }
 }

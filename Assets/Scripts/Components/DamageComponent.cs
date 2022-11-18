@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-public struct DamageComponent : IComponentData
+public struct DamageComponent : IEnableableComponent, IComponentData
 {
-    public float damage;
+    public int allDamage;
 }
