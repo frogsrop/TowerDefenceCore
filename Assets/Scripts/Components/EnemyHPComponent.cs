@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-public struct EnemyHPComponent : IComponentData
+public struct EnemyHpComponent : IComponentData
 {
-    public int hp;
+    public int Hp;
 }

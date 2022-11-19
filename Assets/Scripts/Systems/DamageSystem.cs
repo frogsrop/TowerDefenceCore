@@ -5,19 +5,28 @@ using Unity.Entities;
 [BurstCompile]
 public partial class DamageSystem : SystemBase
 {
+    protected override void OnStartRunning()
+    {
+        Entities.WithAll<DamageComponent>()
+            .ForEach(
+                (Entity entity, ref DamageComponent damage) =>
+                {
+                    EntityManager.SetComponentEnabled<DamageComponent>(entity, false); //TODO: when a creep spawns
+                }).WithoutBurst().Run();
+    }
+        
     [BurstCompile]
     protected override void OnUpdate()
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
 
-        Entities.WithAll<DamageComponent>().WithAll<EnemyHPComponent>()
+        Entities.WithAll<DamageComponent>().WithAll<EnemyHpComponent>()
             .ForEach(
-                (Entity entity, ref DamageComponent damage, ref EnemyHPComponent hp) =>
+                (Entity entity, ref DamageComponent damage, ref EnemyHpComponent hp) =>
                 {
-                    var hpResult = new EnemyHPComponent { hp = hp.hp - damage.allDamage };
-                    var damageReset = new DamageComponent { allDamage = 0 };
+                    var hpResult = new EnemyHpComponent { Hp = hp.Hp - damage.Damage };
                     EntityManager.SetComponentData(entity, hpResult);
-                    ecb.SetComponent(entity, damageReset);
+                    EntityManager.SetComponentEnabled<DamageComponent>(entity, false);
                 }).WithoutBurst().Run();
         Dependency.Complete();
         ecb.Playback(EntityManager);

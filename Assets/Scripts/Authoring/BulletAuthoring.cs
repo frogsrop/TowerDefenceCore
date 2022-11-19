@@ -8,6 +8,6 @@ class BulletBaker : Baker<BulletAuthoring>
 {
     public override void Bake(BulletAuthoring authoring)
     {
-        AddComponent<TargetIDComponent>();
+        AddComponent<TargetIdComponent>();
     }
 }

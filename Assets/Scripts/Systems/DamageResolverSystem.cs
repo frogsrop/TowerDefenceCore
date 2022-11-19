@@ -23,15 +23,15 @@ public partial class DamageResolverSystem : SystemBase
 
         Entities.WithAll<DamageBufferElement>()
             .ForEach(
-                (Entity entity,ref DynamicBuffer<DamageBufferElement> buffer) =>
+                (Entity entity, ref DynamicBuffer<DamageBufferElement> buffer) =>
                 {
                     if (buffer.Length > 0)
                     {
-                        EntityManager.HasComponent<DamageComponent>(entity);
+                        EntityManager.SetComponentEnabled<DamageComponent>(entity, true);
                         var res = lfold(buffer.GetEnumerator());
                         buffer.Clear();
-                        var allDamage = new DamageComponent { allDamage = res };
-                        ecb.SetComponent(entity, allDamage);
+                        var damage = new DamageComponent { Damage = res };
+                        ecb.SetComponent(entity, damage);
                     }
                 }).WithoutBurst().Run();
 

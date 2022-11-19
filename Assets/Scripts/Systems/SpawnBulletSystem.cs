@@ -21,8 +21,8 @@ public partial class SpawnBulletSystem : SystemBase
             return;
         }
 
-        var queryEnemies = GetEntityQuery(ComponentType.ReadOnly<EnemyIDComponent>());
-        var enemyIds = queryEnemies.ToComponentDataArray<EnemyIDComponent>(Allocator.Temp);
+        var queryEnemies = GetEntityQuery(ComponentType.ReadOnly<EnemyIdComponent>());
+        var enemyIds = queryEnemies.ToComponentDataArray<EnemyIdComponent>(Allocator.Temp);
         var enemyId = enemyIds[(int)(_random.NextUInt() % enemyIds.Length)];
         Entities.WithStructuralChanges().WithAll<Tower>().ForEach(
             (in LocalToWorldTransform towerTransform, in Tower tower) =>
@@ -37,8 +37,8 @@ public partial class SpawnBulletSystem : SystemBase
                     { Value = towerUniformScaleTransform };
                 EntityManager.SetComponentData(newBullet,
                     setSpawnPosition);
-                var enemyID = enemyId.Id;
-                EntityManager.AddComponentData(newBullet, new TargetIDComponent { Id = enemyID });
+                var targetId = enemyId.Id;
+                EntityManager.AddComponentData(newBullet, new TargetIdComponent { Id = targetId });
             }).Run();
     }
 }

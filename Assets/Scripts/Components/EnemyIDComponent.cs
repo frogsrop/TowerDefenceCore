@@ -1,15 +1,15 @@
 using System;
 using Unity.Entities;
-public struct EnemyIDComponent : IComponentData, IEquatable<EnemyIDComponent>, IEquatable<TargetIDComponent>
+public struct EnemyIdComponent : IComponentData, IEquatable<EnemyIdComponent>, IEquatable<TargetIdComponent>
 {
     public int Id;
     
-    public bool Equals(EnemyIDComponent other)
+    public bool Equals(EnemyIdComponent other)
     {
         return Id == other.Id;
     }
 
-    public bool Equals(TargetIDComponent other)
+    public bool Equals(TargetIdComponent other)
     {
         return Id == other.Id;
     }
