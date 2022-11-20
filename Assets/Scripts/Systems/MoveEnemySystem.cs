@@ -6,7 +6,7 @@ using Unity.Transforms;
 [BurstCompile]
 partial struct EnemyJob : IJobEntity
 {
-    public float dt;
+    public float Dt;
     public void Execute(TransformAspect transform, ref DirectionComponent dir)
     {
         if ((transform.Position.x > 5 && dir.Direction > 0) ||
@@ -15,7 +15,7 @@ partial struct EnemyJob : IJobEntity
             dir.Direction *= -1;
         }
 
-        transform.Position += new float3(dt * dir.Direction, 0, 0);
+        transform.Position += new float3(Dt * dir.Direction, 0, 0);
     }
 }
 
@@ -25,6 +25,6 @@ partial class MoveEnemySystem : SystemBase
     protected override void OnUpdate()
     {
         var dt = SystemAPI.Time.DeltaTime;
-        new EnemyJob { dt = dt }.ScheduleParallel();
+        new EnemyJob { Dt = dt }.ScheduleParallel();
     }
 }

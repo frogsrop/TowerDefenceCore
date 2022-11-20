@@ -3,11 +3,24 @@ using System.Diagnostics;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Entities.UniversalDelegates;
 using Unity.Mathematics;
 using Unity.Transforms;
 
 public partial class MoveBulletSystem : SystemBase
 {
+    int IndexOf(NativeArray<EnemyIdComponent> array, int id)
+    {
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (array[i].Id == id)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     protected override void OnUpdate()
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
@@ -24,7 +37,8 @@ public partial class MoveBulletSystem : SystemBase
             Entities.WithAll<TargetIdComponent>().ForEach(
                 (ref LocalToWorldTransform bulletTransform, in TargetIdComponent bullet, in Entity entity) =>
                 {
-                    var enemyIndex = enemyIds.IndexOf(bullet);
+                    var enemyIndex = IndexOf(enemyIds, bullet.Id);
+                    
                     if (enemyIndex != -1)
                     {
                         var enemyTransform = enemyTransforms[enemyIndex];
@@ -36,13 +50,12 @@ public partial class MoveBulletSystem : SystemBase
                         {
                             ecb.DestroyEntity(entity);
                             ecb.AppendToBuffer(enemyEntity, new DamageBufferElement { damage = 3 });
-                            var log = EntityManager.IsComponentEnabled<DamageComponent>(enemyEntity);
-                            UnityEngine.Debug.Log(log);
                         }
                     }
                     else
                     {
                         ecb.DestroyEntity(entity);
+                        UnityEngine.Debug.Log("CrashBullet");
                     }
                 }).WithoutBurst().Run();
             Dependency.Complete();

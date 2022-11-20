@@ -2,12 +2,13 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using static UnityEngine.GraphicsBuffer;
 
 
 public partial class SpawnBulletSystem : SystemBase
 {
     private Random _random;
-    private Timer timer = new(0.5f);
+    private Timer _timer = new(0.5f);
 
     protected override void OnCreate()
     {
@@ -16,7 +17,7 @@ public partial class SpawnBulletSystem : SystemBase
 
     protected override void OnUpdate()
     {
-        if (!timer.refreshTimerAndCheckFinish())
+        if (!_timer.refreshTimerAndCheckFinish())
         {
             return;
         }
@@ -24,9 +25,11 @@ public partial class SpawnBulletSystem : SystemBase
         var queryEnemies = GetEntityQuery(ComponentType.ReadOnly<EnemyIdComponent>());
         var enemyIds = queryEnemies.ToComponentDataArray<EnemyIdComponent>(Allocator.Temp);
         var enemyId = enemyIds[(int)(_random.NextUInt() % enemyIds.Length)];
+
         Entities.WithStructuralChanges().WithAll<Tower>().ForEach(
             (in LocalToWorldTransform towerTransform, in Tower tower) =>
             {
+                
                 var newBullet = EntityManager.Instantiate(tower.BulletPrefab);
                 var towerFirePosition = new float3(towerTransform.Value.Position.x,
                     towerTransform.Value.Position.y + 0.5f,
