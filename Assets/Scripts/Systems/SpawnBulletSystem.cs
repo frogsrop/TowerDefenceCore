@@ -2,12 +2,13 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using static UnityEngine.GraphicsBuffer;
 
 
 public partial class SpawnBulletSystem : SystemBase
 {
     private Random _random;
-    private Timer timer = new(0.5f);
+    private Timer _timer = new(0.5f);
 
     protected override void OnCreate()
     {
@@ -16,17 +17,19 @@ public partial class SpawnBulletSystem : SystemBase
 
     protected override void OnUpdate()
     {
-        if (!timer.refreshTimerAndCheckFinish())
+        if (!_timer.refreshTimerAndCheckFinish())
         {
             return;
         }
 
-        var queryEnemies = GetEntityQuery(ComponentType.ReadOnly<Enemy>(), ComponentType.ReadOnly<IDEnemy>());
-        var enemyIds = queryEnemies.ToComponentDataArray<IDEnemy>(Allocator.Temp);
+        var queryEnemies = GetEntityQuery(ComponentType.ReadOnly<EnemyIdComponent>());
+        var enemyIds = queryEnemies.ToComponentDataArray<EnemyIdComponent>(Allocator.Temp);
         var enemyId = enemyIds[(int)(_random.NextUInt() % enemyIds.Length)];
+
         Entities.WithStructuralChanges().WithAll<Tower>().ForEach(
             (in LocalToWorldTransform towerTransform, in Tower tower) =>
             {
+                
                 var newBullet = EntityManager.Instantiate(tower.BulletPrefab);
                 var towerFirePosition = new float3(towerTransform.Value.Position.x,
                     towerTransform.Value.Position.y + 0.5f,
@@ -37,8 +40,8 @@ public partial class SpawnBulletSystem : SystemBase
                     { Value = towerUniformScaleTransform };
                 EntityManager.SetComponentData(newBullet,
                     setSpawnPosition);
-                var enemyID = enemyId.Id;
-                EntityManager.AddComponentData(newBullet, new IDBullet { Id = enemyID });
+                var targetId = enemyId.Id;
+                EntityManager.AddComponentData(newBullet, new TargetIdComponent { Id = targetId });
             }).Run();
     }
 }
