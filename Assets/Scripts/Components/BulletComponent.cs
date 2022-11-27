@@ -1,7 +1,10 @@
-using System.Collections.Generic;
+
+
+using System;
+using Unity.Collections;
 using Unity.Entities;
 
 public struct BulletComponent : IComponentData
 {
-    //public List<IBufferElementData> ListEffects;
+    public FixedList4096Bytes<TempTest> ListEffects;
 }

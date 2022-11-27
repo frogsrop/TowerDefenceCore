@@ -1,30 +1,19 @@
+using System.Security;
 using Unity.Entities;
 using UnityEngine;
 
 [InternalBufferCapacity(999)]
-public struct DamageBufferElement : IBufferElementData
-{
-    public int Damage;
-}
-
-
-
-[CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/DamageBufferElementConfig", order = 1)]
-public class DamageBufferElementConfig : ScriptableObject, IBufferElementConfiguration<DamageBufferElement>
+public struct DamageBufferElement : IBufferElementConfiguration<TempTest>
 {
     public int Damage;
 
-    public DamageBufferElement getComponent()
+    public IBufferElementData BuildComponent(TempTest data)
     {
-        return new DamageBufferElement { Damage = Damage };
+        return new DamageBufferElement { Damage = data.Damage };
     }
-}
+}r
 
-
-
-
-interface IBufferElementConfiguration<T>
+public struct TempTest
 {
-
-    T getComponent();
+    public int Damage;
 }
