@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Unity.Entities;
 
-public struct Bullet : IComponentData
+public struct BulletComponent : IComponentData
 {
+    //public List<IBufferElementData> ListEffects;
 }

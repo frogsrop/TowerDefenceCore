@@ -153,8 +153,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebadcea24cbd6224fae268566d9e85ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 1
-  direction: 5
+  MaxHp: 500
+  Id: 1
+  Direction: 5
 --- !u!212 &626644723
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -350,8 +351,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebadcea24cbd6224fae268566d9e85ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
-  direction: -5
+  MaxHp: 500
+  Id: 0
+  Direction: 5
 --- !u!212 &1733116645
 SpriteRenderer:
   m_ObjectHideFlags: 0

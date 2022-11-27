@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2913502688789384584}
   - component: {fileID: 9068380905924292621}
-  - component: {fileID: 7424013257686115932}
+  - component: {fileID: -169646894579885737}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &9068380905924292621
 SpriteRenderer:
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7424013257686115932
+--- !u!114 &-169646894579885737
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,3 +97,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b87f60125ff2a3e43ac4790255f56d6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ListSo:
+  - {fileID: 11400000, guid: afd0422c573f3a146887c143759efdf7, type: 2}

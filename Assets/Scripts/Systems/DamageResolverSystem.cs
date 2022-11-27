@@ -15,7 +15,7 @@ public partial class DamageResolverSystem : SystemBase
             int res = 0;
             while (en.MoveNext())
             {
-                res += en.Current.damage;
+                res += en.Current.Damage;
             }
 
             return res;

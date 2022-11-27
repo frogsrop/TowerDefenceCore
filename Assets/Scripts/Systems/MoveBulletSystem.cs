@@ -49,7 +49,7 @@ public partial class MoveBulletSystem : SystemBase
                         if (distance < 0.1f)
                         {
                             ecb.DestroyEntity(entity);
-                            ecb.AppendToBuffer(enemyEntity, new DamageBufferElement { damage = 3 });
+                            ecb.AppendToBuffer(enemyEntity, new DamageBufferElement { Damage = 3 });
                         }
                     }
                     else
