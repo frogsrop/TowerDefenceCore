@@ -3,7 +3,7 @@ using Unity.Collections;
 using Unity.Entities;
 
 [BurstCompile]
-public partial class DamageResolverSystem : SystemBase
+public partial class EffectResolverSystem : SystemBase
 {
     [BurstCompile]
     protected override void OnUpdate()

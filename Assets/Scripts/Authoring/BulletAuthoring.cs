@@ -1,14 +1,11 @@
-using NUnit.Framework;
 using System.Collections.Generic;
-using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 class BulletAuthoring : UnityEngine.MonoBehaviour
 {
-    public List<DamageBufferElementConfig> ListSo = new();
+    public List<DamageElementConfig> ListSo = new(); 
 }
 
 class BulletBaker : Baker<BulletAuthoring>

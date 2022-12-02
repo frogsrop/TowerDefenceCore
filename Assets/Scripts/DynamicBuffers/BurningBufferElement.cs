@@ -3,13 +3,13 @@ using Unity.Entities;
 using UnityEngine;
 
 [InternalBufferCapacity(999)]
-public struct DamageBufferElement : IBufferElementConfiguration<TempTest>
+public struct BurningBufferElement : IBufferElementConfiguration<TempTest>
 {
     public int Damage;
+    public float Timer;
 
     public IBufferElementData BuildComponent(TempTest data)
     {
-        return new DamageBufferElement { Damage = data.Damage };
+        return new BurningBufferElement { Damage = data.Damage, Timer = data.Timer };
     }
 }
-

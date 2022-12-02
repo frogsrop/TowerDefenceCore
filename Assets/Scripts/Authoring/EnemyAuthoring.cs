@@ -15,6 +15,8 @@ class EnemyBaker : Baker<EnemyAuthoring>
         AddComponent(new DirectionComponent { Direction = authoring.Direction });
         AddComponent(new EnemyIdComponent { Id = authoring.Id });
         AddComponent<DamageComponent>();
+        AddComponent<BurningComponent>();
         AddBuffer<DamageBufferElement>();
+        AddBuffer<BurningBufferElement>();
     }
 }
