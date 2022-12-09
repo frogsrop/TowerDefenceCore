@@ -1,9 +1,5 @@
-using System;
-using System.Diagnostics;
-using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Entities.UniversalDelegates;
 using Unity.Mathematics;
 using Unity.Transforms;
 
@@ -26,7 +22,8 @@ public partial class MoveBulletSystem : SystemBase
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         var queryEnemy = GetEntityQuery(ComponentType.ReadOnly<EnemyIdComponent>(), 
             ComponentType.ReadOnly<LocalToWorldTransform>(),
-            ComponentType.ReadOnly<DamageBufferElement>());
+            ComponentType.ReadOnly<DamageBufferElement>(),
+            ComponentType.ReadOnly<BurningBufferElement>());
         var dt = SystemAPI.Time.DeltaTime;
 
         var enemyIds = queryEnemy.ToComponentDataArray<EnemyIdComponent>(Allocator.Temp);
@@ -49,13 +46,13 @@ public partial class MoveBulletSystem : SystemBase
                         if (distance < 0.1f)
                         {
                             ecb.DestroyEntity(entity);
-                            ecb.AppendToBuffer(enemyEntity, new DamageBufferElement { Damage = 3 });
+                            //ecb.AppendToBuffer(enemyEntity, new DamageBufferElement { Damage = 3 });
+                            ecb.AppendToBuffer(enemyEntity, new BurningBufferElement { Damage = 2, Timer = 5 });
                         }
                     }
                     else
                     {
                         ecb.DestroyEntity(entity);
-                        UnityEngine.Debug.Log("CrashBullet");
                     }
                 }).WithoutBurst().Run();
             Dependency.Complete();

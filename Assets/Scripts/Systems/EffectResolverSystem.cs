@@ -20,21 +20,33 @@ public partial class EffectResolverSystem : SystemBase
 
             return res;
         }
-
-        Entities.WithAll<DamageBufferElement>()
+        /*Entities.WithAll<DamageBufferElement>()
             .ForEach(
-                (Entity entity, ref DynamicBuffer<DamageBufferElement> buffer) =>
+                (Entity entity, ref DynamicBuffer<DamageBufferElement> damageBuffer) =>
                 {
-                    if (buffer.Length > 0)
+                    if (damageBuffer.Length > 0)
                     {
                         EntityManager.SetComponentEnabled<DamageComponent>(entity, true);
-                        var res = lfold(buffer.GetEnumerator());
-                        buffer.Clear();
+                        var res = lfold(damageBuffer.GetEnumerator());
+                        damageBuffer.Clear();
                         var damage = new DamageComponent { Damage = res };
                         ecb.SetComponent(entity, damage);
                     }
-                }).WithoutBurst().Run();
+                }).WithoutBurst().Run();*/
 
+        Entities.WithAll<BurningBufferElement>()
+            .ForEach(
+                (Entity entity, ref DynamicBuffer<BurningBufferElement> burningBuffer) =>
+                {
+                    //var state = EntityManager.IsComponentEnabled<BurningComponent>(entity);
+                    if (/*!state &&*/ burningBuffer.Length > 0)
+                    {
+                        EntityManager.SetComponentEnabled<BurningComponent>(entity, true);
+                        burningBuffer.Clear();
+                        var burn = new BurningComponent { BurningDamage = 2, Timer = 4 };
+                        ecb.SetComponent(entity, burn);
+                    }
+                }).WithoutBurst().Run();
         Dependency.Complete();
         ecb.Playback(EntityManager);
         ecb.Dispose();

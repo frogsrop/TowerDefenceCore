@@ -8,7 +8,7 @@ using static UnityEngine.GraphicsBuffer;
 public partial class SpawnBulletSystem : SystemBase
 {
     private Random _random;
-    private Timer _timer = new(0.5f);
+    private Timer _timer = new(4f);
 
     protected override void OnCreate()
     {
