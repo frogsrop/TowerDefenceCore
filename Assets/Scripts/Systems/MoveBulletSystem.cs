@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using UnityEngine;
 
 public partial class MoveBulletSystem : SystemBase
 {
@@ -14,13 +16,22 @@ public partial class MoveBulletSystem : SystemBase
                 return i;
             }
         }
+
         return -1;
+    }
+
+
+    private Dictionary<int, AbstactEffectConfig> mapping = new();
+
+    protected override void OnStartRunning()
+    {
+        mapping = AbstactEffectConfig.mapping;
     }
 
     protected override void OnUpdate()
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        var queryEnemy = GetEntityQuery(ComponentType.ReadOnly<EnemyIdComponent>(), 
+        var queryEnemy = GetEntityQuery(ComponentType.ReadOnly<EnemyIdComponent>(),
             ComponentType.ReadOnly<LocalToWorldTransform>(),
             ComponentType.ReadOnly<DamageBufferElement>(),
             ComponentType.ReadOnly<BurningBufferElement>());
@@ -32,10 +43,11 @@ public partial class MoveBulletSystem : SystemBase
         if (enemyIds.Length > 0)
         {
             Entities.WithAll<TargetIdComponent>().ForEach(
-                (ref LocalToWorldTransform bulletTransform, in TargetIdComponent bullet, in Entity entity) =>
+                (ref LocalToWorldTransform bulletTransform, in TargetIdComponent bullet, in BulletComponent bulletInfo,
+                    in Entity entity) =>
                 {
                     var enemyIndex = IndexOf(enemyIds, bullet.Id);
-                    
+
                     if (enemyIndex != -1)
                     {
                         var enemyTransform = enemyTransforms[enemyIndex];
@@ -47,7 +59,15 @@ public partial class MoveBulletSystem : SystemBase
                         {
                             ecb.DestroyEntity(entity);
                             //ecb.AppendToBuffer(enemyEntity, new DamageBufferElement { Damage = 3 });
-                            ecb.AppendToBuffer(enemyEntity, new BurningBufferElement { Damage = 2, Timer = 5 });
+                            // ecb.AppendToBuffer(enemyEntity, new BurningBufferElement { Damage = 2, Timer = 5 });
+                            foreach (var effect in bulletInfo.ListEffects)
+                            {
+                                if (mapping.ContainsKey(effect))
+                                {
+                                    mapping[effect].log();
+                                    mapping[effect].addBufferData(enemyEntity, ecb);
+                                }
+                            }
                         }
                     }
                     else

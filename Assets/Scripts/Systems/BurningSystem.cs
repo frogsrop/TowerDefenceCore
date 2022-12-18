@@ -17,8 +17,9 @@ public partial class BurningSystem : SystemBase
                 {
                     EntityManager.SetComponentEnabled<BurningComponent>(entity, false); //TODO: when a creep spawns
                 }).WithoutBurst().Run();
-    }
 
+    }
+    
     [BurstCompile]
     protected override void OnUpdate()
     {

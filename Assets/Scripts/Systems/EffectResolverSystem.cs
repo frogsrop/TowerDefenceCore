@@ -20,7 +20,8 @@ public partial class EffectResolverSystem : SystemBase
 
             return res;
         }
-        /*Entities.WithAll<DamageBufferElement>()
+
+        Entities.WithAll<DamageBufferElement>()
             .ForEach(
                 (Entity entity, ref DynamicBuffer<DamageBufferElement> damageBuffer) =>
                 {
@@ -32,14 +33,14 @@ public partial class EffectResolverSystem : SystemBase
                         var damage = new DamageComponent { Damage = res };
                         ecb.SetComponent(entity, damage);
                     }
-                }).WithoutBurst().Run();*/
+                }).WithoutBurst().Run();
 
         Entities.WithAll<BurningBufferElement>()
             .ForEach(
                 (Entity entity, ref DynamicBuffer<BurningBufferElement> burningBuffer) =>
                 {
                     //var state = EntityManager.IsComponentEnabled<BurningComponent>(entity);
-                    if (/*!state &&*/ burningBuffer.Length > 0)
+                    if ( /*!state &&*/ burningBuffer.Length > 0)
                     {
                         EntityManager.SetComponentEnabled<BurningComponent>(entity, true);
                         burningBuffer.Clear();

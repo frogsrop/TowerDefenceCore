@@ -6,5 +6,5 @@ using Unity.Entities;
 
 public struct BulletComponent : IComponentData
 {
-    public FixedList4096Bytes<TempTest> ListEffects;
+    public FixedList4096Bytes<int> ListEffects;
 }
