@@ -1,8 +1,6 @@
-using System.Collections;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
 
 [BurstCompile]
 public partial class BurningSystem : SystemBase
@@ -37,7 +35,7 @@ public partial class BurningSystem : SystemBase
                         return;
                     }
 
-                    for (int i= 0; i < timerBurning; i++) 
+                    if (timerBurning >= 0) 
                     {
                         var timerResult = new BurningComponent { BurningDamage = 2, Timer = timerBurning - 1 };
                         var hpResult = new EnemyHpComponent { Hp = hp.Hp - damage.BurningDamage };
@@ -45,7 +43,11 @@ public partial class BurningSystem : SystemBase
                         EntityManager.SetComponentData(entity, hpResult);
                         return;
                     }
-                    EntityManager.SetComponentEnabled<BurningComponent>(entity, false); 
+                    else
+                    {
+                        EntityManager.SetComponentEnabled<BurningComponent>(entity, false);
+                    }
+                     
                 }).WithoutBurst().Run();
         
         Dependency.Complete();

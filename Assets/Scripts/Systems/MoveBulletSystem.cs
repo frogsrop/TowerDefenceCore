@@ -3,7 +3,6 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 public partial class MoveBulletSystem : SystemBase
 {
@@ -21,11 +20,11 @@ public partial class MoveBulletSystem : SystemBase
     }
 
 
-    private Dictionary<int, AbstactEffectConfig> mapping = new();
+    private Dictionary<int, AbstactEffectConfig> _mapping = new();
 
     protected override void OnStartRunning()
     {
-        mapping = AbstactEffectConfig.mapping;
+        _mapping = AbstactEffectConfig.Mapping;
     }
 
     protected override void OnUpdate()
@@ -58,14 +57,13 @@ public partial class MoveBulletSystem : SystemBase
                         if (distance < 0.1f)
                         {
                             ecb.DestroyEntity(entity);
-                            //ecb.AppendToBuffer(enemyEntity, new DamageBufferElement { Damage = 3 });
-                            // ecb.AppendToBuffer(enemyEntity, new BurningBufferElement { Damage = 2, Timer = 5 });
+
                             foreach (var effect in bulletInfo.ListEffects)
                             {
-                                if (mapping.ContainsKey(effect))
+                                if (_mapping.ContainsKey(effect))
                                 {
-                                    mapping[effect].log();
-                                    mapping[effect].addBufferData(enemyEntity, ecb);
+                                    _mapping[effect].log();
+                                    _mapping[effect].addBufferData(enemyEntity, ecb);
                                 }
                             }
                         }

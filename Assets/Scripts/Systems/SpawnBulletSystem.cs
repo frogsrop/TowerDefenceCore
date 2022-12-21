@@ -2,7 +2,6 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using static UnityEngine.GraphicsBuffer;
 
 
 public partial class SpawnBulletSystem : SystemBase
