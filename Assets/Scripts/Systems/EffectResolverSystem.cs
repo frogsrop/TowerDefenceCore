@@ -39,8 +39,8 @@ public partial class EffectResolverSystem : SystemBase
             .ForEach(
                 (Entity entity, ref DynamicBuffer<BurningBufferElement> burningBuffer) =>
                 {
-                    //var state = EntityManager.IsComponentEnabled<BurningComponent>(entity);
-                    if ( /*!state &&*/ burningBuffer.Length > 0)
+                    
+                    if (burningBuffer.Length > 0)
                     {
                         EntityManager.SetComponentEnabled<BurningComponent>(entity, true);
                         burningBuffer.Clear();

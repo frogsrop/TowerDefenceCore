@@ -1,5 +1,4 @@
 using Unity.Entities;
-using static UnityEngine.GraphicsBuffer;
 
 class TowerAuthoring : UnityEngine.MonoBehaviour
 {

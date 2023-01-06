@@ -1,17 +1,15 @@
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Entities.LowLevel.Unsafe;
 using UnityEngine;
 
-class BulletAuthoring : UnityEngine.MonoBehaviour
+class BulletAuthoring : MonoBehaviour
 {
     public List<AbstactEffectConfig> ListSo = new(); 
 }
 
 class BulletBaker : Baker<BulletAuthoring>
 {
-    private UnsafeUntypedBlobAssetReference s;
     public override void Bake(BulletAuthoring authoring)
     {
         
