@@ -19,12 +19,11 @@ public partial class MoveBulletSystem : SystemBase
         return -1;
     }
 
-
-    private Dictionary<int, AbstactEffectConfig> _mapping = new();
+    private static Dictionary<int, AbstractEffectConfig> _mapping;
 
     protected override void OnStartRunning()
     {
-        _mapping = AbstactEffectConfig.Mapping;
+        _mapping = AbstractEffectConfig.Mapping;
     }
 
     protected override void OnUpdate()
@@ -62,8 +61,7 @@ public partial class MoveBulletSystem : SystemBase
                             {
                                 if (_mapping.ContainsKey(effect))
                                 {
-                                    _mapping[effect].log();
-                                    _mapping[effect].addBufferData(enemyEntity, ecb);
+                                    _mapping[effect].AppendToBuffer(enemyEntity, ecb);
                                 }
                             }
                         }

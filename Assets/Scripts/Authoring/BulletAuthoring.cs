@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
@@ -5,7 +6,7 @@ using UnityEngine;
 
 class BulletAuthoring : MonoBehaviour
 {
-    public List<AbstactEffectConfig> ListSo = new(); 
+    public List<AbstractEffectConfig> ListSo = new(); 
 }
 
 class BulletBaker : Baker<BulletAuthoring>

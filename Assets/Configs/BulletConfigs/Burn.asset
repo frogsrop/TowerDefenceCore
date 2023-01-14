@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11f1d9f70fcb7a64bbc484d8b1dd285e, type: 3}
   m_Name: Burn
   m_EditorClassIdentifier: 
-  Id: 1
-  Damage: 6
-  Timer: 10
+  Damage: 50
+  Timer: 5

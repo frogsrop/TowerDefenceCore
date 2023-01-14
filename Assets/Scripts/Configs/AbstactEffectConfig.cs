@@ -1,20 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
 
-public abstract class AbstactEffectConfig : ScriptableObject
+public abstract class AbstractEffectConfig : ScriptableObject
 {
-    public static Dictionary<int, AbstactEffectConfig> Mapping = new();
-    static int CurId = 0;
-    public int Id;
+    public static Dictionary<int, AbstractEffectConfig> Mapping = new();
+    private static int CurId;
+    private int _id;
+    public int Id => _id;
 
     private void OnEnable()
     {
-        Id = CurId;
-        CurId += 1;
-        Mapping[Id] = this;
-        Debug.Log($"{name} -> {Id}");
+        _id = CurId;
+        CurId++;
+        Mapping[_id] = this;
     }
-    public abstract void addBufferData(Entity e, EntityCommandBuffer ecb);
-    public abstract void log();
+
+    public abstract void AppendToBuffer(Entity entity, EntityCommandBuffer ecb);
+
 }

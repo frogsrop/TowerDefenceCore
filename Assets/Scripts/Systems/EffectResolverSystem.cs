@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -5,17 +7,36 @@ using Unity.Entities;
 [BurstCompile]
 public partial class EffectResolverSystem : SystemBase
 {
+    private static Dictionary<int, AbstractEffectConfig> mapping;
+
+    protected override void OnStartRunning()
+    {
+        mapping = AbstractEffectConfig.Mapping;
+    }
+
     [BurstCompile]
     protected override void OnUpdate()
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
 
+        ApplyDamage(ecb);
+        ApplyBurn(ecb);
+
+        Dependency.Complete();
+        ecb.Playback(EntityManager);
+        ecb.Dispose();
+    }
+
+    void ApplyDamage(EntityCommandBuffer ecb)
+    {
         int lfold(NativeArray<DamageBufferElement>.Enumerator en)
         {
             int res = 0;
             while (en.MoveNext())
             {
-                res += en.Current.Damage;
+                var damage = (DamageEffectConfig)mapping[en.Current.Id];
+
+                res += damage.Damage;
             }
 
             return res;
@@ -34,22 +55,36 @@ public partial class EffectResolverSystem : SystemBase
                         ecb.SetComponent(entity, damage);
                     }
                 }).WithoutBurst().Run();
+    }
 
+    void ApplyBurn(EntityCommandBuffer ecb)
+    {
         Entities.WithAll<BurningBufferElement>()
             .ForEach(
                 (Entity entity, ref DynamicBuffer<BurningBufferElement> burningBuffer) =>
                 {
-                    
                     if (burningBuffer.Length > 0)
                     {
                         EntityManager.SetComponentEnabled<BurningComponent>(entity, true);
+                        var resId = 0;
+                        var timer = -1f;
+                        foreach (var burning in burningBuffer)
+                        {
+                            var burningEffectConfig = (BurningEffectConfig)mapping[burning.Id];
+                            if (burningEffectConfig.Timer > timer)
+                            {
+                                timer = burningEffectConfig.Timer;
+                                resId = burning.Id;
+                            }
+                        }
+
+                        var maxBurningEffect = (BurningEffectConfig)mapping[resId];
+                        ecb.SetComponent(entity,
+                            new BurningComponent
+                                { BurningDamage = maxBurningEffect.Damage, Timer = maxBurningEffect.Timer });
+
                         burningBuffer.Clear();
-                        var burn = new BurningComponent { BurningDamage = 2, Timer = 4 };
-                        ecb.SetComponent(entity, burn);
                     }
                 }).WithoutBurst().Run();
-        Dependency.Complete();
-        ecb.Playback(EntityManager);
-        ecb.Dispose();
     }
 }

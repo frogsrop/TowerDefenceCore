@@ -1,6 +1,8 @@
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Transforms;
+using UnityEngine;
 
 [BurstCompile]
 public partial class BurningSystem : SystemBase
@@ -37,11 +39,24 @@ public partial class BurningSystem : SystemBase
 
                     if (timerBurning >= 0) 
                     {
-                        var timerResult = new BurningComponent { BurningDamage = 2, Timer = timerBurning - 1 };
-                        var hpResult = new EnemyHpComponent { Hp = hp.Hp - damage.BurningDamage };
+                        var timerResult = new BurningComponent { BurningDamage = damage.BurningDamage, Timer = timerBurning - 1 };
+                        var resHp = hp.Hp - damage.BurningDamage;
+                        var hpResult = new EnemyHpComponent { Hp =  resHp, MaxHp = hp.MaxHp};
+                        
+                        var children = EntityManager.GetBuffer<Child>(entity);
+                        foreach (var child in children)
+                        {
+                            var ob = EntityManager.GetComponentObject<SpriteRenderer>(child.Value);
+                            Debug.Log(ob.name);
+                            if (ob.name == "hp(Clone)(Clone)(Clone)")
+                            {
+                                ob.size = new Vector2(Mathf.Max(0f, resHp * 1f) / hp.MaxHp, 1);
+                                break;
+                            }
+                        }
+                        
                         EntityManager.SetComponentData(entity, timerResult);
                         EntityManager.SetComponentData(entity, hpResult);
-                        return;
                     }
                     else
                     {
