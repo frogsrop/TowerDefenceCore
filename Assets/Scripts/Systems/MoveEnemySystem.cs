@@ -25,6 +25,6 @@ partial class MoveEnemySystem : SystemBase
     protected override void OnUpdate()
     {
         var dt = SystemAPI.Time.DeltaTime;
-        // new EnemyJob { Dt = dt }.ScheduleParallel();
+        new EnemyJob { Dt = dt }.ScheduleParallel();
     }
 }
