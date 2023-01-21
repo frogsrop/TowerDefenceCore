@@ -11,10 +11,12 @@ class EnemyBaker : Baker<EnemyAuthoring>
 {
     public override void Bake(EnemyAuthoring authoring)
     {
-        AddComponent(new EnemyHpComponent { Hp = authoring.MaxHp});
+        AddComponent(new EnemyHpComponent { Hp = authoring.MaxHp, MaxHp = authoring.MaxHp });
         AddComponent(new DirectionComponent { Direction = authoring.Direction });
         AddComponent(new EnemyIdComponent { Id = authoring.Id });
         AddComponent<DamageComponent>();
+        AddComponent<BurningComponent>();
         AddBuffer<DamageBufferElement>();
+        AddBuffer<BurningBufferElement>();
     }
 }

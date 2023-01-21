@@ -1,9 +1,6 @@
-using System;
-using System.Diagnostics;
-using Unity.Burst;
+using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Entities.UniversalDelegates;
 using Unity.Mathematics;
 using Unity.Transforms;
 
@@ -18,15 +15,24 @@ public partial class MoveBulletSystem : SystemBase
                 return i;
             }
         }
+
         return -1;
+    }
+
+    private static Dictionary<int, AbstractEffectConfig> _mapping;
+
+    protected override void OnStartRunning()
+    {
+        _mapping = AbstractEffectConfig.Mapping;
     }
 
     protected override void OnUpdate()
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        var queryEnemy = GetEntityQuery(ComponentType.ReadOnly<EnemyIdComponent>(), 
+        var queryEnemy = GetEntityQuery(ComponentType.ReadOnly<EnemyIdComponent>(),
             ComponentType.ReadOnly<LocalToWorldTransform>(),
-            ComponentType.ReadOnly<DamageBufferElement>());
+            ComponentType.ReadOnly<DamageBufferElement>(),
+            ComponentType.ReadOnly<BurningBufferElement>());
         var dt = SystemAPI.Time.DeltaTime;
 
         var enemyIds = queryEnemy.ToComponentDataArray<EnemyIdComponent>(Allocator.Temp);
@@ -35,10 +41,11 @@ public partial class MoveBulletSystem : SystemBase
         if (enemyIds.Length > 0)
         {
             Entities.WithAll<TargetIdComponent>().ForEach(
-                (ref LocalToWorldTransform bulletTransform, in TargetIdComponent bullet, in Entity entity) =>
+                (ref LocalToWorldTransform bulletTransform, in TargetIdComponent bullet, in BulletComponent bulletInfo,
+                    in Entity entity) =>
                 {
                     var enemyIndex = IndexOf(enemyIds, bullet.Id);
-                    
+
                     if (enemyIndex != -1)
                     {
                         var enemyTransform = enemyTransforms[enemyIndex];
@@ -49,13 +56,19 @@ public partial class MoveBulletSystem : SystemBase
                         if (distance < 0.1f)
                         {
                             ecb.DestroyEntity(entity);
-                            ecb.AppendToBuffer(enemyEntity, new DamageBufferElement { damage = 3 });
+
+                            foreach (var effect in bulletInfo.ListEffects)
+                            {
+                                if (_mapping.ContainsKey(effect))
+                                {
+                                    _mapping[effect].AppendToBuffer(enemyEntity, ecb);
+                                }
+                            }
                         }
                     }
                     else
                     {
                         ecb.DestroyEntity(entity);
-                        UnityEngine.Debug.Log("CrashBullet");
                     }
                 }).WithoutBurst().Run();
             Dependency.Complete();
