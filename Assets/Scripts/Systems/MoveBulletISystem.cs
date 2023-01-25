@@ -75,12 +75,12 @@
 //             if (distance < 0.1f)
 //             {
 //                 ecbJob.DestroyEntity(entity);
-//                 foreach (var effect in bulletInfo.ListEffects)
-//                 {
-//                     if (_mapping.ContainsKey(effect))
-//                     {
-//                         _mapping[effect].AppendToBuffer(enemyEntity, ecbJob);
-//                     }
+                 // foreach (var effect in bulletInfo.ListEffects)
+                 // {
+                 //     if (_mapping.ContainsKey(effect))
+                 //     {
+                 //         _mapping[effect].AppendToBuffer(enemyEntity, ecbJob);
+                 //     }
 //                 }
 //             }
 //         }
