@@ -1,9 +1,7 @@
-using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 public partial class MoveBulletSystem : SystemBase
 {
@@ -40,8 +38,8 @@ public partial struct MoveBulletJob : IJobEntity
     public NativeArray<LocalToWorldTransform> enemyTransformsJob;
     public NativeArray<Entity> enemyEntityArrayJob;
 
-    private void Execute(ref LocalToWorldTransform bulletTransform, in TargetIdComponent bullet, in BulletComponent bulletInfo,
-        in Entity entity)
+    private void Execute(ref LocalToWorldTransform bulletTransform, in TargetIdComponent bullet, 
+        in BulletComponent bulletInfo, in Entity entity)
     {
         var mapping = AbstractEffectConfig.Mapping;
         var enemyIndex = IndexOf(enemyIdsJob, bullet.Id);

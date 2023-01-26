@@ -39,7 +39,8 @@ public partial class BurningSystem : SystemBase
 
                     if (timerBurning >= 0) 
                     {
-                        var timerResult = new BurningComponent { BurningDamage = damage.BurningDamage, Timer = timerBurning - 1 };
+                        var timerResult = new BurningComponent { BurningDamage = damage.BurningDamage, 
+                            Timer = timerBurning - 1 };
                         var resHp = hp.Hp - damage.BurningDamage;
                         var hpResult = new EnemyHpComponent { Hp =  resHp, MaxHp = hp.MaxHp};
                         
@@ -64,7 +65,6 @@ public partial class BurningSystem : SystemBase
                     }
                      
                 }).WithoutBurst().Run();
-        
         Dependency.Complete();
         ecb.Playback(EntityManager);
         ecb.Dispose();
