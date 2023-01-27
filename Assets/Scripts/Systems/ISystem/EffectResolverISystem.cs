@@ -3,35 +3,41 @@ using Unity.Collections;
 using Unity.Entities;
 
 [BurstCompile]
-public partial class EffectResolverSystem : SystemBase
+public partial struct EffectResolverSystem : ISystem
 {
+    [BurstCompile] public void OnCreate(ref SystemState state) {}
+    [BurstCompile] public void OnDestroy(ref SystemState state) {}
+    
     [BurstCompile]
-    protected override void OnUpdate()
+    public void OnUpdate(ref SystemState state)
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
+        
+        ApplyDamage(ecb, ref state);
+        
+        ApplyBurn(ecb, ref state);
 
-        ApplyDamage(ecb);
-        ApplyBurn(ecb);
-
-        Dependency.Complete();
-        ecb.Playback(EntityManager);
+        state.Dependency.Complete();
+        ecb.Playback(state.EntityManager);
         ecb.Dispose();
     }
 
-    void ApplyDamage(EntityCommandBuffer ecb)
+    [BurstCompile]
+    void ApplyDamage(EntityCommandBuffer ecb, ref SystemState state)
     {
-        
-        var queryDamageBuffer = GetEntityQuery(ComponentType.ReadOnly<DamageBufferElement>());
+        var queryDamageBuffer = state.GetEntityQuery(ComponentType.ReadOnly<DamageBufferElement>());
         new DamageJob { ecbJob = ecb }.Run(queryDamageBuffer);
     }
 
-    void ApplyBurn(EntityCommandBuffer ecb)
+    [BurstCompile]
+    void ApplyBurn(EntityCommandBuffer ecb, ref SystemState state)
     {
-        var queryBurningBuffer = GetEntityQuery(ComponentType.ReadOnly<BurningBufferElement>());
+        var queryBurningBuffer = state.GetEntityQuery(ComponentType.ReadOnly<BurningBufferElement>());
         new BurnJob { ecbJob = ecb }.Run(queryBurningBuffer);
     }
 }
 
+[BurstCompile]
 public partial struct DamageJob : IJobEntity
 {
     public EntityCommandBuffer ecbJob;
@@ -60,6 +66,7 @@ public partial struct DamageJob : IJobEntity
     }
 }
 
+[BurstCompile]
 public partial struct BurnJob : IJobEntity
 {
     public EntityCommandBuffer ecbJob;
