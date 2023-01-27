@@ -12,11 +12,8 @@ public partial struct EffectResolverSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        
         ApplyDamage(ecb, ref state);
-        
         ApplyBurn(ecb, ref state);
-
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
@@ -28,7 +25,7 @@ public partial struct EffectResolverSystem : ISystem
         var queryDamageBuffer = state.GetEntityQuery(ComponentType.ReadOnly<DamageBufferElement>());
         new DamageJob { ecbJob = ecb }.Run(queryDamageBuffer);
     }
-
+    
     [BurstCompile]
     void ApplyBurn(EntityCommandBuffer ecb, ref SystemState state)
     {
@@ -37,7 +34,6 @@ public partial struct EffectResolverSystem : ISystem
     }
 }
 
-[BurstCompile]
 public partial struct DamageJob : IJobEntity
 {
     public EntityCommandBuffer ecbJob;
