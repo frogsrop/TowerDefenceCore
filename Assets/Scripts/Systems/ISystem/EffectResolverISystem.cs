@@ -62,7 +62,6 @@ public partial struct DamageJob : IJobEntity
     }
 }
 
-[BurstCompile]
 public partial struct BurnJob : IJobEntity
 {
     public EntityCommandBuffer ecbJob;
