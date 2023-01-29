@@ -69,6 +69,4 @@ public partial class BurningSystem : SystemBase
         ecb.Playback(EntityManager);
         ecb.Dispose();
     }
-
-    
 }
