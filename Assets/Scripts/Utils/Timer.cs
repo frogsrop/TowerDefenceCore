@@ -14,9 +14,9 @@ public class Timer
         currentTimeout = timout;
     }
 
-    public Boolean refreshTimerAndCheckFinish()
+    public Boolean refreshTimerAndCheckFinish(float dt)
     {
-        currentTimeout -= Time.deltaTime;
+        currentTimeout -= dt;
         if (currentTimeout <= 0)
         {
             currentTimeout = fullTimeout;
