@@ -3,27 +3,32 @@ using Unity.Collections;
 using Unity.Entities;
 
 [BurstCompile]
-public partial struct BurningISystem : ISystem
+public partial class BurningSystem : SystemBase
 {
-    [BurstCompile]
-    public void OnCreate(ref SystemState state)
-    {
-        var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        var queryBurningComponent = state.GetEntityQuery(ComponentType.ReadOnly<BurningComponent>());
-        new OffBurningComponentJob{ecbJob = ecb}.Run(queryBurningComponent);
-    }
-    [BurstCompile] public void OnDestroy(ref SystemState state) {}
+    private Timer _timer = new(1f);
     
     [BurstCompile]
-    public void OnUpdate(ref SystemState state)
+    protected override void OnCreate()
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        var queryBurningComponent = state.GetEntityQuery(ComponentType.ReadOnly<BurningComponent>(), 
+        var queryBurningComponent = GetEntityQuery(ComponentType.ReadOnly<BurningComponent>());
+        new OffBurningComponentJob{ecbJob = ecb}.Run(queryBurningComponent);
+    }
+    
+    [BurstCompile]
+    protected override void OnUpdate()
+    {
+        var ecb = new EntityCommandBuffer(Allocator.TempJob);
+        var queryBurningComponent = GetEntityQuery(ComponentType.ReadOnly<BurningComponent>(), 
             ComponentType.ReadOnly<EnemyHpComponent>());
         var dt = SystemAPI.Time.DeltaTime;
-        new BurningJob{ecbJob=ecb, dt = dt}.Run(queryBurningComponent);
-        state.Dependency.Complete();
-        ecb.Playback(state.EntityManager);
+        if (!_timer.refreshTimerAndCheckFinish(dt))
+        {
+            return;
+        }
+        new BurningJob{ecbJob=ecb}.Run(queryBurningComponent);
+        Dependency.Complete();
+        ecb.Playback(EntityManager);
         ecb.Dispose();
     }
 }
@@ -38,22 +43,14 @@ public partial struct OffBurningComponentJob : IJobEntity
     }
 }
 
-//[BurstCompile]
+[BurstCompile]
 public partial struct BurningJob : IJobEntity
 {
-    public float dt;
     public EntityCommandBuffer ecbJob;
     private void Execute(Entity entity, ref BurningComponent damage, ref EnemyHpComponent hp)
     {
-        var timer = new Timer(1f);
         var timerBurning = damage.Timer;
-        
 
-        if (!timer.refreshTimerAndCheckFinish(dt))
-        {
-            return;
-        }
-        
         if (timerBurning >= 0) 
         {
             var timerResult = new BurningComponent { BurningDamage = damage.BurningDamage, Timer = timerBurning - 1 };

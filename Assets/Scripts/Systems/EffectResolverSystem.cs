@@ -37,7 +37,6 @@ public partial struct EffectResolverSystem : ISystem
 public partial struct DamageJob : IJobEntity
 {
     public EntityCommandBuffer ecbJob;
-
     private void Execute(Entity entity, ref DynamicBuffer<DamageBufferElement> damageBuffer)
     {
         var mapping = AbstractEffectConfig.Mapping;
