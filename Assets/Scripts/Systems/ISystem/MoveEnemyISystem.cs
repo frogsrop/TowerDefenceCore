@@ -4,6 +4,20 @@ using Unity.Mathematics;
 using Unity.Transforms;
 
 [BurstCompile]
+public partial struct MoveEnemySystem : ISystem
+{
+    [BurstCompile] public void OnCreate(ref SystemState state) {}
+    [BurstCompile] public void OnDestroy(ref SystemState state) {}
+    
+    [BurstCompile]
+    public void OnUpdate(ref SystemState state)
+    {
+        var dt = SystemAPI.Time.DeltaTime;
+        new EnemyJob { Dt = dt }.ScheduleParallel();
+    }
+}
+
+[BurstCompile]
 partial struct EnemyJob : IJobEntity
 {
     public float Dt;
@@ -19,12 +33,3 @@ partial struct EnemyJob : IJobEntity
     }
 }
 
-partial class MoveEnemySystem : SystemBase
-{
-    [BurstCompile]
-    protected override void OnUpdate()
-    {
-        var dt = SystemAPI.Time.DeltaTime;
-        new EnemyJob { Dt = dt }.ScheduleParallel();
-    }
-}
