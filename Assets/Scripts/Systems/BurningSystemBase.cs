@@ -6,6 +6,7 @@ using Unity.Entities;
 public partial class BurningSystem : SystemBase
 {
     private Timer _timer = new(1f);
+    //private EntityCommandBuffer _ecb = new(Allocator.TempJob);
     
     [BurstCompile]
     protected override void OnCreate()
@@ -18,14 +19,10 @@ public partial class BurningSystem : SystemBase
     [BurstCompile]
     protected override void OnUpdate()
     {
-        var ecb = new EntityCommandBuffer(Allocator.TempJob);
         var queryBurningComponent = GetEntityQuery(ComponentType.ReadOnly<BurningComponent>(), 
-            ComponentType.ReadOnly<EnemyHpComponent>());
-        var dt = SystemAPI.Time.DeltaTime;
-        if (!_timer.refreshTimerAndCheckFinish(dt))
-        {
-            return;
-        }
+            ComponentType.ReadOnly<EnemyHpComponent>(), ComponentType.ReadOnly<TimerComponent>());
+
+        var ecb = new EntityCommandBuffer(Allocator.TempJob);
         new BurningJob{ecbJob=ecb}.Run(queryBurningComponent);
         Dependency.Complete();
         ecb.Playback(EntityManager);
@@ -34,23 +31,18 @@ public partial class BurningSystem : SystemBase
 }
 
 [BurstCompile]
-public partial struct OffBurningComponentJob : IJobEntity
-{
-    public EntityCommandBuffer ecbJob;
-    private void Execute(Entity entity, ref BurningComponent damage)
-    {
-        ecbJob.SetComponentEnabled<BurningComponent>(entity, false); /*TODO: when a creep spawns*/
-    }
-}
-
-[BurstCompile]
 public partial struct BurningJob : IJobEntity
 {
     public EntityCommandBuffer ecbJob;
-    private void Execute(Entity entity, ref BurningComponent damage, ref EnemyHpComponent hp)
+    private void Execute(Entity entity, ref BurningComponent damage, ref EnemyHpComponent hp, ref TimerComponent timer)
     {
         var timerBurning = damage.Timer;
 
+        if (!timer.Trigger)
+        {
+            return;
+        }
+        
         if (timerBurning >= 0) 
         {
             var timerResult = new BurningComponent { BurningDamage = damage.BurningDamage, Timer = timerBurning - 1 };
@@ -63,5 +55,17 @@ public partial struct BurningJob : IJobEntity
         {
             ecbJob.SetComponentEnabled<BurningComponent>(entity, false);
         }
+    }
+}
+
+
+[BurstCompile]
+public partial struct OffBurningComponentJob : IJobEntity
+{
+    public EntityCommandBuffer ecbJob;
+    private void Execute(Entity entity, ref BurningComponent damage)
+    {
+        ecbJob.SetComponentEnabled<BurningComponent>(entity, false); /*TODO: when a creep spawns*/
+        ecbJob.SetComponentEnabled<TimerComponent>(entity, false);
     }
 }

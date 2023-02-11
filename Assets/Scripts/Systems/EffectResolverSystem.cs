@@ -1,6 +1,7 @@
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 [BurstCompile]
 public partial struct EffectResolverSystem : ISystem
@@ -64,12 +65,17 @@ public partial struct DamageJob : IJobEntity
 public partial struct BurnJob : IJobEntity
 {
     public EntityCommandBuffer ecbJob;
-    private void Execute(Entity entity, ref DynamicBuffer<BurningBufferElement> burningBuffer)
+    private void Execute(Entity entity, ref DynamicBuffer<BurningBufferElement> burningBuffer, 
+        ref TimerComponent timerComponent)
     {
         var mapping = AbstractEffectConfig.Mapping;
         if (burningBuffer.Length > 0)
         {
             ecbJob.SetComponentEnabled<BurningComponent>(entity, true);
+            //ecbJob.SetComponentEnabled<TimerComponent>(entity, true);
+            Debug.Log("executeBurnJob");
+            if(!timerComponent.Condition) ecbJob.SetComponent(entity, 
+                new TimerComponent{Condition = true, Trigger = false, Time = 1f});
             var resId = 0;
             var timer = -1f;
             foreach (var burning in burningBuffer)

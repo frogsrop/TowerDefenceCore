@@ -14,6 +14,7 @@ class EnemyBaker : Baker<EnemyAuthoring>
         AddComponent(new EnemyHpComponent { Hp = authoring.MaxHp, MaxHp = authoring.MaxHp });
         AddComponent(new DirectionComponent { Direction = authoring.Direction });
         AddComponent(new EnemyIdComponent { Id = authoring.Id });
+        AddComponent<TimerComponent>();
         AddComponent<DamageComponent>();
         AddComponent<BurningComponent>();
         AddBuffer<DamageBufferElement>();
