@@ -3,9 +3,9 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-public partial class  SpawnBulletISystem : SystemBase
+public partial class  SpawnBulletSystem : SystemBase
 {
-    private Timer _timer =new (4f);
+    private Timer _timer = new(4f);
     private Random _random;
 
     protected override void OnCreate()

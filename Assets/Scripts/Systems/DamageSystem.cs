@@ -5,7 +5,6 @@ using Unity.Entities;
 [BurstCompile]
 public partial struct DamageSystem : ISystem
 {
-
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
@@ -13,6 +12,7 @@ public partial struct DamageSystem : ISystem
         var queryDamageComponent = state.GetEntityQuery(ComponentType.ReadWrite<DamageComponent>());
         new OffDamageComponentJob{ecbJob = ecb}.Run(queryDamageComponent);
     }
+    
     [BurstCompile] public void OnDestroy(ref SystemState state) {}
 
     [BurstCompile]
