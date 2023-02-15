@@ -10,7 +10,7 @@ public partial struct DamageSystem : ISystem
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         var queryDamageComponent = state.GetEntityQuery(ComponentType.ReadWrite<DamageComponent>());
-        new OffDamageComponentJob{ecbJob = ecb}.Run(queryDamageComponent);
+        new OffDamageComponentJob{Ecb = ecb}.Run(queryDamageComponent);
     }
     
     [BurstCompile] public void OnDestroy(ref SystemState state) {}
@@ -19,37 +19,32 @@ public partial struct DamageSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        var em = state.EntityManager;
-        new DamageJob
-        {
-            em=em,
-            ecbJob = ecb
-        }.Run();
+        new DamageJob{Ecb = ecb}.Run();
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
     }
+    
+    [BurstCompile]
     public partial struct OffDamageComponentJob : IJobEntity
     {
-        
-        public EntityCommandBuffer ecbJob;
+        public EntityCommandBuffer Ecb;
         private void Execute(Entity entity, ref DamageComponent damage)
         {
-            ecbJob.SetComponentEnabled<DamageComponent>(entity, false); /*TODO: when a creep spawns*/
+            Ecb.SetComponentEnabled<DamageComponent>(entity, false); /*TODO: when a creep spawns*/
         }
     }
     
+    [BurstCompile]
     public partial struct DamageJob : IJobEntity
     {
-        public EntityManager em;
-        public EntityCommandBuffer ecbJob;
+        public EntityCommandBuffer Ecb;
         private void Execute(Entity entity, ref DamageComponent damage, ref EnemyHpComponent hp)
         {
-            
             var resHp = hp.Hp - damage.Damage;
-            var hpResult = new EnemyHpComponent { Hp = resHp , MaxHp = hp.MaxHp};
-            ecbJob.SetComponent(entity, hpResult);
-            ecbJob.SetComponentEnabled<DamageComponent>(entity, false);
+            var hpResult = new EnemyHpComponent { Hp = resHp, MaxHp = hp.MaxHp};
+            Ecb.SetComponent(entity, hpResult);
+            Ecb.SetComponentEnabled<DamageComponent>(entity, false);
         }
     }
 }

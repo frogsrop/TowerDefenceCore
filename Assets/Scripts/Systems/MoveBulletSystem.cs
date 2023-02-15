@@ -23,11 +23,11 @@ public partial struct MoveBulletSystem : ISystem
         if (enemyIds.Length <= 0) return;
         new MoveBulletJob
         {
-            dtJob = dt,
-            ecbJob = ecb,
-            enemyIdsJob = enemyIds,
-            enemyTransformsJob = queryEnemy.ToComponentDataArray<LocalToWorldTransform>(Allocator.TempJob),
-            enemyEntityArrayJob = queryEnemy.ToEntityArray(Allocator.TempJob)
+            Dt = dt,
+            Ecb = ecb,
+            EnemyIds = enemyIds,
+            EnemyTransforms = queryEnemy.ToComponentDataArray<LocalToWorldTransform>(Allocator.TempJob),
+            EnemyEntityArray = queryEnemy.ToEntityArray(Allocator.TempJob)
         }.Run(queryTargetId);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
@@ -37,37 +37,37 @@ public partial struct MoveBulletSystem : ISystem
 
 public partial struct MoveBulletJob : IJobEntity
 {
-    public float dtJob;
-    public EntityCommandBuffer ecbJob;
-    public NativeArray<EnemyIdComponent> enemyIdsJob;
-    public NativeArray<LocalToWorldTransform> enemyTransformsJob;
-    public NativeArray<Entity> enemyEntityArrayJob;
+    public float Dt;
+    public EntityCommandBuffer Ecb;
+    public NativeArray<EnemyIdComponent> EnemyIds;
+    public NativeArray<LocalToWorldTransform> EnemyTransforms;
+    public NativeArray<Entity> EnemyEntityArray;
     
     private void Execute(ref LocalToWorldTransform bulletTransform, in TargetIdComponent bullet, 
         in BulletComponent bulletInfo, in Entity entity)
     {
         var mapping = AbstractEffectConfig.Mapping;
-        var enemyIndex = IndexOf(enemyIdsJob, bullet.Id);
+        var enemyIndex = IndexOf(EnemyIds, bullet.Id);
         if (enemyIndex != -1)
         {
-            var enemyTransform = enemyTransformsJob[enemyIndex];
-            var enemyEntity = enemyEntityArrayJob[enemyIndex];
+            var enemyTransform = EnemyTransforms[enemyIndex];
+            var enemyEntity = EnemyEntityArray[enemyIndex];
             var direction = math.normalize(enemyTransform.Value.Position - bulletTransform.Value.Position);
-            bulletTransform.Value.Position += direction * dtJob * 10;
+            bulletTransform.Value.Position += direction * Dt * 10;
             var distance = math.distancesq(bulletTransform.Value.Position, enemyTransform.Value.Position);
             if (!(distance < 0.1f)) return;
-            ecbJob.DestroyEntity(entity);
+            Ecb.DestroyEntity(entity);
             foreach (var effect in bulletInfo.ListEffects)
             {
                 if (mapping.ContainsKey(effect))
                 {
-                    mapping[effect].AppendToBuffer(enemyEntity, ecbJob);
+                    mapping[effect].AppendToBuffer(enemyEntity, Ecb);
                 }
             }
         }
         else
         {
-            ecbJob.DestroyEntity(entity);
+            Ecb.DestroyEntity(entity);
         }
     }
 
