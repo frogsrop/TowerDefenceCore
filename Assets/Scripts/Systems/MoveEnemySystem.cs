@@ -13,7 +13,7 @@ public partial struct MoveEnemySystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         var dt = SystemAPI.Time.DeltaTime;
-        new EnemyJob { Dt = dt }.ScheduleParallel();
+        new EnemyJob{Dt = dt}.ScheduleParallel();
     }
 }
 

@@ -1,6 +1,7 @@
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 [BurstCompile]
 public partial struct EffectResolverSystem : ISystem
@@ -23,20 +24,20 @@ public partial struct EffectResolverSystem : ISystem
     void ApplyDamage(EntityCommandBuffer ecb, ref SystemState state)
     {
         var queryDamageBuffer = state.GetEntityQuery(ComponentType.ReadOnly<DamageBufferElement>());
-        new DamageJob { ecbJob = ecb }.Run(queryDamageBuffer);
+        new DamageJob{Ecb = ecb}.Run(queryDamageBuffer);
     }
     
     [BurstCompile]
     void ApplyBurn(EntityCommandBuffer ecb, ref SystemState state)
     {
         var queryBurningBuffer = state.GetEntityQuery(ComponentType.ReadOnly<BurningBufferElement>());
-        new BurnJob { ecbJob = ecb }.Run(queryBurningBuffer);
+        new BurnJob{Ecb = ecb}.Run(queryBurningBuffer);
     }
 }
 
 public partial struct DamageJob : IJobEntity
 {
-    public EntityCommandBuffer ecbJob;
+    public EntityCommandBuffer Ecb;
     private void Execute(Entity entity, ref DynamicBuffer<DamageBufferElement> damageBuffer)
     {
         var mapping = AbstractEffectConfig.Mapping;
@@ -52,24 +53,27 @@ public partial struct DamageJob : IJobEntity
         }
         if (damageBuffer.Length > 0)
         {
-            ecbJob.SetComponentEnabled<DamageComponent>(entity, true);
+            Ecb.SetComponentEnabled<DamageComponent>(entity, true);
             var res = lfold(damageBuffer.GetEnumerator());
             damageBuffer.Clear();
             var damage = new DamageComponent { Damage = res };
-            ecbJob.SetComponent(entity, damage);
+            Ecb.SetComponent(entity, damage);
         }
     }
 }
 
 public partial struct BurnJob : IJobEntity
 {
-    public EntityCommandBuffer ecbJob;
-    private void Execute(Entity entity, ref DynamicBuffer<BurningBufferElement> burningBuffer)
+    public EntityCommandBuffer Ecb;
+    private void Execute(Entity entity, ref DynamicBuffer<BurningBufferElement> burningBuffer, 
+        ref TimerComponent timerComponent)
     {
         var mapping = AbstractEffectConfig.Mapping;
         if (burningBuffer.Length > 0)
         {
-            ecbJob.SetComponentEnabled<BurningComponent>(entity, true);
+            Ecb.SetComponentEnabled<BurningComponent>(entity, true);
+            if(!timerComponent.Condition) Ecb.SetComponent(entity, 
+                new TimerComponent{Condition = true, Trigger = false, Time = 1f, Delay = 1f});
             var resId = 0;
             var timer = -1f;
             foreach (var burning in burningBuffer)
@@ -82,7 +86,7 @@ public partial struct BurnJob : IJobEntity
                 }
             }
             var maxBurningEffect = (BurningEffectConfig)mapping[resId];
-            ecbJob.SetComponent(entity,
+            Ecb.SetComponent(entity,
                 new BurningComponent
                     { BurningDamage = maxBurningEffect.Damage, Timer = maxBurningEffect.Timer });
             burningBuffer.Clear();
