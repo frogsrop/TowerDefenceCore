@@ -5,22 +5,22 @@ using Unity.Entities;
 [BurstCompile]
 public partial struct BurningSystem : ISystem
 {
-    [BurstCompile]
+    private EntityQuery _queryBurningComponent;
+
     public void OnCreate(ref SystemState state)
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        var queryBurningComponent = state.GetEntityQuery(ComponentType.ReadOnly<BurningComponent>());
-        new OffBurningComponentJob{Ecb = ecb}.Run(queryBurningComponent);
+        _queryBurningComponent = state.GetEntityQuery(ComponentType.ReadOnly<BurningComponent>(),
+            ComponentType.ReadOnly<EnemyHpComponent>(), ComponentType.ReadOnly<TimerComponent>());
+        new OffBurningComponentJob{Ecb = ecb}.Run(_queryBurningComponent);
     }
     [BurstCompile] public void OnDestroy(ref SystemState state) {}
-    
+
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        var queryBurningComponent = state.GetEntityQuery(ComponentType.ReadOnly<BurningComponent>(), 
-            ComponentType.ReadOnly<EnemyHpComponent>(), ComponentType.ReadOnly<TimerComponent>());
-
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        new BurningJob{Ecb = ecb}.Run(queryBurningComponent);
+        new BurningJob{Ecb = ecb}.Run(_queryBurningComponent);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();

@@ -5,12 +5,14 @@ using Unity.Entities;
 [BurstCompile]
 public partial struct DamageSystem : ISystem
 {
+    private EntityQuery _queryDamageComponent;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        var queryDamageComponent = state.GetEntityQuery(ComponentType.ReadWrite<DamageComponent>());
-        new OffDamageComponentJob{Ecb = ecb}.Run(queryDamageComponent);
+        _queryDamageComponent = state.GetEntityQuery(ComponentType.ReadWrite<DamageComponent>());
+        new OffDamageComponentJob{Ecb = ecb}.Run(_queryDamageComponent);
     }
     
     [BurstCompile] public void OnDestroy(ref SystemState state) {}
@@ -19,7 +21,7 @@ public partial struct DamageSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        new DamageJob{Ecb = ecb}.Run();
+        new DamageJob{Ecb = ecb}.Run(_queryDamageComponent);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
@@ -29,6 +31,8 @@ public partial struct DamageSystem : ISystem
     public partial struct OffDamageComponentJob : IJobEntity
     {
         public EntityCommandBuffer Ecb;
+
+        [BurstCompile]
         private void Execute(Entity entity, ref DamageComponent damage)
         {
             Ecb.SetComponentEnabled<DamageComponent>(entity, false); /*TODO: when a creep spawns*/
@@ -39,6 +43,8 @@ public partial struct DamageSystem : ISystem
     public partial struct DamageJob : IJobEntity
     {
         public EntityCommandBuffer Ecb;
+
+        [BurstCompile]
         private void Execute(Entity entity, ref DamageComponent damage, ref EnemyHpComponent hp)
         {
             var resHp = hp.Hp - damage.Damage;

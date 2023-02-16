@@ -1,43 +1,37 @@
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
 
 [BurstCompile]
 public partial struct EffectResolverSystem : ISystem
 {
-    [BurstCompile] public void OnCreate(ref SystemState state) {}
+    private EntityQuery _queryBurningBuffer; 
+    private EntityQuery _queryDamageBuffer;
+
+    [BurstCompile] 
+    public void OnCreate(ref SystemState state) 
+    {
+        _queryDamageBuffer = state.GetEntityQuery(ComponentType.ReadOnly<DamageBufferElement>());
+        _queryBurningBuffer = state.GetEntityQuery(ComponentType.ReadOnly<BurningBufferElement>());
+    }
     [BurstCompile] public void OnDestroy(ref SystemState state) {}
     
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        ApplyDamage(ecb, ref state);
-        ApplyBurn(ecb, ref state);
+        new DamageResolverJob { Ecb = ecb }.Run(_queryDamageBuffer);
+        new BurnResolverJob { Ecb = ecb }.Run(_queryBurningBuffer);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
     }
-
-    [BurstCompile]
-    void ApplyDamage(EntityCommandBuffer ecb, ref SystemState state)
-    {
-        var queryDamageBuffer = state.GetEntityQuery(ComponentType.ReadOnly<DamageBufferElement>());
-        new DamageJob{Ecb = ecb}.Run(queryDamageBuffer);
-    }
-    
-    [BurstCompile]
-    void ApplyBurn(EntityCommandBuffer ecb, ref SystemState state)
-    {
-        var queryBurningBuffer = state.GetEntityQuery(ComponentType.ReadOnly<BurningBufferElement>());
-        new BurnJob{Ecb = ecb}.Run(queryBurningBuffer);
-    }
 }
 
-public partial struct DamageJob : IJobEntity
+public partial struct DamageResolverJob : IJobEntity
 {
     public EntityCommandBuffer Ecb;
+
     private void Execute(Entity entity, ref DynamicBuffer<DamageBufferElement> damageBuffer)
     {
         var mapping = AbstractEffectConfig.Mapping;
@@ -62,9 +56,10 @@ public partial struct DamageJob : IJobEntity
     }
 }
 
-public partial struct BurnJob : IJobEntity
+public partial struct BurnResolverJob : IJobEntity
 {
     public EntityCommandBuffer Ecb;
+
     private void Execute(Entity entity, ref DynamicBuffer<BurningBufferElement> burningBuffer, 
         ref TimerComponent timerComponent)
     {

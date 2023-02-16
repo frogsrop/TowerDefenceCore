@@ -1,37 +1,46 @@
-﻿using Unity.Collections;
+﻿using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-public partial class SpawnBulletSystem : SystemBase
+[BurstCompile]
+public partial struct SpawnBulletSystem : ISystem
 {
     private Random _random;
+    private EntityQuery _queryEnemies;
+    private EntityQuery _towerQuery;
 
-    protected override void OnCreate()
+    [BurstCompile]
+    public void OnCreate(ref SystemState state)
     {
         _random.InitState();
+        _queryEnemies = state.GetEntityQuery(ComponentType.ReadOnly<EnemyIdComponent>());
+        _towerQuery = state.GetEntityQuery(ComponentType.ReadOnly<Tower>());
     }
+    [BurstCompile] public void OnDestroy(ref SystemState state) { }
 
-    protected override void OnUpdate()
-    {
-        var queryEnemies = GetEntityQuery(ComponentType.ReadOnly<EnemyIdComponent>());
-        var enemyIds = queryEnemies.ToComponentDataArray<EnemyIdComponent>(Allocator.TempJob);
+    [BurstCompile]
+    public void OnUpdate(ref SystemState state)
+    {   
+        var enemyIds = _queryEnemies.ToComponentDataArray<EnemyIdComponent>(Allocator.TempJob);
         var enemyIdLinq = enemyIds[(int)(_random.NextUInt() % enemyIds.Length)];
         var enemyId = enemyIdLinq.Id;
-        var towerQuery = GetEntityQuery(ComponentType.ReadOnly<Tower>());
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-
-        new SpawnBulletJob { EnemyId = enemyId, Ecb = ecb }.Run(towerQuery);
-        Dependency.Complete();
-        ecb.Playback(EntityManager);
+        new SpawnBulletJob { EnemyId = enemyId, Ecb = ecb }.Run(_towerQuery);
+        state.Dependency.Complete();
+        ecb.Playback(state.EntityManager);
         ecb.Dispose();
     }
 }
 
+[BurstCompile]
 public partial struct SpawnBulletJob : IJobEntity
 {
     public int EnemyId;
     public EntityCommandBuffer Ecb;
+
+    [BurstCompile]
     private void Execute(Entity entity, ref TimerComponent timerComponent, in LocalToWorldTransform towerTransform, in Tower tower)
     {
         if (!timerComponent.Condition) Ecb.SetComponent(entity,
