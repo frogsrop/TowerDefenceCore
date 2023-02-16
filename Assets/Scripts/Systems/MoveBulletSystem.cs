@@ -7,16 +7,24 @@ using Unity.Burst;
 [BurstCompile]
 public partial struct MoveBulletSystem : ISystem
 {
-    [BurstCompile] public void OnCreate(ref SystemState state) {}
-    [BurstCompile] public void OnDestroy(ref SystemState state) {}
     
-    public void OnUpdate(ref SystemState state)
+    private EntityQuery queryTargetId;
+    private EntityQuery queryEnemy;
+
+    public void OnCreate(ref SystemState state) 
     {
-        var queryTargetId = state.GetEntityQuery(ComponentType.ReadOnly<TargetIdComponent>());
-        var queryEnemy = state.GetEntityQuery(ComponentType.ReadOnly<EnemyIdComponent>(),
+        queryTargetId = state.GetEntityQuery(ComponentType.ReadOnly<TargetIdComponent>());
+        queryEnemy = state.GetEntityQuery(ComponentType.ReadOnly<EnemyIdComponent>(),
             ComponentType.ReadOnly<LocalToWorldTransform>(),
             ComponentType.ReadOnly<DamageBufferElement>(),
             ComponentType.ReadOnly<BurningBufferElement>());
+    }
+    [BurstCompile] public void OnDestroy(ref SystemState state) {}
+
+    [BurstCompile]
+    public void OnUpdate(ref SystemState state)
+    {
+
         var enemyIds = queryEnemy.ToComponentDataArray<EnemyIdComponent>(Allocator.TempJob);
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         var dt = SystemAPI.Time.DeltaTime;
@@ -42,7 +50,7 @@ public partial struct MoveBulletJob : IJobEntity
     public NativeArray<EnemyIdComponent> EnemyIds;
     public NativeArray<LocalToWorldTransform> EnemyTransforms;
     public NativeArray<Entity> EnemyEntityArray;
-    
+
     private void Execute(ref LocalToWorldTransform bulletTransform, in TargetIdComponent bullet, 
         in BulletComponent bulletInfo, in Entity entity)
     {

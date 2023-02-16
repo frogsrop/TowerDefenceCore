@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 626644723}
   - component: {fileID: 626644722}
   m_Layer: 0
-  m_Name: Enemy (1)
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHp: 500
-  Id: 1
+  Id: 0
   Direction: 5
 --- !u!212 &626644723
 SpriteRenderer:
@@ -433,7 +433,7 @@ GameObject:
   - component: {fileID: 2038211251}
   - component: {fileID: 2038211250}
   m_Layer: 0
-  m_Name: Tower (1)
+  m_Name: Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

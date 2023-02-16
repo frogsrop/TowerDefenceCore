@@ -5,14 +5,22 @@ using Unity.Entities;
 [BurstCompile]
 public partial struct TimerSystem : ISystem
 {
-    [BurstCompile] public void OnCreate(ref SystemState state) { }
+    private EntityQuery _queryTimerComponent;
+
+    [BurstCompile] 
+    public void OnCreate(ref SystemState state) 
+    {
+        _queryTimerComponent = state.GetEntityQuery(ComponentType.ReadOnly<TimerComponent>());
+    }
+
     [BurstCompile] public void OnDestroy(ref SystemState state) { }
+
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         var dt = SystemAPI.Time.DeltaTime;
-        var queryTimerComponent = state.GetEntityQuery(ComponentType.ReadOnly<TimerComponent>());
-        new TimerJob{Dt = dt, Ecb = ecb}.Run(queryTimerComponent);
+        new TimerJob{Dt = dt, Ecb = ecb}.Run(_queryTimerComponent);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
@@ -24,6 +32,8 @@ public partial struct TimerJob : IJobEntity
 {
     public float Dt;
     public EntityCommandBuffer Ecb;
+
+    [BurstCompile]
     private void Execute(Entity entity, ref TimerComponent timer)
     {
         if(!timer.Condition) return;
@@ -39,6 +49,7 @@ public partial struct TimerJob : IJobEntity
         }
     }
 
+    [BurstCompile]
     void SetTime(float time, float delay, bool result,Entity entity)
     {
         var updateTime = new TimerComponent {Time = time, Trigger = result, Condition = true, Delay = delay};
