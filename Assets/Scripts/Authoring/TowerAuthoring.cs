@@ -11,5 +11,6 @@ class TowerBaker : Baker<TowerAuthoring>
     {
         AddComponent(new Tower{BulletPrefab = GetEntity(authoring.BulletPrefab)});
         AddComponent<TimerComponent>();
+        AddComponent<TowerSpeedAttack>();
     }
 }
