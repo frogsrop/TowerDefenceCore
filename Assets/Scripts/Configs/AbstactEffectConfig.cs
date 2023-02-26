@@ -4,16 +4,15 @@ using UnityEngine;
 
 public abstract class AbstractEffectConfig : ScriptableObject
 {
-    public static Dictionary<int, AbstractEffectConfig> Mapping = new();
-    private static int CurId;
-    private int _id;
-    public int Id => _id;
+    public static readonly Dictionary<int, AbstractEffectConfig> Mapping = new();
+    private static int _curId;
+    public int Id { get; private set; }
 
     private void OnEnable()
     {
-        _id = CurId;
-        CurId++;
-        Mapping[_id] = this;
+        Id = _curId;
+        _curId++;
+        Mapping[Id] = this;
     }
 
     public abstract void AppendToBuffer(Entity entity, EntityCommandBuffer ecb);

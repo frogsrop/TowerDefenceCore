@@ -1,7 +1,7 @@
 using Unity.Entities;
 using UnityEngine;
 
-[InternalBufferCapacity(999)]
+[InternalBufferCapacity(99)]
 public struct BurningBufferElement: IBufferElementData  
 {
     public int Id;

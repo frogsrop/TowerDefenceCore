@@ -7,20 +7,25 @@ public partial struct BurningSystem : ISystem
 {
     private EntityQuery _queryBurningComponent;
 
+    [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         _queryBurningComponent = state.GetEntityQuery(ComponentType.ReadOnly<BurningComponent>(),
             ComponentType.ReadOnly<EnemyHpComponent>(), ComponentType.ReadOnly<TimerComponent>());
-        new OffBurningComponentJob{Ecb = ecb}.Run(_queryBurningComponent);
+        new OffBurningComponentJob { Ecb = ecb }.Run(_queryBurningComponent);
     }
-    [BurstCompile] public void OnDestroy(ref SystemState state) {}
+
+    [BurstCompile]
+    public void OnDestroy(ref SystemState state)
+    {
+    }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        new BurningJob{Ecb = ecb}.Run(_queryBurningComponent);
+        new BurningJob { Ecb = ecb }.Run(_queryBurningComponent);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
@@ -31,7 +36,7 @@ public partial struct BurningSystem : ISystem
 public partial struct BurningJob : IJobEntity
 {
     public EntityCommandBuffer Ecb;
-    
+
     [BurstCompile]
     private void Execute(Entity entity, ref BurningComponent damage, ref EnemyHpComponent hp, ref TimerComponent timer)
     {
@@ -41,12 +46,12 @@ public partial struct BurningJob : IJobEntity
         {
             return;
         }
-        
-        if (timerBurning >= 0) 
+
+        if (timerBurning >= 0)
         {
-            var timerResult = new BurningComponent{BurningDamage = damage.BurningDamage, Timer = timerBurning - 1};
+            var timerResult = new BurningComponent { BurningDamage = damage.BurningDamage, Timer = timerBurning - 1 };
             var resHp = hp.Hp - damage.BurningDamage;
-            var hpResult = new EnemyHpComponent{Hp =  resHp, MaxHp = hp.MaxHp};
+            var hpResult = new EnemyHpComponent { Hp = resHp, MaxHp = hp.MaxHp };
             Ecb.SetComponent(entity, timerResult);
             Ecb.SetComponent(entity, hpResult);
         }
@@ -62,6 +67,7 @@ public partial struct BurningJob : IJobEntity
 public partial struct OffBurningComponentJob : IJobEntity
 {
     public EntityCommandBuffer Ecb;
+
     private void Execute(Entity entity, ref BurningComponent damage)
     {
         Ecb.SetComponentEnabled<BurningComponent>(entity, false); /*TODO: when a creep spawns*/

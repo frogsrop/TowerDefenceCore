@@ -1,6 +1,8 @@
+using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
-class EnemyAuthoring : UnityEngine.MonoBehaviour
+class EnemyAuthoring : MonoBehaviour
 {
     public int MaxHp = 500;
     public int Id = 0;
