@@ -1,3 +1,4 @@
+using System.Linq;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -11,8 +12,11 @@ public partial struct BurningSystem : ISystem
     public void OnCreate(ref SystemState state)
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        _queryBurningComponent = state.GetEntityQuery(ComponentType.ReadOnly<BurningComponent>(),
-            ComponentType.ReadOnly<EnemyHpComponent>(), ComponentType.ReadOnly<TimerComponent>());
+        var queries = new NativeArray<ComponentType>(3, Allocator.Temp);
+        queries[0] = ComponentType.ReadOnly<BurningComponent>();
+        queries[1] = ComponentType.ReadOnly<EnemyHpComponent>();
+        queries[2] = ComponentType.ReadOnly<TimerComponent>();
+        _queryBurningComponent = state.GetEntityQuery(queries);
         new OffBurningComponentJob { Ecb = ecb }.Run(_queryBurningComponent);
     }
 

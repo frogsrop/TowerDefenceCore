@@ -20,7 +20,8 @@ public partial struct SpawnBulletSystem : ISystem
         _queryEnemies = state.GetEntityQuery(ComponentType.ReadOnly<EnemyIdComponent>());
         _towerQuery = state.GetEntityQuery(ComponentType.ReadOnly<Tower>());
     }
-    [BurstCompile] public void OnDestroy(ref SystemState state) { }
+    // [BurstCompile] 
+    public void OnDestroy(ref SystemState state) { }
 
     //[BurstCompile]
     public void OnUpdate(ref SystemState state)
