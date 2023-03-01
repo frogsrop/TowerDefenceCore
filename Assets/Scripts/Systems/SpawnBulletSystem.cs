@@ -4,26 +4,25 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-//[BurstCompile]
+[BurstCompile]
 public partial struct SpawnBulletSystem : ISystem
 {
-    
-
     private Random _random;
     private EntityQuery _queryEnemies;
     private EntityQuery _towerQuery;
 
-    //[BurstCompile]
+    [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
         _random.InitState();
         _queryEnemies = state.GetEntityQuery(ComponentType.ReadOnly<EnemyIdComponent>());
         _towerQuery = state.GetEntityQuery(ComponentType.ReadOnly<Tower>());
     }
+    
     // [BurstCompile] 
     public void OnDestroy(ref SystemState state) { }
 
-    //[BurstCompile]
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         var enemyIds = _queryEnemies.ToComponentDataArray<EnemyIdComponent>(Allocator.TempJob);
@@ -38,13 +37,13 @@ public partial struct SpawnBulletSystem : ISystem
     }
 }
 
-//[BurstCompile]
+[BurstCompile]
 public partial struct SpawnBulletJob : IJobEntity
 {
     public int EnemyId;
     public EntityCommandBuffer Ecb;
 
-    //[BurstCompile]
+    [BurstCompile]
     private void Execute(Entity entity, ref TimerComponent timerComponent, 
         in LocalToWorldTransform towerTransform, in Tower tower, in TowerSpeedAttack towerSpeedAttack)
     {

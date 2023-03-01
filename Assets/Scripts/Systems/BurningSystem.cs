@@ -17,13 +17,11 @@ public partial struct BurningSystem : ISystem
         queries[1] = ComponentType.ReadOnly<EnemyHpComponent>();
         queries[2] = ComponentType.ReadOnly<TimerComponent>();
         _queryBurningComponent = state.GetEntityQuery(queries);
-        new OffBurningComponentJob { Ecb = ecb }.Run(_queryBurningComponent);
+        new OffBurningComponentJob{Ecb = ecb}.Run(_queryBurningComponent);
     }
 
-    [BurstCompile]
-    public void OnDestroy(ref SystemState state)
-    {
-    }
+    //[BurstCompile]
+    public void OnDestroy(ref SystemState state) { }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TargetFPS : MonoBehaviour
+public class TargetFps : MonoBehaviour
 {
     [SerializeField]
     private int target = 60;

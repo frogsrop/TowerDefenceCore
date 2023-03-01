@@ -5,7 +5,6 @@ using Random = Unity.Mathematics.Random;
 using Unity.Transforms;
 using Unity.Mathematics;
 
-
 [BurstCompile]
 public partial struct TestResSystem : ISystem
 {
@@ -18,11 +17,12 @@ public partial struct TestResSystem : ISystem
     }
     [BurstCompile] public void OnDestroy(ref SystemState state) { }
 
-    //[BurstCompile]
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
+        var dt = SystemAPI.Time.DeltaTime;
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        new SpawnEntitysJob { Ecb = ecb, Random = _random }.Run();
+        new SpawnEntitysJob { Ecb = ecb, Random = _random, Dt = dt }.Run();
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
@@ -33,11 +33,12 @@ public partial struct SpawnEntitysJob : IJobEntity
 {
     public EntityCommandBuffer Ecb;
     public Random Random;
-
+    public float Dt;
     private void Execute(Entity e, in TestComponent testComponent, ref QuantitySpawnComponent quantitySpawn)
     {
         if(!quantitySpawn.OnOff) return;
-        Random.InitState();
+        var timeSeed = (uint)(Dt * 100000);
+        Random.InitState(timeSeed);
         var _minimumPosition = new float3(-8, -4, 0);
         var _maximumPosition = new float3(8, 2, 0);
         
