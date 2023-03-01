@@ -1,120 +1,86 @@
 using UnityEngine;
 using TMPro;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework;
 
 public class showFPS : MonoBehaviour
 {
-    [SerializeField]
-    private TextMeshProUGUI _meanFps;
-    [SerializeField]
-    private TextMeshProUGUI _minFps;
-    [SerializeField]
-    private TextMeshProUGUI _maxFps;
-    [SerializeField] 
-    private TextMeshProUGUI _averageFps;
-    [SerializeField]
-    private TextMeshProUGUI _medianFps;
+    [SerializeField] private TextMeshProUGUI _meanFpsText;
+    [SerializeField] private TextMeshProUGUI _minFpsText;
+    [SerializeField] private TextMeshProUGUI _maxFpsText;
+    [SerializeField] private TextMeshProUGUI _averageFpsText;
+    [SerializeField] private TextMeshProUGUI _medianFpsText;
 
-    private int _meanCount;
-    private int _maxCount;
-    private int _minCount;
-    private int _averageCount;
-    private int _medianCount;
+    private int _fpsCount;
 
     private float _poolingTime = 1f;
     private float _time;
-    private int _waitOutput;
-    private int[] _fpsArray;
+    private float _fps;
+    private List<float> _fpsArray;
     private int _lengthArray;
     private int _indexArray;
 
     private void Start()
     {
-        _minCount = 60;
-        _indexArray = 0;
-        _lengthArray = 10;
-        _fpsArray = new int[_lengthArray];
+        _fpsArray = new List<float>();
     }
 
     private void Update()
     {
         _time += Time.deltaTime;
-        _meanCount++;
+        _fpsCount++;
         if (_time >= _poolingTime)
         {
-            _waitOutput++;
-            meanFps();
-            minFps(); 
-            maxFps(); 
-            averageFps();
-            medianFps();
+            UpdateFps();
+
+            UpdateMinFps();
+            UpdateMaxFps();
+            UpdateAverageFps();
+            UpdateMedianFps();
             _time -= _poolingTime;
-            _meanCount = 0;
-        }        
-    }
-
-    private void medianFps()
-    {
-        _medianCount = GetMedian(_fpsArray);
-        _medianFps.text = "MED: " + _medianCount.ToString();
-    }
-
-    private void meanFps()
-    {
-        _meanCount = Mathf.RoundToInt(_meanCount / _time);
-        _meanFps.text = "FPS: " + _meanCount.ToString();
-    }
-
-    private void minFps()
-    {
-        if (_minCount >= _meanCount && _waitOutput > 10)
-        {
-            _minCount = _meanCount;
-            _minFps.text = "MIN: " + _minCount.ToString();
-
+            _fpsCount = 0;
         }
     }
 
-    private void maxFps()
+    private void UpdateMedianFps()
     {
-        if (_maxCount < _meanCount)
-        {
-            _maxCount = _meanCount;
-            _maxFps.text = "MAX: " + _maxCount.ToString();
-        }
+        var sortedPNumbers = _fpsArray.OrderBy(r => r).ToArray();
+        var mid = sortedPNumbers.Length / 2;
+        var median = sortedPNumbers.Length == 0
+            ? 0
+            : sortedPNumbers.Length % 2 != 0
+                ? sortedPNumbers[mid]
+                : (sortedPNumbers[mid] + sortedPNumbers[mid - 1]) / 2;
+        _medianFpsText.text = "MED: " + Mathf.RoundToInt(median);
     }
 
-    private void averageFps()
+    private void UpdateFps()
     {
-        _fpsArray[_indexArray] = _meanCount;
-        var sum = SumArray(_fpsArray);
-        _averageCount = sum / _fpsArray.Length;
-        _indexArray++;
-        if (_indexArray >= _fpsArray.Length)
+        _fps = _fpsCount / _time;
+        _fpsArray.Add(_fps);
+        if (_fpsArray.Count > 10)
         {
-            _lengthArray += 10;
-            Array.Resize(ref _fpsArray, _lengthArray);
+            _fpsArray.RemoveAt(0);
         }
-        _averageFps.text = "AVR: " + _averageCount.ToString();
+
+        _meanFpsText.text = "FPS: " + Mathf.RoundToInt(_fps);
     }
 
-    private int SumArray(int[] toBeSummed)
+    private void UpdateMinFps()
     {
-        int sum = 0;
-        foreach (int item in toBeSummed)
-        {
-            sum += item;
-        }
-        return sum;
+        _minFpsText.text = "MIN: " + Mathf.RoundToInt(_fpsArray.Min());
     }
 
-    private int GetMedian(int[] sourceNumbers)
+    private void UpdateMaxFps()
     {
-        int[] sortedPNumbers = (int[])sourceNumbers.Clone();
-        Array.Sort(sortedPNumbers);
-        int size = sortedPNumbers.Length;
-        int mid = size / 2;
-        int median = (size % 2 != 0) ? (int)sortedPNumbers[mid] : ((int)sortedPNumbers[mid] + (int)sortedPNumbers[mid - 1]) / 2;
-        return median;
+        _maxFpsText.text = "MAX: " + Mathf.RoundToInt(_fpsArray.Max());
+    }
+
+    private void UpdateAverageFps()
+    {
+        _averageFpsText.text = "AVR: " + Mathf.RoundToInt(_fpsArray.Average());
     }
 }

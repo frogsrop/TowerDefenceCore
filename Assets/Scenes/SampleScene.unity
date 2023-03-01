@@ -4314,11 +4314,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44660b607421c9c4cbe6f29787448b30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meanFps: {fileID: 1339976357}
-  _minFps: {fileID: 1251786888}
-  _maxFps: {fileID: 317452493}
-  _averageFps: {fileID: 58796278}
-  _medianFps: {fileID: 1541886285}
+  _meanFpsText: {fileID: 1339976357}
+  _minFpsText: {fileID: 1251786888}
+  _maxFpsText: {fileID: 317452493}
+  _averageFpsText: {fileID: 58796278}
+  _medianFpsText: {fileID: 1541886285}
 --- !u!1 &1361809848
 GameObject:
   m_ObjectHideFlags: 0
