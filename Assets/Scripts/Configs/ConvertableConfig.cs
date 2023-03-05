@@ -1,4 +1,4 @@
-//TODO:later
+// TODO: fix this class for inheritance
 // using System;
 // using System.Reflection;
 // using Unity.Entities;

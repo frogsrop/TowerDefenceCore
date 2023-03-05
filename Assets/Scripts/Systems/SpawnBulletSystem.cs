@@ -18,12 +18,15 @@ public partial struct SpawnBulletSystem : ISystem
         _queryEnemies = state.GetEntityQuery(ComponentType.ReadOnly<EnemyIdComponent>());
         _towerQuery = state.GetEntityQuery(ComponentType.ReadOnly<Tower>());
     }
-    [BurstCompile] public void OnDestroy(ref SystemState state) { }
+    
+    // [BurstCompile] 
+    public void OnDestroy(ref SystemState state) { }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
-    {   
+    {
         var enemyIds = _queryEnemies.ToComponentDataArray<EnemyIdComponent>(Allocator.TempJob);
+        if (enemyIds.Length == 0) return;
         var enemyIdLinq = enemyIds[(int)(_random.NextUInt() % enemyIds.Length)];
         var enemyId = enemyIdLinq.Id;
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
@@ -41,10 +44,11 @@ public partial struct SpawnBulletJob : IJobEntity
     public EntityCommandBuffer Ecb;
 
     [BurstCompile]
-    private void Execute(Entity entity, ref TimerComponent timerComponent, in LocalToWorldTransform towerTransform, in Tower tower)
+    private void Execute(Entity entity, ref TimerComponent timerComponent, 
+        in LocalToWorldTransform towerTransform, in Tower tower, in TowerSpeedAttack towerSpeedAttack)
     {
-        if (!timerComponent.Condition) Ecb.SetComponent(entity,
-            new TimerComponent { Condition = true, Trigger = false, Time = 4f, Delay = 4f });
+        if (!timerComponent.Condition) Ecb.SetComponent(entity, new TimerComponent { 
+            Condition = true, Trigger = false, Time = towerSpeedAttack.Value, Delay = towerSpeedAttack.Value });
         if (!timerComponent.Trigger) return;
         var newBullet = Ecb.Instantiate(tower.BulletPrefab);
         var towerFirePosition = new float3(towerTransform.Value.Position.x,
