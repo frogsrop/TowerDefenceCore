@@ -4,6 +4,7 @@ using Unity.Entities;
 using Random = Unity.Mathematics.Random;
 using Unity.Transforms;
 using Unity.Mathematics;
+using UnityEngine;
 
 [BurstCompile]
 public partial struct TestResSystem : ISystem
@@ -22,10 +23,11 @@ public partial struct TestResSystem : ISystem
     {
         var dt = SystemAPI.Time.DeltaTime;
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        new SpawnEntitysJob { Ecb = ecb, Random = _random, Dt = dt }.Run();
+        new SpawnEntitysJob { Ecb = ecb, Random = _random, Dt = dt}.Run();
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
+        
     }
 }
 
@@ -41,10 +43,8 @@ public partial struct SpawnEntitysJob : IJobEntity
         Random.InitState(timeSeed);
         var _minimumPosition = new float3(-8, -4, 0);
         var _maximumPosition = new float3(8, 2, 0);
-        
         for (var i = 1; i <= quantitySpawn.QuantityTowers; i++)
         {
-            
             var posTowerSpawn = Random.NextFloat3(_minimumPosition, _maximumPosition);
             var towerUniformScaleTransform = new UniformScaleTransform
             { Position = posTowerSpawn, Scale = 0.5f };

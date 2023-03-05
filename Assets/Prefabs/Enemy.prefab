@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3240839864143985656}
   - component: {fileID: 3240839864143985663}
-  - component: {fileID: 3240839864143985662}
+  - component: {fileID: 1391818589893270945}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3240839864143985663
 SpriteRenderer:
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3240839864143985662
+--- !u!114 &1391818589893270945
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
