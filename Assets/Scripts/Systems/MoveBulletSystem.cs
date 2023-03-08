@@ -1,3 +1,4 @@
+using System.Linq;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -7,24 +8,28 @@ using Unity.Burst;
 [BurstCompile]
 public partial struct MoveBulletSystem : ISystem
 {
-    
     private EntityQuery queryTargetId;
     private EntityQuery queryEnemy;
 
-    public void OnCreate(ref SystemState state) 
+    public void OnCreate(ref SystemState state)
     {
         queryTargetId = state.GetEntityQuery(ComponentType.ReadOnly<TargetIdComponent>());
-        queryEnemy = state.GetEntityQuery(ComponentType.ReadOnly<EnemyIdComponent>(),
-            ComponentType.ReadOnly<LocalToWorldTransform>(),
-            ComponentType.ReadOnly<DamageBufferElement>(),
-            ComponentType.ReadOnly<BurningBufferElement>());
+        var nativeArray = new NativeArray<ComponentType>(4, Allocator.Temp);
+        nativeArray[0] = ComponentType.ReadOnly<EnemyIdComponent>();
+        nativeArray[1] = ComponentType.ReadOnly<LocalToWorldTransform>();
+        nativeArray[2] = ComponentType.ReadOnly<DamageBufferElement>();
+        nativeArray[3] = ComponentType.ReadOnly<BurningBufferElement>();
+        queryEnemy = state.GetEntityQuery(nativeArray);
     }
-    [BurstCompile] public void OnDestroy(ref SystemState state) {}
+
+    [BurstCompile]
+    public void OnDestroy(ref SystemState state)
+    {
+    }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-
         var enemyIds = queryEnemy.ToComponentDataArray<EnemyIdComponent>(Allocator.TempJob);
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         var dt = SystemAPI.Time.DeltaTime;
@@ -51,7 +56,7 @@ public partial struct MoveBulletJob : IJobEntity
     public NativeArray<LocalToWorldTransform> EnemyTransforms;
     public NativeArray<Entity> EnemyEntityArray;
 
-    private void Execute(ref LocalToWorldTransform bulletTransform, in TargetIdComponent bullet, 
+    private void Execute(ref LocalToWorldTransform bulletTransform, in TargetIdComponent bullet,
         in BulletComponent bulletInfo, in Entity entity)
     {
         var mapping = AbstractEffectConfig.Mapping;
@@ -86,6 +91,7 @@ public partial struct MoveBulletJob : IJobEntity
         {
             if (array[i].Id == id) return i;
         }
+
         return -1;
     }
 }
