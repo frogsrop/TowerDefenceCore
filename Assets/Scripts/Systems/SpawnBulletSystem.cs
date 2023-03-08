@@ -34,8 +34,6 @@ public partial struct SpawnBulletSystem : ISystem
         var enemyIds = _queryEnemies.ToComponentDataArray<EnemyIdComponent>(Allocator.TempJob);
         if (enemyIds.Length == 0) return;
         var enemyTransforms = _queryEnemies.ToComponentDataArray<LocalToWorldTransform>(Allocator.TempJob);
-
-        // var enemyIdLinq = enemyIds[(int)(_random.NextUInt() % enemyIds.Length)];
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         new SpawnBulletJob { Transforms = enemyTransforms, EnemyIds = enemyIds, Ecb = ecb }.Run(_towerQuery);
         state.Dependency.Complete();
@@ -70,7 +68,6 @@ public partial struct SpawnBulletJob : IJobEntity
         var setSpawnPosition = new LocalToWorldTransform
             { Value = towerUniformScaleTransform };
         Ecb.SetComponent(newBullet, setSpawnPosition);
-        // var targetId = EnemyId;
         var minDist = float.MaxValue;
         var enemyId = -1;
         for (var i = 0; i < Transforms.Length; i++)
