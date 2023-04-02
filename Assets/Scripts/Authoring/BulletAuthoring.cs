@@ -18,7 +18,6 @@ class BulletBaker : Baker<BulletAuthoring>
         {
             list.Add(effect.Id);
         }
-
         AddComponent(new BulletComponent { ListEffects = list });
     }
 }

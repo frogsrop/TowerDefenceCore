@@ -1,4 +1,3 @@
-using System.Linq;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -59,7 +58,7 @@ public partial struct MoveBulletJob : IJobEntity
     private void Execute(ref LocalToWorldTransform bulletTransform, in TargetIdComponent bullet,
         in BulletComponent bulletInfo, in Entity entity)
     {
-        var mapping = AbstractEffectConfig.Mapping;
+        var mapping = AbstractEffectConfig.Mapping; 
         var enemyIndex = IndexOf(EnemyIds, bullet.Id);
         if (enemyIndex != -1)
         {

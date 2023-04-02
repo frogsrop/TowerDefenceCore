@@ -3,19 +3,16 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine.SocialPlatforms;
 
 [BurstCompile]
 public partial struct SpawnBulletSystem : ISystem
 {
-    private Random _random;
     private EntityQuery _queryEnemies;
     private EntityQuery _towerQuery;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-        _random.InitState();
         var componentsQuery = new NativeArray<ComponentType>(2, Allocator.Temp);
         componentsQuery[0] = ComponentType.ReadOnly<EnemyIdComponent>();
         componentsQuery[1] = ComponentType.ReadOnly<LocalToWorldTransform>();
@@ -68,13 +65,13 @@ public partial struct SpawnBulletJob : IJobEntity
         var setSpawnPosition = new LocalToWorldTransform
             { Value = towerUniformScaleTransform };
         Ecb.SetComponent(newBullet, setSpawnPosition);
-        var minDist = float.MaxValue;
+        var minDist = float.MaxValue; 
         var enemyId = -1;
-        for (var i = 0; i < Transforms.Length; i++)
+        for (var i = 0; i < Transforms.Length; i++) 
         {
             var localToWorldTransform = Transforms[i];
             var dist = math.distancesq(towerTransform.Value.Position, localToWorldTransform.Value.Position);
-            if (dist < minDist)
+            if (dist < minDist) 
             {
                 minDist = dist;
                 enemyId = EnemyIds[i].Id;

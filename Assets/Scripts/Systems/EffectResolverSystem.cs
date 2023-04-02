@@ -34,7 +34,7 @@ public partial struct DamageResolverJob : IJobEntity
 
     private void Execute(Entity entity, ref DynamicBuffer<DamageBufferElement> damageBuffer)
     {
-        var mapping = AbstractEffectConfig.Mapping;
+        var mapping = AbstractEffectConfig.Mapping; 
         int lfold(NativeArray<DamageBufferElement>.Enumerator en)
         {
             int res = 0;
@@ -77,7 +77,7 @@ public partial struct BurnResolverJob : IJobEntity
                 if (burningEffectConfig.Timer > timer)
                 {
                     timer = burningEffectConfig.Timer;
-                    resId = burning.Id;
+                    resId = burning.Id; 
                 }
             }
             var maxBurningEffect = (BurningEffectConfig)mapping[resId];
