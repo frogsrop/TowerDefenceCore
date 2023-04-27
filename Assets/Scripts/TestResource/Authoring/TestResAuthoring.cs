@@ -1,8 +1,7 @@
 using Unity.Entities;
-using Unity.Mathematics;
 using UnityEngine;
 
-class TestResAuthoring : MonoBehaviour
+public class TestResAuthoring : MonoBehaviour
 {
     public GameObject TowerPrefab;
     public GameObject EnemyPrefab;

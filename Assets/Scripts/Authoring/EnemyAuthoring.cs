@@ -1,14 +1,34 @@
+using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
 
-class EnemyAuthoring : MonoBehaviour
+public class EnemyAuthoring : MonoBehaviour
 {
     public int MaxHp = 500;
     public int Id = 0;
-    public float Direction = 5;
+     public float Direction = 5;
+    
+    public float Speed;
+    public GameObject Prefab;
+    
 }
 
-class EnemyBaker : Baker<EnemyAuthoring>
+public class PresentationGO : IComponentData
+{
+    public GameObject Prefab;
+}
+public class TransformGO : ICleanupComponentData
+{
+    public Transform Transform;
+}
+
+public class AnimatorGO : IComponentData
+{
+    public Animator Animator;
+}
+
+
+public class EnemyBaker : Baker<EnemyAuthoring>
 {
     public override void Bake(EnemyAuthoring authoring)
     {
@@ -20,5 +40,15 @@ class EnemyBaker : Baker<EnemyAuthoring>
         AddComponent<BurningComponent>();
         AddBuffer<DamageBufferElement>();
         AddBuffer<BurningBufferElement>();
+        if (authoring.Speed > 0)
+        {
+            SpeedComponent speed = default;
+            speed.Value = authoring.Speed;
+            AddComponent(speed);
+        }
+
+        PresentationGO pgo = new PresentationGO();
+        pgo.Prefab = authoring.Prefab;
+        AddComponentObject(pgo);
     }
 }

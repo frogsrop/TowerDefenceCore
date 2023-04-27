@@ -4,7 +4,6 @@ using Unity.Entities;
 using Random = Unity.Mathematics.Random;
 using Unity.Transforms;
 using Unity.Mathematics;
-using UnityEngine;
 
 [BurstCompile]
 public partial struct TestResSystem : ISystem
@@ -27,7 +26,6 @@ public partial struct TestResSystem : ISystem
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
-        
     }
 }
 

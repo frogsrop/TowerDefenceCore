@@ -56,8 +56,5 @@ public class DropdownMenu : MonoBehaviour
             OnOff = true
         };
         _entityManager.SetComponentData(_entity, QuantitySpawnComponent);
-
-
     }
-
 }
