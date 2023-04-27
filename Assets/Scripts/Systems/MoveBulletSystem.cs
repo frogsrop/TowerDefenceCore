@@ -13,7 +13,6 @@ public partial struct MoveBulletSystem : ISystem
 
     public void OnCreate(ref SystemState state)
     {
-        Debug.Log("MoveBulletSystem - OnCreate");
         queryTargetId = state.GetEntityQuery(ComponentType.ReadOnly<TargetIdComponent>());
         var nativeArray = new NativeArray<ComponentType>(4, Allocator.Temp);
         nativeArray[0] = ComponentType.ReadOnly<EnemyIdComponent>();
