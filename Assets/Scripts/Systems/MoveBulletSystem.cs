@@ -3,6 +3,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using Unity.Burst;
+using UnityEngine;
 
 [BurstCompile]
 public partial struct MoveBulletSystem : ISystem
@@ -12,6 +13,7 @@ public partial struct MoveBulletSystem : ISystem
 
     public void OnCreate(ref SystemState state)
     {
+        Debug.Log("MoveBulletSystem - OnCreate");
         queryTargetId = state.GetEntityQuery(ComponentType.ReadOnly<TargetIdComponent>());
         var nativeArray = new NativeArray<ComponentType>(4, Allocator.Temp);
         nativeArray[0] = ComponentType.ReadOnly<EnemyIdComponent>();
@@ -29,6 +31,7 @@ public partial struct MoveBulletSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
+        //Debug.Log("MoveBulletSystem - OnUpdate");
         var enemyIds = queryEnemy.ToComponentDataArray<EnemyIdComponent>(Allocator.TempJob);
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         var dt = SystemAPI.Time.DeltaTime;
@@ -58,6 +61,8 @@ public partial struct MoveBulletJob : IJobEntity
     private void Execute(ref LocalToWorldTransform bulletTransform, in TargetIdComponent bullet,
         in BulletComponent bulletInfo, in Entity entity)
     {
+        
+        //Debug.Log("MoveBulletSystem - MoveBulletJob");
         var mapping = AbstractEffectConfig.Mapping; 
         var enemyIndex = IndexOf(EnemyIds, bullet.Id);
         if (enemyIndex != -1)

@@ -26,7 +26,6 @@ public partial struct TestResSystem : ISystem
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
-        
     }
 }
 

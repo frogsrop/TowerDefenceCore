@@ -1,6 +1,7 @@
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 [BurstCompile]
 public partial struct BurningSystem : ISystem
@@ -10,6 +11,7 @@ public partial struct BurningSystem : ISystem
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
+        //Debug.Log("BurningSystem - OnCreate");
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         var queries = new NativeArray<ComponentType>(3, Allocator.Temp);
         queries[0] = ComponentType.ReadOnly<BurningComponent>();
@@ -25,6 +27,7 @@ public partial struct BurningSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
+        //Debug.Log("BurningSystem - OnUpdate");
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         new BurningJob { Ecb = ecb }.Run(_queryBurningComponent);
         state.Dependency.Complete();
@@ -41,6 +44,7 @@ public partial struct BurningJob : IJobEntity
     [BurstCompile]
     private void Execute(Entity entity, ref BurningComponent damage, ref EnemyHpComponent hp, ref TimerComponent timer)
     {
+        //Debug.Log("BurningSystem - BurningJob");
         var timerBurning = damage.Timer;
 
         if (!timer.Trigger)
@@ -71,6 +75,7 @@ public partial struct OffBurningComponentJob : IJobEntity
 
     private void Execute(Entity entity, ref BurningComponent damage)
     {
+        //Debug.Log("BurningSystem - OffBurningComponentJob");
         Ecb.SetComponentEnabled<BurningComponent>(entity, false); /*TODO: when a creep spawns*/
     }
 }

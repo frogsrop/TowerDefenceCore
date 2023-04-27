@@ -1,6 +1,7 @@
 ﻿using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 [BurstCompile]
 public partial struct TimerSystem : ISystem
@@ -8,7 +9,7 @@ public partial struct TimerSystem : ISystem
     private EntityQuery _queryTimerComponent;
 
     [BurstCompile] 
-    public void OnCreate(ref SystemState state) 
+    public void OnCreate(ref SystemState state)
     {
         _queryTimerComponent = state.GetEntityQuery(ComponentType.ReadOnly<TimerComponent>());
     }

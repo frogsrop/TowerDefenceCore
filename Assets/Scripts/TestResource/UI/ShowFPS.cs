@@ -14,9 +14,9 @@ public class ShowFPS : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _averageFpsText;
     [SerializeField] private TextMeshProUGUI _medianFpsText;
     [SerializeField] private TextMeshProUGUI _diffFpsText;
+
+    private bool startTest = false;
     
-
-
     private int _fpsCount;
     private float _poolingTime = 1f;
     private float _time;
@@ -37,7 +37,7 @@ public class ShowFPS : MonoBehaviour
 
     private void Update()
     {
-        if (_stopFps >= 30) return;
+        if (_stopFps >= 30 || !startTest) return;
 
         _time += Time.deltaTime;
         _fpsCount++;
@@ -54,6 +54,11 @@ public class ShowFPS : MonoBehaviour
             _time -= _poolingTime;
             _fpsCount = 0;
         }
+    }
+
+    public void StartOnButtonSpawn()
+    {
+        startTest = true;
     }
     
     private void UpdateDiffMinMaxFps()

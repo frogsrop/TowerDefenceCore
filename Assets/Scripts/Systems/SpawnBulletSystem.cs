@@ -3,6 +3,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using UnityEngine;
 
 [BurstCompile]
 public partial struct SpawnBulletSystem : ISystem
@@ -30,7 +31,8 @@ public partial struct SpawnBulletSystem : ISystem
     {
         var enemyIds = _queryEnemies.ToComponentDataArray<EnemyIdComponent>(Allocator.TempJob);
         if (enemyIds.Length == 0) return;
-        var enemyTransforms = _queryEnemies.ToComponentDataArray<LocalToWorldTransform>(Allocator.TempJob);
+        var enemyTransforms = _queryEnemies.
+            ToComponentDataArray<LocalToWorldTransform>(Allocator.TempJob);
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         new SpawnBulletJob { Transforms = enemyTransforms, EnemyIds = enemyIds, Ecb = ecb }.Run(_towerQuery);
         state.Dependency.Complete();

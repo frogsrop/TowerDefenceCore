@@ -23,11 +23,13 @@ public class DropdownMenu : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("DropdownMenu - start");
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
     }
 
     public void OnButtonSpawn()
     {
+        //Debug.Log("DropdownMenu - OnButton");
         _entity = _entityManager.CreateEntityQuery(typeof(TestComponent)).GetSingletonEntity();
         valueTowerMenu = _quantityTowersMenu.value;
         if (valueTowerMenu == 0) { _quantityTowers = 0; }
@@ -56,8 +58,5 @@ public class DropdownMenu : MonoBehaviour
             OnOff = true
         };
         _entityManager.SetComponentData(_entity, QuantitySpawnComponent);
-
-
     }
-
 }
