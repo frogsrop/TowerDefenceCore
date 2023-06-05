@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
 
@@ -6,27 +5,11 @@ public class EnemyAuthoring : MonoBehaviour
 {
     public int MaxHp = 500;
     public int Id = 0;
-     public float Direction = 5;
+    public float Direction = 5;
     
     public float Speed;
     public GameObject Prefab;
-    
 }
-
-public class PresentationGO : IComponentData
-{
-    public GameObject Prefab;
-}
-public class TransformGO : ICleanupComponentData
-{
-    public Transform Transform;
-}
-
-public class AnimatorGO : IComponentData
-{
-    public Animator Animator;
-}
-
 
 public class EnemyBaker : Baker<EnemyAuthoring>
 {
@@ -47,7 +30,7 @@ public class EnemyBaker : Baker<EnemyAuthoring>
             AddComponent(speed);
         }
 
-        PresentationGO pgo = new PresentationGO();
+        PresentationGoComponent pgo = new PresentationGoComponent();
         pgo.Prefab = authoring.Prefab;
         AddComponentObject(pgo);
     }

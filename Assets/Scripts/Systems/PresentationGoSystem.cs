@@ -24,26 +24,25 @@ public partial struct PresentationGOSystem : ISystem
         //var positionSpawn = _querySpawnerPosition.ToComponentDataArray<LocalToWorldTransform>
              //(Allocator.Temp)[0];
         
-        foreach(var (pgo,entity) in SystemAPI.Query<PresentationGO>().WithEntityAccess())
+        foreach(var (pgo,entity) in SystemAPI.Query<PresentationGoComponent>().WithEntityAccess())
         {
-            //pgo.Prefab.transform.position = positionSpawn.Value.Position;//TODO: When we add spawn and path
+            //TODO: When we add spawn and path
+            //pgo.Prefab.transform.position = positionSpawn.Value.Position;
             GameObject go = GameObject.Instantiate(pgo.Prefab);
-            
             
             go.AddComponent<EntityGameObjectAuthoring>().AssignEntity(entity, state.World);
 
-            
-            ecbBOS.AddComponent(entity, new TransformGO() { Transform = go.transform });
-            ecbBOS.AddComponent(entity, new AnimatorGO() { Animator = go.GetComponent<Animator>() });
-            ecbBOS.RemoveComponent<PresentationGO>(entity);
+            ecbBOS.AddComponent(entity, new TransformGoComponent() { Transform = go.transform });
+            ecbBOS.AddComponent(entity, new AnimatorGoComponent() { Animator = go.GetComponent<Animator>() });
+            ecbBOS.RemoveComponent<PresentationGoComponent>(entity);
         }
         //TODO: When we add spawn and path
         //var ecbEOS = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
           //  .CreateCommandBuffer(state.WorldUnmanaged);
 
         foreach (var (goTransform,goAnimator,tranform,speed) in SystemAPI.Query<
-                     TransformGO, 
-                     AnimatorGO, 
+                     TransformGoComponent, 
+                     AnimatorGoComponent, 
                      TransformAspect, 
                      RefRO<SpeedComponent>>())
         {

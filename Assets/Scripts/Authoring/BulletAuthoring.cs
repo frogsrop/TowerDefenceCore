@@ -5,6 +5,7 @@ using UnityEngine;
 
 class BulletAuthoring : MonoBehaviour
 {
+    public float Speed = 10;
     public List<AbstractEffectConfig> ListSo = new();
 }
 
@@ -19,5 +20,6 @@ class BulletBaker : Baker<BulletAuthoring>
             list.Add(effect.Id);
         }
         AddComponent(new BulletComponent { ListEffects = list });
+        AddComponent(new SpeedComponent {Value = authoring.Speed});
     }
 }

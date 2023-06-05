@@ -30,7 +30,6 @@ public partial struct MoveBulletSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        //Debug.Log("MoveBulletSystem - OnUpdate");
         var enemyIds = queryEnemy.ToComponentDataArray<EnemyIdComponent>(Allocator.TempJob);
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         var dt = SystemAPI.Time.DeltaTime;
@@ -58,10 +57,8 @@ public partial struct MoveBulletJob : IJobEntity
     public NativeArray<Entity> EnemyEntityArray;
 
     private void Execute(ref LocalToWorldTransform bulletTransform, in TargetIdComponent bullet,
-        in BulletComponent bulletInfo, in Entity entity)
+        in BulletComponent bulletInfo, in SpeedComponent bulletSpeed, in Entity entity)
     {
-        
-        //Debug.Log("MoveBulletSystem - MoveBulletJob");
         var mapping = AbstractEffectConfig.Mapping; 
         var enemyIndex = IndexOf(EnemyIds, bullet.Id);
         if (enemyIndex != -1)
@@ -69,7 +66,7 @@ public partial struct MoveBulletJob : IJobEntity
             var enemyTransform = EnemyTransforms[enemyIndex];
             var enemyEntity = EnemyEntityArray[enemyIndex];
             var direction = math.normalize(enemyTransform.Value.Position - bulletTransform.Value.Position);
-            bulletTransform.Value.Position += direction * Dt * 10;
+            bulletTransform.Value.Position += direction * Dt * bulletSpeed.Value;
             var distance = math.distancesq(bulletTransform.Value.Position, enemyTransform.Value.Position);
             if (!(distance < 0.1f)) return;
             Ecb.DestroyEntity(entity);
