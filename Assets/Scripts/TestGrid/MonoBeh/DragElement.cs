@@ -48,7 +48,7 @@ public class DragElement : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         {
             for (int j = 0; j < arrayGridElements.GetLength(1); j++)
             {
-                arrayGridElements[i, j] = new Vector2( i*spacingGrid, j*spacingGrid);
+                arrayGridElements[i, j] = new Vector2( posGrid.x+i*spacingGrid, posGrid.y+j*spacingGrid);
                 arrayControllGrid[i, j] = true;
             }
         }
@@ -77,14 +77,14 @@ public class DragElement : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         {
             for (int j = 0; j < arrayGridElements.GetLength(1); j++)
             {
-                if (arrayGridElements[i, j] == roundHit && arrayControllGrid[i, j] == true)
+                if (arrayGridElements[i, j] == roundHit && arrayControllGrid[i, j])
                 {
                     posActive = arrayGridElements[i, j];
                     GreenSquare.transform.position = new Vector3(posActive.x, posActive.y, 0);
                     indexBoolI = i;
                     indexBoolJ = j;
                 }
-                if (arrayGridElements[i, j] == roundHit && arrayControllGrid[i, j] == false)
+                if (arrayGridElements[i, j] == roundHit && !arrayControllGrid[i, j])
                 {
                     posActive = arrayGridElements[i, j];
                     RedSquare.transform.position = new Vector3(posActive.x, posActive.y, 0);
@@ -102,7 +102,7 @@ public class DragElement : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         if ( hit.collider != null )
         {
             Debug.Log("hit.collider");
-            _posSpawn = new float3(worldPoint.x, worldPoint.y, 0);
+            _posSpawn = new float3(posActive.x, posActive.y, 0);
             //if (_posSpawn.y > -1 || _posSpawn.y < -5 || _posSpawn.x < -9 || _posSpawn.x > 1 ) return;
             _entity = _entityManager.CreateEntityQuery(typeof(PrefabComponent)).GetSingletonEntity();
             var spawnPosComponent = new SpawnComponent

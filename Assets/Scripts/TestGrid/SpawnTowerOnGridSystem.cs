@@ -31,8 +31,8 @@ public partial struct SpawnEntitiesJob : IJobEntity
     private void Execute(Entity e, in PrefabComponent prefabComponent, ref SpawnComponent spawnComponent)
     {
         if(!spawnComponent.OnOff) return;
-        var posTowerX = Mathf.Round(spawnComponent.TowerPos.x / 2) * 2;
-        var posTowerY = Mathf.Round(spawnComponent.TowerPos.y / 2) * 2;
+        var posTowerX = spawnComponent.TowerPos.x;//Mathf.Round(spawnComponent.TowerPos.x / 2) * 2;
+        var posTowerY = spawnComponent.TowerPos.y;//Mathf.Round(spawnComponent.TowerPos.y / 2) * 2;
         var posTowerSpawn = new float3(posTowerX, posTowerY, 0);
         var towerUniformScaleTransform = new UniformScaleTransform
             { Position = posTowerSpawn, Scale = 0.5f };

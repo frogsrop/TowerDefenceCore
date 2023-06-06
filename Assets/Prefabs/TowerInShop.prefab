@@ -401,12 +401,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TowerImgPrefab: {fileID: 6478238751360883004, guid: d8fdf534218ef6646892488b1adecb89, type: 3}
-  GreenSquare: {fileID: 0}
-  RedSquare: {fileID: 886041938534677277, guid: 0bd7603333bc0894da1e889b51cd675c, type: 3}
+  GreenSquare: {fileID: 8775697056954883635, guid: 96d60b5ba9744374493e5805b16957c4, type: 3}
+  RedSquare: {fileID: 6776515695998511664, guid: 0bd7603333bc0894da1e889b51cd675c, type: 3}
   lengtnGrid: 5
   widthGrid: 2
   spacingGrid: 2
-  posGrid: {x: 0, y: 0}
+  posGrid: {x: -6, y: -3}
 --- !u!1 &2240895695832026293
 GameObject:
   m_ObjectHideFlags: 0

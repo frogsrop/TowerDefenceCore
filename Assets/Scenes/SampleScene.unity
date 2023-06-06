@@ -775,6 +775,10 @@ PrefabInstance:
       value: TowerInShop (2)
       objectReference: {fileID: 0}
     - target: {fileID: 8663039288743208135, guid: 394b11e56ed867646a149986e5712c41, type: 3}
+      propertyPath: RedSquare
+      value: 
+      objectReference: {fileID: 2144853832}
+    - target: {fileID: 8663039288743208135, guid: 394b11e56ed867646a149986e5712c41, type: 3}
       propertyPath: GreenSquare
       value: 
       objectReference: {fileID: 110416517}
@@ -879,6 +883,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TowerInShop (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 8663039288743208135, guid: 394b11e56ed867646a149986e5712c41, type: 3}
+      propertyPath: RedSquare
+      value: 
+      objectReference: {fileID: 2144853832}
     - target: {fileID: 8663039288743208135, guid: 394b11e56ed867646a149986e5712c41, type: 3}
       propertyPath: GreenSquare
       value: 
@@ -3343,11 +3351,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7014903648496544250, guid: 96d60b5ba9744374493e5805b16957c4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.10777518
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7014903648496544250, guid: 96d60b5ba9744374493e5805b16957c4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.44
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7014903648496544250, guid: 96d60b5ba9744374493e5805b16957c4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3883,6 +3891,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TowerInShop (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 8663039288743208135, guid: 394b11e56ed867646a149986e5712c41, type: 3}
+      propertyPath: RedSquare
+      value: 
+      objectReference: {fileID: 2144853832}
     - target: {fileID: 8663039288743208135, guid: 394b11e56ed867646a149986e5712c41, type: 3}
       propertyPath: GreenSquare
       value: 
@@ -5534,6 +5546,67 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1399802188}
   m_CullTransparentMesh: 1
+--- !u!1001 &1421588740
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6028884863066246605, guid: 0bd7603333bc0894da1e889b51cd675c, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6028884863066246605, guid: 0bd7603333bc0894da1e889b51cd675c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6028884863066246605, guid: 0bd7603333bc0894da1e889b51cd675c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6028884863066246605, guid: 0bd7603333bc0894da1e889b51cd675c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6028884863066246605, guid: 0bd7603333bc0894da1e889b51cd675c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6028884863066246605, guid: 0bd7603333bc0894da1e889b51cd675c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6028884863066246605, guid: 0bd7603333bc0894da1e889b51cd675c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6028884863066246605, guid: 0bd7603333bc0894da1e889b51cd675c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6028884863066246605, guid: 0bd7603333bc0894da1e889b51cd675c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6028884863066246605, guid: 0bd7603333bc0894da1e889b51cd675c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6028884863066246605, guid: 0bd7603333bc0894da1e889b51cd675c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6776515695998511664, guid: 0bd7603333bc0894da1e889b51cd675c, type: 3}
+      propertyPath: m_Name
+      value: RedSquare
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0bd7603333bc0894da1e889b51cd675c, type: 3}
 --- !u!1 &1449684282
 GameObject:
   m_ObjectHideFlags: 0
@@ -6553,6 +6626,10 @@ PrefabInstance:
       value: TowerInShop (3)
       objectReference: {fileID: 0}
     - target: {fileID: 8663039288743208135, guid: 394b11e56ed867646a149986e5712c41, type: 3}
+      propertyPath: RedSquare
+      value: 
+      objectReference: {fileID: 2144853832}
+    - target: {fileID: 8663039288743208135, guid: 394b11e56ed867646a149986e5712c41, type: 3}
       propertyPath: GreenSquare
       value: 
       objectReference: {fileID: 110416517}
@@ -7162,6 +7239,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TowerInShop (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8663039288743208135, guid: 394b11e56ed867646a149986e5712c41, type: 3}
+      propertyPath: RedSquare
+      value: 
+      objectReference: {fileID: 2144853832}
     - target: {fileID: 8663039288743208135, guid: 394b11e56ed867646a149986e5712c41, type: 3}
       propertyPath: GreenSquare
       value: 
@@ -7784,6 +7865,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2117367432}
   m_CullTransparentMesh: 1
+--- !u!1 &2144853832 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6776515695998511664, guid: 0bd7603333bc0894da1e889b51cd675c, type: 3}
+  m_PrefabInstance: {fileID: 1421588740}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3006236159671295577
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7880,6 +7966,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TowerInShop
       objectReference: {fileID: 0}
+    - target: {fileID: 8663039288743208135, guid: 394b11e56ed867646a149986e5712c41, type: 3}
+      propertyPath: RedSquare
+      value: 
+      objectReference: {fileID: 2144853832}
     - target: {fileID: 8663039288743208135, guid: 394b11e56ed867646a149986e5712c41, type: 3}
       propertyPath: GreenSquare
       value: 
