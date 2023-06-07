@@ -9,7 +9,6 @@ public class ShopWindowController : MonoBehaviour
     private Sprite iconOpen;
     [SerializeField]
     private Sprite iconClose;
-    
     [SerializeField]
     private GameObject panel;
 

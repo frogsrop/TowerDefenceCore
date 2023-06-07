@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class VissualDrag : MonoBehaviour
+public class VissualDragShopElement : MonoBehaviour
 {
     private void LateUpdate()
     {

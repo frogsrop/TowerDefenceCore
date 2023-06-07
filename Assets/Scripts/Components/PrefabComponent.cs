@@ -3,5 +3,5 @@ using Unity.Mathematics;
 
 public struct PrefabComponent : IComponentData
 {
-    public Entity TowerPrefab;
+    public Entity Prefab;
 }

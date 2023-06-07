@@ -1,4 +1,5 @@
 using UnityEngine;
+
 [ExecuteInEditMode]
 public class CreaterTowerInShop : MonoBehaviour
 {
@@ -11,12 +12,11 @@ public class CreaterTowerInShop : MonoBehaviour
 
     private void Start()
     {
-        
         for (int i = 0; i < MyScriptableObjects.Length; i++)
         {
             var node = Instantiate(Pref, Grid);
             node.transform.localScale = Vector3.one;
-            node.GetComponent<BankTowerController>().towerData = MyScriptableObjects[i];
+            node.GetComponent<BankTowerInShop>().towerData = MyScriptableObjects[i];
         }
     }
 }

@@ -28,20 +28,18 @@ public partial struct SpawnEntitiesJob : IJobEntity
 {
     public EntityCommandBuffer Ecb;
     public float Dt;
-    private void Execute(Entity e, in PrefabComponent prefabComponent, ref SpawnComponent spawnComponent)
+    private void Execute(Entity e, in PrefabComponent prefabComponent, ref SpawnPostPayComponent spawnPostPayComponent)
     {
-        if(!spawnComponent.OnOff) return;
-        var posTowerX = spawnComponent.TowerPos.x;//Mathf.Round(spawnComponent.TowerPos.x / 2) * 2;
-        var posTowerY = spawnComponent.TowerPos.y;//Mathf.Round(spawnComponent.TowerPos.y / 2) * 2;
-        var posTowerSpawn = new float3(posTowerX, posTowerY, 0);
+        if(!spawnPostPayComponent.OnOff) return;
+        var posTowerSpawn = new float3(spawnPostPayComponent.TowerPos.x, spawnPostPayComponent.TowerPos.y, 0);
         var towerUniformScaleTransform = new UniformScaleTransform
             { Position = posTowerSpawn, Scale = 0.5f };
         var setSpawnTowerPosition = new LocalToWorldTransform
             { Value = towerUniformScaleTransform };
-        var eTower = Ecb.Instantiate(prefabComponent.TowerPrefab);
+        var eTower = Ecb.Instantiate(prefabComponent.Prefab);
         Ecb.SetComponent(eTower, setSpawnTowerPosition);
         
-        var offSpawn = new SpawnComponent { OnOff = false };
+        var offSpawn = new SpawnPostPayComponent { OnOff = false };
         Ecb.SetComponent(e, offSpawn);
     }
 }

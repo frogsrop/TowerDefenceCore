@@ -28,7 +28,7 @@ public class DropdownMenu : MonoBehaviour
 
     public void OnButtonSpawn()
     {
-        _entity = _entityManager.CreateEntityQuery(typeof(TestComponent)).GetSingletonEntity();
+        _entity = _entityManager.CreateEntityQuery(typeof(ObjectsSpawnComponent)).GetSingletonEntity();
         valueTowerMenu = _quantityTowersMenu.value;
         if (valueTowerMenu == 0) { _quantityTowers = 0; }
         if (valueTowerMenu == 1) { _quantityTowers = 10; }

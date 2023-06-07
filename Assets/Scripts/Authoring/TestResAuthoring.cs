@@ -11,7 +11,7 @@ class TestResBaker : Baker<TestResAuthoring>
 {
     public override void Bake(TestResAuthoring authoring)
     {
-        AddComponent(new TestComponent {
+        AddComponent(new ObjectsSpawnComponent {
             TowerPrefab = GetEntity(authoring.TowerPrefab),
             EnemyPrefab = GetEntity(authoring.EnemyPrefab)
         });

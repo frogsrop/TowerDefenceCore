@@ -34,7 +34,7 @@ public partial struct SpawnEntitysJob : IJobEntity
     public EntityCommandBuffer Ecb;
     public Random Random;
     public float Dt;
-    private void Execute(Entity e, in TestComponent testComponent, ref QuantitySpawnComponent quantitySpawn)
+    private void Execute(Entity e, in ObjectsSpawnComponent objectsSpawnComponent, ref QuantitySpawnComponent quantitySpawn)
     {
         if(!quantitySpawn.OnOff) return;
         var timeSeed = (uint)(Dt * 100000);
@@ -49,7 +49,7 @@ public partial struct SpawnEntitysJob : IJobEntity
             var setSpawnTowerPosition = new LocalToWorldTransform
             { Value = towerUniformScaleTransform };
             var setSpeedAttack = new TowerSpeedAttack { Value = quantitySpawn.SpeedShoot };
-            var _eTower = Ecb.Instantiate(testComponent.TowerPrefab);
+            var _eTower = Ecb.Instantiate(objectsSpawnComponent.TowerPrefab);
             Ecb.SetComponent(_eTower, setSpawnTowerPosition);
             Ecb.SetComponent(_eTower, setSpeedAttack);
 
@@ -62,7 +62,7 @@ public partial struct SpawnEntitysJob : IJobEntity
             var setSpawnEnemyPosition = new LocalToWorldTransform
             { Value = enemyUniformScaleTransform };
             var newEnemyId = new EnemyIdComponent { Id = i };
-            var _eEnemy = Ecb.Instantiate(testComponent.EnemyPrefab);
+            var _eEnemy = Ecb.Instantiate(objectsSpawnComponent.EnemyPrefab);
             Ecb.SetComponent(_eEnemy, newEnemyId);
             Ecb.SetComponent(_eEnemy, setSpawnEnemyPosition);
         }

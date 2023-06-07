@@ -1,8 +1,9 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 [ExecuteInEditMode]
-public class BankTowerController : MonoBehaviour
+public class BankTowerInShop : MonoBehaviour
 {
     [SerializeField]
     private TowerData _towerData;
