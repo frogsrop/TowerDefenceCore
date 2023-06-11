@@ -1,6 +1,6 @@
-*.anim
-*.meta
-*.prefab
-*.png
-*.unity
-*.asset
+*.anim -text
+*.meta -text
+*.prefab -text
+*.png -text
+*.unity -text
+*.asset -text
