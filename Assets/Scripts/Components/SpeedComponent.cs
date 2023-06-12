@@ -1,6 +1,7 @@
 using Unity.Entities;
 
-public struct SpeedComponent : IComponentData
+public struct SpeedModifierComponent : IEnableableComponent, IComponentData
 {
-    public float Value;
+    public float Speed;
+    public float MaxSpeed;
 }
