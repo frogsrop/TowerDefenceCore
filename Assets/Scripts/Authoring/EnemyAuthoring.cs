@@ -6,7 +6,6 @@ public class EnemyAuthoring : MonoBehaviour
 {
     public int MaxHp = 500;
     public int Id = 0;
-    public float Direction = 5;
     public float Direction = 1;
     public float Speed = 5;
     public float SpeedModifier = 1.5F;
