@@ -1,3 +1,4 @@
+using Math;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -29,14 +30,29 @@ partial struct EnemyJob : IJobEntity
 {
     public float Dt;
 
-    public void Execute(TransformAspect transform, ref DirectionComponent dir)
-    {
+    public void Execute(
+        TransformAspect transform,
+        ref DirectionComponent dir,
+        ref SpeedComponent speed,
+        ref SpeedModifierComponent speedModifier
+    ) {
         if ((transform.Position.x > 5 && dir.Direction > 0) ||
             (transform.Position.x < -5 && dir.Direction < 0))
         {
             dir.Direction *= -1;
         }
 
-        transform.Position += new float3(Dt * dir.Direction, 0, 0);
+        speedCoefficient = 1;
+        // TODO: can we overload this function for enemies without SpeedModifierComponent
+        // and just disable it?
+        if (speedModifier.Timer > 0) {
+            speedCoefficient = speedModifier.ModifierCoefficient;
+            speedModifier.timer -= Dt;
+        }
+
+        transform.Position += new float3(
+            Dt * dir.Direction * Math.Min(speed.MaxSpeed, speed.Speed * speedCoefficient),
+            0, 0
+        );
     }
 }
