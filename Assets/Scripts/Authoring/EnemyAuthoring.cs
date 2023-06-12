@@ -6,11 +6,14 @@ public class EnemyAuthoring : MonoBehaviour
 {
     public int MaxHp = 500;
     public int Id = 0;
-     public float Direction = 5;
-    
-    public float Speed;
+    public float Direction = 5;
+    public float Direction = 1;
+    public float Speed = 5;
+    public float SpeedModifier = 1.5;
+    public float SpeedModifierTimer = 5;
+    public float MaxSpeed = 10;
+
     public GameObject Prefab;
-    
 }
 
 public class PresentationGO : IComponentData
@@ -34,18 +37,16 @@ public class EnemyBaker : Baker<EnemyAuthoring>
     {
         AddComponent(new EnemyHpComponent { Hp = authoring.MaxHp, MaxHp = authoring.MaxHp });
         AddComponent(new DirectionComponent { Direction = authoring.Direction });
+        AddComponent(new SpeedComponent { Speed = authoring.Speed, MaxSpeed = authoring.MaxSpeed });
+        AddComponent(
+            new SpeedModifierComponent { SpeedModifier = authoring.SpeedModifier, Timer = authoring.SpeedModifierTimer }
+        );
         AddComponent(new EnemyIdComponent { Id = authoring.Id });
         AddComponent<TimerComponent>();
         AddComponent<DamageComponent>();
         AddComponent<BurningComponent>();
         AddBuffer<DamageBufferElement>();
         AddBuffer<BurningBufferElement>();
-        if (authoring.Speed > 0)
-        {
-            SpeedComponent speed = default;
-            speed.Value = authoring.Speed;
-            AddComponent(speed);
-        }
 
         PresentationGO pgo = new PresentationGO();
         pgo.Prefab = authoring.Prefab;
