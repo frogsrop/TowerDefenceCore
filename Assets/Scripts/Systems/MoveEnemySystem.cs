@@ -1,4 +1,4 @@
-using Math;
+using UnityEngine;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -47,16 +47,16 @@ partial struct EnemyJob : IJobEntity
             dir.Direction *= -1;
         }
 
-        speedCoefficient = 1;
+        float speedCoefficient = 1;
         // TODO: can we overload this function for enemies without SpeedModifierComponent
         // and just disable it?
-        if (speedModifier.Timer > 0) {
+        if (speedModifier.Timeout > 0) {
             speedCoefficient = speedModifier.ModifierCoefficient;
-            speedModifier.timer -= Dt;
+            speedModifier.Timeout -= Dt;
         }
 
         transform.Position += new float3(
-            Dt * dir.Direction * Math.Min(speed.MaxSpeed, speed.Speed * speedCoefficient),
+            Dt * dir.Direction * Mathf.Min(speed.MaxSpeed, speed.Speed * speedCoefficient),
             0, 0
         );
     }
