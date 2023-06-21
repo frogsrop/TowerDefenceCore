@@ -19,6 +19,7 @@ public partial struct SpawnBulletSystem : ISystem
         componentsQuery[1] = ComponentType.ReadOnly<LocalToWorldTransform>();
         _queryEnemies = state.GetEntityQuery(componentsQuery);
         _towerQuery = state.GetEntityQuery(ComponentType.ReadOnly<Tower>());
+        
     }
 
     // [BurstCompile] 

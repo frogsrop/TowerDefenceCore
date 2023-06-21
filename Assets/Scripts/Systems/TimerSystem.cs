@@ -11,6 +11,7 @@ public partial struct TimerSystem : ISystem
     [BurstCompile] 
     public void OnCreate(ref SystemState state)
     {
+        
         _queryTimerComponent = state.GetEntityQuery(ComponentType.ReadOnly<TimerComponent>());
     }
 

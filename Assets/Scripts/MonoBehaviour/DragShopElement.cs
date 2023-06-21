@@ -2,13 +2,17 @@
 using UnityEngine.EventSystems;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Transforms;
 
-public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler 
+public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    private Entity _entity;
+    private Entity _entityStorage;
+    private Entity _entityTower;
     private EntityManager _entityManager;
     private float3 _posSpawn;
+    private BlobAssetStore _blobAssetStore;
     
+    [SerializeField] private GameObject TowerPrefab;
     [SerializeField] private GameObject TowerImgPrefab;
     [SerializeField] private GameObject GreenSquare;
     [SerializeField] private GameObject RedSquare;
@@ -25,8 +29,14 @@ public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private int indexBoolI;
     private int indexBoolJ;
     
+    
     void Start()
     {
+        
+        //Instantiate(TowerPrefab);
+        
+        _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        
         arrayGridElements = new Vector2[lengtnGrid,widthGrid];
         arrayControllGrid = new bool[lengtnGrid,widthGrid];
         
@@ -38,7 +48,7 @@ public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 arrayControllGrid[i, j] = true;
             }
         }
-        _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        
     }
 
     private void Update()
@@ -87,14 +97,18 @@ public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if ( hit.collider != null )
         {
             _posSpawn = new float3(posActive.x, posActive.y, 0);
-            _entity = _entityManager.CreateEntityQuery(typeof(PrefabComponent)).GetSingletonEntity();
-            var spawnPosComponent = new SpawnPostPayComponent
-            {
-                TowerPos = _posSpawn,
-                OnOff = true
-            };
-            _entityManager.SetComponentData(_entity, spawnPosComponent);
+            _entityStorage = _entityManager.CreateEntityQuery(
+                typeof(StoragePrefabsComponent)).GetSingletonEntity();
             
+            _entityTower = _entityManager.GetComponentData<StoragePrefabsComponent>(_entityStorage).TowerPrefab;
+            
+
+            var towerUniformScaleTransform = new UniformScaleTransform
+                { Position = _posSpawn, Scale = 0.5f };
+            var setSpawnTowerPosition = new LocalToWorldTransform
+                { Value = towerUniformScaleTransform };
+            _entityManager.SetComponentData(_entityTower, setSpawnTowerPosition);
+            _entityManager.Instantiate(_entityTower);
             arrayControllGrid[indexBoolI, indexBoolJ] = false;
         }
     }
