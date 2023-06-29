@@ -26,7 +26,7 @@
     },
     "com.unity.collections": {
       "version": "2.1.0-exp.4",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.burst": "1.7.3",
@@ -37,7 +37,7 @@
     },
     "com.unity.entities": {
       "version": "1.0.0-exp.12",
-      "depth": 0,
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.burst": "1.7.3",
@@ -109,7 +109,7 @@
     },
     "com.unity.jobs": {
       "version": "0.70.0-preview.7",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.collections": "1.4.0"
@@ -125,7 +125,7 @@
     },
     "com.unity.nuget.mono-cecil": {
       "version": "1.11.4",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -139,7 +139,7 @@
     },
     "com.unity.platforms": {
       "version": "1.0.0-exp.6",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.modules.uielements": "1.0.0",
@@ -152,14 +152,14 @@
     },
     "com.unity.profiling.core": {
       "version": "1.0.2",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.properties": {
       "version": "2.0.0-exp.11",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.test-framework.performance": "2.8.0-preview"
@@ -190,7 +190,7 @@
     },
     "com.unity.scriptablebuildpipeline": {
       "version": "1.21.0",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -204,7 +204,7 @@
     },
     "com.unity.serialization": {
       "version": "2.0.0-exp.11",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.collections": "1.1.0",
@@ -248,7 +248,7 @@
     },
     "com.unity.test-framework.performance": {
       "version": "2.8.0-preview",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.test-framework": "1.1.0",

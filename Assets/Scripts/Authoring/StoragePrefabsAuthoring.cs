@@ -4,26 +4,20 @@ using UnityEngine;
 public class StoragePrefabsAuthoring : MonoBehaviour
 {
     public GameObject TowerPrefab;
-    //public EnemyConfig enemyConfig;
-    
+    public GameObject EnemyPrefab;
 }
 
 class PayManagerBaker : Baker<StoragePrefabsAuthoring>
 {
-
     public override void Bake(StoragePrefabsAuthoring authoring)
     {
-        var TowerPrefab = GetEntity(authoring.TowerPrefab);
+        var towerPrefab = GetEntity(authoring.TowerPrefab);
+        var enemyPrefab = GetEntity(authoring.EnemyPrefab);
 
         AddComponent(new StoragePrefabsComponent
         {
-            TowerPrefab = TowerPrefab
+            TowerPrefab = towerPrefab,
+            EnemyPrefab = enemyPrefab
         });
-        
-        AddComponent(new StorageConfigsComponent
-        {
-            //EnemyConfig = enemyConfig
-        });
-
     }
 }

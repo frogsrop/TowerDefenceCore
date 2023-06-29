@@ -11,7 +11,6 @@ public partial struct MoveEnemySystem : ISystem
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-        //Debug.Log("MoveEnemySystem - OnCreate");
     }
 
     [BurstCompile]
@@ -22,7 +21,7 @@ public partial struct MoveEnemySystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        //Debug.Log("MoveEnemySystem - OnUpdate");
+        
         var dt = SystemAPI.Time.DeltaTime;
         new EnemyJob { Dt = dt }.ScheduleParallel();
     }
@@ -35,7 +34,6 @@ partial struct EnemyJob : IJobEntity
 
     public void Execute(TransformAspect transform, ref DirectionComponent dir)
     {
-        //Debug.Log("MoveEnemySystem - EnemyJob");
         if ((transform.Position.x > 5 && dir.Direction > 0) ||
             (transform.Position.x < -5 && dir.Direction < 0))
         {

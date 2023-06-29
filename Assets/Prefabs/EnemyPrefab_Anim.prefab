@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 3144760654791316789}
   - component: {fileID: 8893524193362593090}
   m_Layer: 0
-  m_Name: TestPrefab
+  m_Name: EnemyPrefab_Anim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -211,7 +211,7 @@ Transform:
   m_Children:
   - {fileID: 1340885532965511027}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3144760654791316790
 SpriteRenderer:

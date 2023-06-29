@@ -5,7 +5,6 @@ using Random = Unity.Mathematics.Random;
 using Unity.Transforms;
 using Unity.Mathematics;
 
-
 public class DropdownMenu : MonoBehaviour
 {
     [SerializeField]
@@ -17,6 +16,15 @@ public class DropdownMenu : MonoBehaviour
     [SerializeField]    
     private TMP_Dropdown _speedShootMenu;
     private int valueSpeedShootMenu;
+    
+    [SerializeField]
+    private float MinSpawnX = -8;
+    [SerializeField]
+    private float MaxSpawnX = 8;
+    [SerializeField]
+    private float MinSpawnY = -4;
+    [SerializeField]
+    private float MaxSpawnY = 2;
 
     private EntityManager _entityManager;
     private Entity _entityStorage;
@@ -29,16 +37,7 @@ public class DropdownMenu : MonoBehaviour
     
     private Random _random;
 
-    [SerializeField] private EnemyConfig _enemyConfig;
-    // [SerializeField]
-    // private int EnemyMaxHp = 500;
-    // [SerializeField]
-    // private int EnemyDirection = 5;
-    // [SerializeField]
-    // private int EnemySpeed = 4;
-    // private int enemyId =0;
-    // [SerializeField]
-    // private GameObject AnimPrefab;
+    //[SerializeField] private EnemyConfig _enemyConfig;
 
     public void Start()
     {
@@ -65,16 +64,15 @@ public class DropdownMenu : MonoBehaviour
         if (valueSpeedShootMenu == 1) { _speedShoot = 0.25f; }
         if (valueSpeedShootMenu == 2) { _speedShoot = 0.5f; }
         if (valueSpeedShootMenu == 3) { _speedShoot = 2f; }
-
         
         _entityStorage = _entityManager.CreateEntityQuery(typeof(StoragePrefabsComponent))
             .GetSingletonEntity();
 
         var storageComponent = _entityManager.GetComponentData<StoragePrefabsComponent>(_entityStorage);
         _entityTower = storageComponent.TowerPrefab;
-        //_entityEnemy = storageComponent.EnemyPrefab;
-        var _minimumPosition = new float3(-8, -4, 0);
-        var _maximumPosition = new float3(8, 2, 0);
+        _entityEnemy = storageComponent.EnemyPrefab;
+        var _minimumPosition = new float3(MinSpawnX, MinSpawnY, 0);
+        var _maximumPosition = new float3(MaxSpawnX, MaxSpawnY, 0);
         
         var timeSeed = (uint)(Time.deltaTime * 100000);
         _random.InitState(timeSeed);
@@ -96,64 +94,11 @@ public class DropdownMenu : MonoBehaviour
             var posEnemySpawn = _random.NextFloat3(_minimumPosition, _maximumPosition);
             var enemyUniformScaleTransform = new UniformScaleTransform
                 { Position = posEnemySpawn, Scale = 0.5f };
-            var EnemyPrefab = _entityManager.CreateEntity();
-            _entityManager.AddComponentData(EnemyPrefab, new LocalToWorldTransform
+            _entityManager.SetComponentData(_entityEnemy, new LocalToWorldTransform
                 { Value = enemyUniformScaleTransform });
-            _entityManager.AddComponentData(EnemyPrefab, new EnemyHpComponent
-            {
-                Hp = _enemyConfig.EnemyMaxHp, MaxHp = _enemyConfig.EnemyMaxHp
-            });
-            _entityManager.AddComponentData(EnemyPrefab, new DirectionComponent
-            {
-                Direction = _enemyConfig.EnemyDirection
-            });
-            _entityManager.AddComponentData(EnemyPrefab, new EnemyIdComponent { Id = i });
-            _entityManager.AddComponent<TimerComponent>(EnemyPrefab);
-            _entityManager.AddComponent<DamageComponent>(EnemyPrefab);
-            _entityManager.AddComponent<BurningComponent>(EnemyPrefab);
-            _entityManager.AddBuffer<DamageBufferElement>(EnemyPrefab);
-            _entityManager.AddBuffer<BurningBufferElement>(EnemyPrefab);
-            
-            if (_enemyConfig.EnemySpeed > 0)
-            {
-                SpeedComponent speed = default;
-                speed.Value = _enemyConfig.EnemySpeed;
-                _entityManager.AddComponentData(EnemyPrefab, speed);
-            }
-
-            PresentationGoComponent pgo = new PresentationGoComponent();
-            pgo.Prefab = _enemyConfig.AnimPrefab;
-            _entityManager.AddComponentObject(EnemyPrefab, pgo);
+            _entityManager.SetComponentData(_entityEnemy, new EnemyIdComponent { Id =  i});
+            _entityManager.Instantiate(_entityEnemy);
         }
     }
-    
-    // public void CreateEnemy(int id)
-    // {
-    //     var EnemyPrefab = _entityManager.CreateEntity();
-    //
-    //     _entityManager.AddComponentData(EnemyPrefab, new EnemyHpComponent { Hp = EnemyMaxHp, MaxHp = EnemyMaxHp });
-    //     _entityManager.AddComponentData(EnemyPrefab, new DirectionComponent { Direction = EnemyDirection });
-    //     _entityManager.AddComponentData(EnemyPrefab, new EnemyIdComponent { Id = enemyId });
-    //     _entityManager.AddComponent<TimerComponent>(EnemyPrefab);
-    //
-    //     var te = new EnemyIdComponent { Id = enemyId };
-    //     _entityManager.AddComponent<EnemyIdComponent>(EnemyPrefab);
-    //     _entityManager.AddComponent<DamageComponent>(EnemyPrefab);
-    //     _entityManager.AddComponent<BurningComponent>(EnemyPrefab);
-    //     _entityManager.AddBuffer<DamageBufferElement>(EnemyPrefab);
-    //     _entityManager.AddBuffer<BurningBufferElement>(EnemyPrefab);
-    //     if (EnemySpeed > 0)
-    //     {
-    //         SpeedComponent speed = default;
-    //         speed.Value = EnemySpeed;
-    //         _entityManager.AddComponentData(EnemyPrefab, speed);
-    //     }
-    //
-    //     PresentationGoComponent pgo = new PresentationGoComponent();
-    //     pgo.Prefab = AnimPrefab;
-    //     _entityManager.AddComponentObject(EnemyPrefab, pgo);
-    //
-    //
-    //     _entityEnemy = EnemyPrefab;
-    // }
 }
+

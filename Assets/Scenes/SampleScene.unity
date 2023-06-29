@@ -5636,7 +5636,10 @@ MonoBehaviour:
   _quantityTowersMenu: {fileID: 313997116}
   _quantityEnemiesMenu: {fileID: 816326597}
   _speedShootMenu: {fileID: 363152263}
-  _enemyConfig: {fileID: 11400000, guid: eee5ab689180af040be1bf1e1fdae26a, type: 2}
+  MinSpawnX: -8
+  MaxSpawnX: 8
+  MinSpawnY: -4
+  MaxSpawnY: 2
 --- !u!114 &1984034055
 MonoBehaviour:
   m_ObjectHideFlags: 0
