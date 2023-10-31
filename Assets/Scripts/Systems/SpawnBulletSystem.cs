@@ -31,10 +31,14 @@ public partial struct SpawnBulletSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         var enemyIds = _queryEnemies.ToComponentDataArray<EnemyIdComponent>(Allocator.TempJob);
+        
         if (enemyIds.Length == 0) return;
+        
         var enemyTransforms = _queryEnemies.
             ToComponentDataArray<LocalToWorldTransform>(Allocator.TempJob);
+        
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
+        
         new SpawnBulletJob { Transforms = enemyTransforms, EnemyIds = enemyIds, Ecb = ecb }.Run(_towerQuery);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
@@ -59,6 +63,7 @@ public partial struct SpawnBulletJob : IJobEntity
                 Condition = true, Trigger = false, Time = towerSpeedAttack.Value, Delay = towerSpeedAttack.Value
             });
         if (!timerComponent.Trigger) return;
+        
         var newBullet = Ecb.Instantiate(tower.BulletPrefab);
         var towerFirePosition = new float3(towerTransform.Value.Position.x,
             towerTransform.Value.Position.y + 0.5f,

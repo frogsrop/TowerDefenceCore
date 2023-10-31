@@ -12,7 +12,6 @@ public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private float3 _posSpawn;
     private BlobAssetStore _blobAssetStore;
     
-    [SerializeField] private GameObject TowerPrefab;
     [SerializeField] private GameObject TowerImgPrefab;
     [SerializeField] private GameObject GreenSquare;
     [SerializeField] private GameObject RedSquare;
@@ -32,9 +31,6 @@ public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     
     void Start()
     {
-        
-        //Instantiate(TowerPrefab);
-        
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         
         arrayGridElements = new Vector2[lengtnGrid,widthGrid];
@@ -48,7 +44,6 @@ public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 arrayControllGrid[i, j] = true;
             }
         }
-        
     }
 
     private void Update()
@@ -102,7 +97,6 @@ public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             
             _entityTower = _entityManager.GetComponentData<StoragePrefabsComponent>(_entityStorage).TowerPrefab;
             
-
             var towerUniformScaleTransform = new UniformScaleTransform
                 { Position = _posSpawn, Scale = 0.5f };
             var setSpawnTowerPosition = new LocalToWorldTransform

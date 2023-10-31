@@ -4,6 +4,7 @@ using UnityEngine;
 class TowerAuthoring : MonoBehaviour
 {
     public GameObject BulletPrefab;
+    public float TowerSpeedAttack = 1;
 }
 
 class TowerBaker : Baker<TowerAuthoring>
@@ -12,6 +13,6 @@ class TowerBaker : Baker<TowerAuthoring>
     {
         AddComponent(new Tower { BulletPrefab = GetEntity(authoring.BulletPrefab) });
         AddComponent<TimerComponent>();
-        AddComponent<TowerSpeedAttack>();
+        AddComponent(new TowerSpeedAttack {Value = authoring.TowerSpeedAttack});
     }
 }

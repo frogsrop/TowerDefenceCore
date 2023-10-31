@@ -12,7 +12,6 @@ public partial struct EffectResolverSystem : ISystem
     [BurstCompile] 
     public void OnCreate(ref SystemState state) 
     {
-        //Debug.Log("EffectResolverSystem - OnCreate");
         _queryDamageBuffer = state.GetEntityQuery(ComponentType.ReadOnly<DamageBufferElement>());
         _queryBurningBuffer = state.GetEntityQuery(ComponentType.ReadOnly<BurningBufferElement>());
     }
@@ -21,7 +20,6 @@ public partial struct EffectResolverSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        //Debug.Log("EffectResolverSystem - OnUpdate");
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         new DamageResolverJob { Ecb = ecb }.Run(_queryDamageBuffer);
         new BurnResolverJob { Ecb = ecb }.Run(_queryBurningBuffer);
@@ -37,7 +35,6 @@ public partial struct DamageResolverJob : IJobEntity
 
     private void Execute(Entity entity, ref DynamicBuffer<DamageBufferElement> damageBuffer)
     {
-        //Debug.Log("EffectResolverSystem - DamageResolverJob");
         var mapping = AbstractEffectConfig.Mapping; 
         int lfold(NativeArray<DamageBufferElement>.Enumerator en)
         {
@@ -67,7 +64,6 @@ public partial struct BurnResolverJob : IJobEntity
     private void Execute(Entity entity, ref DynamicBuffer<BurningBufferElement> burningBuffer, 
         ref TimerComponent timerComponent)
     {
-        //Debug.Log("EffectResolverSystem - BurnResolverJob");
         var mapping = AbstractEffectConfig.Mapping;
         if (burningBuffer.Length > 0)
         {

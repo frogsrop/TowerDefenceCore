@@ -8,18 +8,21 @@ using UnityEngine;
 [BurstCompile]
 public partial struct MoveBulletSystem : ISystem
 {
-    private EntityQuery queryTargetId;
-    private EntityQuery queryEnemy;
+    private EntityQuery _queryTargetId;
+    private EntityQuery _queryEnemy;
 
     public void OnCreate(ref SystemState state)
     {
-        queryTargetId = state.GetEntityQuery(ComponentType.ReadOnly<TargetIdComponent>());
-        var nativeArray = new NativeArray<ComponentType>(4, Allocator.Temp);
-        nativeArray[0] = ComponentType.ReadOnly<EnemyIdComponent>();
-        nativeArray[1] = ComponentType.ReadOnly<LocalToWorldTransform>();
-        nativeArray[2] = ComponentType.ReadOnly<DamageBufferElement>();
-        nativeArray[3] = ComponentType.ReadOnly<BurningBufferElement>();
-        queryEnemy = state.GetEntityQuery(nativeArray);
+        var nativeArrayBullet = new NativeArray<ComponentType>(2, Allocator.Temp);
+        nativeArrayBullet[0] = ComponentType.ReadOnly<BulletComponent>();
+        nativeArrayBullet[1] = ComponentType.ReadOnly<TargetIdComponent>();
+        _queryTargetId = state.GetEntityQuery(nativeArrayBullet);
+        var nativeArrayEnemies = new NativeArray<ComponentType>(4, Allocator.Temp);
+        nativeArrayEnemies[0] = ComponentType.ReadOnly<EnemyIdComponent>();
+        nativeArrayEnemies[1] = ComponentType.ReadOnly<LocalToWorldTransform>();
+        nativeArrayEnemies[2] = ComponentType.ReadOnly<DamageBufferElement>();
+        nativeArrayEnemies[3] = ComponentType.ReadOnly<BurningBufferElement>();
+        _queryEnemy = state.GetEntityQuery(nativeArrayEnemies);
     }
 
     [BurstCompile]
@@ -30,7 +33,7 @@ public partial struct MoveBulletSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        var enemyIds = queryEnemy.ToComponentDataArray<EnemyIdComponent>(Allocator.TempJob);
+        var enemyIds = _queryEnemy.ToComponentDataArray<EnemyIdComponent>(Allocator.TempJob);
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         var dt = SystemAPI.Time.DeltaTime;
         if (enemyIds.Length <= 0) return;
@@ -39,9 +42,9 @@ public partial struct MoveBulletSystem : ISystem
             Dt = dt,
             Ecb = ecb,
             EnemyIds = enemyIds,
-            EnemyTransforms = queryEnemy.ToComponentDataArray<LocalToWorldTransform>(Allocator.TempJob),
-            EnemyEntityArray = queryEnemy.ToEntityArray(Allocator.TempJob)
-        }.Run(queryTargetId);
+            EnemyTransforms = _queryEnemy.ToComponentDataArray<LocalToWorldTransform>(Allocator.TempJob),
+            EnemyEntityArray = _queryEnemy.ToEntityArray(Allocator.TempJob)
+        }.Run(_queryTargetId);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
