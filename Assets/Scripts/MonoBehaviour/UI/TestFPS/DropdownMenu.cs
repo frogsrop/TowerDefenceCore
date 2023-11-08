@@ -65,11 +65,11 @@ public class DropdownMenu : MonoBehaviour
         if (valueSpeedShootMenu == 2) { _speedShoot = 0.5f; }
         if (valueSpeedShootMenu == 3) { _speedShoot = 2f; }
         
-        _entityStorage = _entityManager.CreateEntityQuery(typeof(StoragePrefabsComponent))
+        _entityStorage = _entityManager.CreateEntityQuery(typeof(StorageDataComponent))
             .GetSingletonEntity();
 
-        var storageComponent = _entityManager.GetComponentData<StoragePrefabsComponent>(_entityStorage);
-        _entityTower = storageComponent.TowerPrefab;
+        var storageComponent = _entityManager.GetComponentData<StorageDataComponent>(_entityStorage);
+        _entityTower = storageComponent.SimpleTowerPrefab;
         _entityEnemy = storageComponent.EnemyPrefab;
         var _minimumPosition = new float3(MinSpawnX, MinSpawnY, 0);
         var _maximumPosition = new float3(MaxSpawnX, MaxSpawnY, 0);

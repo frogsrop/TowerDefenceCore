@@ -1,3 +1,4 @@
+using Unity.Entities;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/ShopObject", fileName = "NewShopObject", order = 51)]
@@ -9,7 +10,11 @@ public class TowerData : ScriptableObject
     private Sprite icon;
     [SerializeField]
     private int price;
-    //TODO:[SerializeField] private GameObject pref;
+    // [SerializeField] 
+    // private string towerPrefabName;
+    
+    [SerializeField] 
+    private Entity towerEntity;
 
 
     public Sprite Icon
@@ -30,4 +35,15 @@ public class TowerData : ScriptableObject
         set { price = value; }
     }
 
+    // public string Pref
+    // {
+    //     get { return towerPrefabName; }
+    //     set { towerPrefabName = value; }
+    // }
+
+    public Entity entity
+    {
+        get { return towerEntity; }
+        set { towerEntity = value; }
+    }
 }

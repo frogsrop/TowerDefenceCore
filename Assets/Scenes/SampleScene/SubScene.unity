@@ -132,6 +132,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -4870421065525274450, guid: 2c89323eaf5e72640a9379a17d82e777, type: 3}
+      propertyPath: SpeedSpawn
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -4870421065525274450, guid: 2c89323eaf5e72640a9379a17d82e777, type: 3}
       propertyPath: EnemyPrefab
       value: 
       objectReference: {fileID: 5024274864085140636, guid: e84e5fde29947df41b2cdc629ca40579, type: 3}
@@ -348,6 +352,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyStorage
       objectReference: {fileID: 0}
+    - target: {fileID: 6614212751984463938, guid: 8a829a80c39e70f48b219a5ab01c7105, type: 3}
+      propertyPath: FireTowerPrefab
+      value: 
+      objectReference: {fileID: 7056713013877562141, guid: b9453c84cc3cd0d4aac021d88fb43c0f, type: 3}
+    - target: {fileID: 6614212751984463938, guid: 8a829a80c39e70f48b219a5ab01c7105, type: 3}
+      propertyPath: SimpleTowerPrefab
+      value: 
+      objectReference: {fileID: 7056713013877562141, guid: 60f0ffbb949d5e045a106a1946649e97, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

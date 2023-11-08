@@ -5,33 +5,33 @@ using UnityEngine.UI;
 [ExecuteInEditMode]
 public class BankTowerInShop : MonoBehaviour
 {
+    public TowerData TowerData;
+    //[SerializeField] private TowerData towerData;
     [SerializeField]
-    private TowerData _towerData;
+    private TMP_Text _nameText;
     [SerializeField]
-    private TMP_Text nameText;
+    private TMP_Text _priceText;
     [SerializeField]
-    private TMP_Text priceText;
-    [SerializeField]
-    private Image iconSprite;
+    private Image _iconSprite;
     
     private void Start()
     {
-        init(); 
+        Init(); 
     }
-    public TowerData towerData
-    {   
-        get => _towerData;
-        set
-        {
-            _towerData = value;
-            init();
-        }
-    }
+    // public TowerData TowerData
+    // {   
+    //     get => towerData;
+    //     set
+    //     {
+    //         towerData = value;
+    //         Init();
+    //     }
+    // }
     
-    public void init()
+    public void Init()
     {
-        iconSprite.sprite = towerData.Icon;
-        priceText.text = towerData.Price.ToString();
-        nameText.text = towerData.NameTower;
+        _iconSprite.sprite = TowerData.Icon;
+        _priceText.text = TowerData.Price.ToString();
+        _nameText.text = TowerData.NameTower;
     }
 }

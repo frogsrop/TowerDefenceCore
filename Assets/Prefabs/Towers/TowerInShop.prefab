@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 5376906142580630327}
   - component: {fileID: 96878578291249236}
   m_Layer: 5
-  m_Name: SimpleTowerInShop
+  m_Name: TowerInShop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -302,10 +302,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a412050b3d8db842915537f2ecb13d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _towerData: {fileID: 11400000, guid: a9b755a4849d80d4f89195ff13f32052, type: 2}
-  nameText: {fileID: 4253038528922993415}
-  priceText: {fileID: 5779339816714416658}
-  iconSprite: {fileID: 0}
+  TowerData: {fileID: 0}
+  _nameText: {fileID: 4253038528922993415}
+  _priceText: {fileID: 5779339816714416658}
+  _iconSprite: {fileID: 2991713875697871721}
 --- !u!114 &5376906142580630327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,12 +339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TowerImgPrefab: {fileID: 6478238751360883004, guid: d8fdf534218ef6646892488b1adecb89, type: 3}
-  GreenSquare: {fileID: 0}
-  RedSquare: {fileID: 0}
-  lengtnGrid: 5
-  widthGrid: 2
-  spacingGrid: 2
-  posGrid: {x: -6, y: -3}
+  ThisObject: {fileID: 2640021603061490396}
 --- !u!1 &8408588729383091838
 GameObject:
   m_ObjectHideFlags: 0

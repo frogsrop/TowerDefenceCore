@@ -1198,7 +1198,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 940040696}
         m_TargetAssemblyTypeName: ShopWindowController, Assembly-CSharp
-        m_MethodName: ControllShopPanel
+        m_MethodName: ControlShopPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class CreaterTowerInShop : MonoBehaviour
 {
     [SerializeField]
@@ -10,13 +9,14 @@ public class CreaterTowerInShop : MonoBehaviour
     [SerializeField]
     private TowerData[] MyScriptableObjects;
 
+
     private void Start()
     {
         for (int i = 0; i < MyScriptableObjects.Length; i++)
         {
             var node = Instantiate(Pref, Grid);
             node.transform.localScale = Vector3.one;
-            node.GetComponent<BankTowerInShop>().towerData = MyScriptableObjects[i];
+            node.GetComponent<BankTowerInShop>().TowerData = MyScriptableObjects[i];
         }
     }
 }

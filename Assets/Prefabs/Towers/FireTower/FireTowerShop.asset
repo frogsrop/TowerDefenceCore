@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: FireTowerShop
   m_EditorClassIdentifier: 
   nameTower: FireTower
-  icon: {fileID: 21300000, guid: aadbd184efd99b64aa012b8d0fcee561, type: 3}
+  icon: {fileID: 21300000, guid: 73420eb07dcf8f84d9d6d0f25c35fcae, type: 3}
   price: 10

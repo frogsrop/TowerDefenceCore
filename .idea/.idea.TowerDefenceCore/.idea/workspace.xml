@@ -5,97 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="236bd051-b02e-431a-88f2-6ccd72ec0612" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Systems/MoveEnemiesSystem.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/Authoring/EntityGameObjectAuthoring.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/Authoring/SpawnerAuthoring.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/Components/AnimatorGoComponent.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/Components/HealthBarUiComponent.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/Components/PresentationGoComponent.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/MonoBehaviour/HorizontalAnimController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/System/PresentationGoSystem.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TowerDefenceCore/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TowerDefenceCore/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/ShopPanel/OpenButton.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/ShopPanel/OpenButton.anim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Configs/BulletConfigs/Burn.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Configs/BulletConfigs/Burn.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Configs/BulletConfigs/Damage.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Configs/BulletConfigs/Damage.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Configs/BulletConfigs/Damage2.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Configs/BulletConfigs/Damage2.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/BulletPrefab.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/BulletPrefab.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/EnemyPrefab_Anim.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/EnemyPrefab_Anim.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/EnemyPrefab_Entity.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/EnemyPrefab_Entity.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/FireballPrefab.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/FireballPrefab.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/GreenSquare.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/GreenSquare.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Spawner.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Spawner.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Configs/BulletConfigs/Damage2.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Configs/BulletConfigs/Damage2.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/FireTowerInShop.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/FireTowerInShop.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/FireTowerPrefab.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/FireTowerPrefab.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/FireballPrefab.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/FireballPrefab.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Shop.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/SimpleTowerInShop.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/SimpleTowerInShop.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/SimpleTowerPrefab.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/SimpleTowerPrefab.prefab.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TowerImgPrefab.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/TowerImgPrefab.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TowerInShop.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TowerInShop.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TowerPrefab.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TowerPrefab.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene/SubScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene/SubScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/ShopScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/ShopScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/TowerShopObject.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/TowerShopObject.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Authoring/EnemyAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Authoring/EnemyAuthoring.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Authoring/EntityGameObjectAuthoring.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Authoring/EntityGameObjectAuthoring.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/Authoring/EntityGameObjectAuthoring.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Authoring/SpawnerAuthoring.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Authoring/SpawnerAuthoring.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/Authoring/SpawnerAuthoring.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Authoring/StoragePrefabsAuthoring.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Authoring/StoragePrefabsAuthoring.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Authoring/TowerAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Authoring/TowerAuthoring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/ShopScene.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/ShopScene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/TestLevel.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/TestLevel.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/FireTowerShop.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/FireTowerShop.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/SimpleTowerShop.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/SimpleTowerShop.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Authoring/StoragePrefabsAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Authoring/StorageDataAuthoring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Authoring/StoragePrefabsAuthoring.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Authoring/StorageDataAuthoring.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/BufferElements/WayPointsComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BufferElements/WayPointsComponent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/AnimatorGoComponent.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/AnimatorGoComponent.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/Components/AnimatorGoComponent.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/Aspects.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/Aspects/PathFollowerAspect.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/Aspects/PathFollowerAspect.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/HealthBarUiComponent.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/HealthBarUiComponent.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/Components/HealthBarUiComponent.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/NextPathIndexComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/Components/NextPathIndexComponent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/NextPathIndexComponent.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/Components/NextPathIndexComponent.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/ObjectsSpawnComponent.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/ObjectsSpawnComponent.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/PresentationGoComponent.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/PresentationGoComponent.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/Components/PresentationGoComponent.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/SpawnPostPayComponent.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/SpawnPostPayComponent.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/SpawnerData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/Components/SpawnerData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/SpawnerData.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/Components/SpawnerData.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/TransformGoComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/Components/TransformGoComponent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/TransformGoComponent.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/Components/TransformGoComponent.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/CreateEnemySystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/MonoBehaviour/CreateEnemySystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/CreateEnemySystem.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/MonoBehaviour/CreateEnemySystem.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/StoragePrefabsComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Components/StorageDataComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Components/StoragePrefabsComponent.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Components/StorageDataComponent.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/DragShopElement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/DragShopElement.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/HorizontalAnimController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/HorizontalAnimController.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/MonoBehaviour/HorizontalAnimController.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/UI/DropdownMenu.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/UI/DropdownMenu.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/UI/ResetButton.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/UI/ResetButton.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/UI/ShowFPS.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/UI/ShowFPS.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Systems/EffectResolverSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Systems/EffectResolverSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Systems/MoveBulletSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Systems/MoveBulletSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Systems/MoveEnemySystem.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Systems/MoveEnemySystem.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Systems/MoveEnemiesSystem.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Systems/PresentationGoSystem.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Systems/PresentationGoSystem.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/System/PresentationGoSystem.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Systems/SpawnBulletSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Systems/SpawnBulletSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Systems/SpawnerSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/System/SpawnerSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Systems/SpawnerSystem.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/System/SpawnerSystem.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TestConfigEnemy.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/TestConfigEnemy.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TestConfigEnemy/AbstractEnemyConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/TestConfigEnemy/AbstractEnemyConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TestConfigEnemy/AbstractEnemyConfig.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/TestConfigEnemy/AbstractEnemyConfig.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TestConfigEnemy/EnemyConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/TestConfigEnemy/EnemyConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TestConfigEnemy/EnemyConfig.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TODO(Other)/TestConfigEnemy/EnemyConfig.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/Renderer2D.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/Renderer2D.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/VFX/Fireball VFX.vfx" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/VFX/Fireball VFX.vfx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/VFXManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/VFXManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/UI/BankTowerInShop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/UI/BankTowerInShop.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/UI/CreaterTowerInShop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/UI/CreaterTowerInShop.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/UI/ShopWindowController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/UI/ShopWindowController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/UI/TestFPS/DropdownMenu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/UI/TestFPS/DropdownMenu.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ScriptableObject/TowerData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ScriptableObject/TowerData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Systems/DieEnemiesSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Systems/DieEnemiesSystem.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,20 +49,21 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Authoring/BulletAuthoring.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Authoring/StoragePrefabsAuthoring.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Authoring/StorageDataAuthoring.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/BufferElements/BurningBufferElement.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Components/DamageComponent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Components/DirectionComponent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Components/EnemyIdComponent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Configs/BurningEffectConfig.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Configs/ConvertableConfig.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/MonoBehaviour/UI/ShowCoins.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Systems/EffectResolverSystem.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/TestLevel/Spawner/SpawnerEnemies.prefab" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.collections@2.1.0-exp.4/Unity.Collections.Tests/FixedStringTests.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.collections@2.1.0-exp.4/Unity.Collections/FixedString.gen.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.collections@2.1.0-exp.4/Unity.Collections/NativeArrayExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.collections@2.1.0-exp.4/Unity.Collections/UnsafeList.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.entities@1.0.0-exp.12/Unity.Entities.Hybrid/Baking/Baker.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.entities@1.0.0-exp.12/Unity.Entities.Hybrid/GameObjectConversion/BlobAssetStore.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.entities@1.0.0-exp.12/Unity.Entities.Tests/EntityNameStorageTests.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.entities@1.0.0-exp.12/Unity.Entities/ComponentSystemBase.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.entities@1.0.0-exp.12/Unity.Entities/EntityCommandBuffer.cs" root0="SKIP_HIGHLIGHTING" />
@@ -164,6 +110,7 @@
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -245,6 +192,21 @@
       <workItem from="1698404210922" duration="1497000" />
       <workItem from="1698592465644" duration="255000" />
       <workItem from="1698592794335" duration="2505000" />
+      <workItem from="1698745555902" duration="7050000" />
+      <workItem from="1698926253983" duration="1791000" />
+      <workItem from="1698936151811" duration="104000" />
+      <workItem from="1699022351709" duration="2205000" />
+      <workItem from="1699192421331" duration="2296000" />
+      <workItem from="1699198446969" duration="1928000" />
+      <workItem from="1699215272508" duration="3722000" />
+      <workItem from="1699220147494" duration="4044000" />
+      <workItem from="1699224431036" duration="1838000" />
+      <workItem from="1699226359213" duration="226000" />
+      <workItem from="1699226718479" duration="571000" />
+      <workItem from="1699356502023" duration="595000" />
+      <workItem from="1699366815201" duration="2611000" />
+      <workItem from="1699448151270" duration="5953000" />
+      <workItem from="1699457920546" duration="4300000" />
     </task>
     <servers />
   </component>
@@ -255,6 +217,23 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Authoring/BulletAuthoring.cs</url>
+          <line>19</line>
+          <properties documentPath="C:\UnityProjects\TowerDefenceCore\Assets\Scripts\Authoring\BulletAuthoring.cs" initialLine="19" containingFunctionPresentation="Method 'Bake'">
+            <startOffsets>
+              <option value="498" />
+            </startOffsets>
+            <endOffsets>
+              <option value="518" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="Frame#AbstractConvertableConfig`1.AppendToBuffer" memberName="prop" />

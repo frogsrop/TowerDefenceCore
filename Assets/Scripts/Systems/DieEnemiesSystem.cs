@@ -9,10 +9,14 @@ using UnityEngine;
 public partial struct DieEnemiesSystem : ISystem
 {
     private EntityQuery _queryEnemies;
+    private EntityQuery _queryStorage;
+    private Entity _entityStorage;
     
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
+        _queryStorage = state.GetEntityQuery(
+            ComponentType.ReadWrite<StorageDataComponent>());//.GetSingletonEntity()
         _queryEnemies = state.GetEntityQuery(ComponentType.ReadWrite<EnemyHpComponent>());
     }
     public void OnDestroy(ref SystemState state)
@@ -23,9 +27,14 @@ public partial struct DieEnemiesSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
+        var entityStorageArray = _queryStorage.ToEntityArray(Allocator.TempJob);
+        _entityStorage = entityStorageArray[0];
+        var coins = state.EntityManager.GetComponentData<StorageDataComponent>(_entityStorage).Coins;
         new DieEnemiesJob
         {
-            Ecb = ecb
+            Ecb = ecb,
+            EntityStorage = _entityStorage,
+            CoinsBalance = coins
         }.Run(_queryEnemies);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
@@ -37,12 +46,16 @@ public partial struct DieEnemiesSystem : ISystem
 partial struct DieEnemiesJob : IJobEntity
 {
     public EntityCommandBuffer Ecb;
+    public Entity EntityStorage;
+    public int CoinsBalance;
 
     public void Execute(Entity entity, ref EnemyHpComponent enemyHp, in LocalToWorldTransform enemyTransform)
     {
         if (enemyHp.Hp <= 0)
         {
             Ecb.DestroyEntity(entity);
+            var loot = new StorageDataComponent { Coins = CoinsBalance + 5 };
+            Ecb.SetComponent(EntityStorage, loot);
         }
     }
 }

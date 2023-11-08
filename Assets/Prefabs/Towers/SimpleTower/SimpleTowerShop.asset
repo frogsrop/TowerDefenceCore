@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SimpleTowerShop
   m_EditorClassIdentifier: 
   nameTower: SimpleTower
-  icon: {fileID: 21300000, guid: 7fadb55865ad44b4697b793ea15c608c, type: 3}
+  icon: {fileID: 21300000, guid: f3ac41fd54a080746bd5905685eb517c, type: 3}
   price: 5
+  pref: {fileID: 7056713013877562141, guid: 60f0ffbb949d5e045a106a1946649e97, type: 3}

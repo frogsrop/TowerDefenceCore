@@ -7,43 +7,41 @@ using Unity.Transforms;
 public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private Entity _entityStorage;
-    private Entity _entityTower;
+    private Entity _entitySimpleTower;
+    private Entity _entityFireTower;
     private EntityManager _entityManager;
     private float3 _posSpawn;
     private BlobAssetStore _blobAssetStore;
+    private int _coins;
     
     [SerializeField] private GameObject TowerImgPrefab;
-    [SerializeField] private GameObject GreenSquare;
-    [SerializeField] private GameObject RedSquare;
+    private GameObject _greenSquare;
+    private GameObject _redSquare;
     
-    [SerializeField] private int lengtnGrid;
-    [SerializeField] private int widthGrid;
-    [SerializeField] private int spacingGrid;
-    [SerializeField] private Vector2 posGrid;
-    
-    private Vector2[,] arrayGridElements;
-    private bool[,] arrayControllGrid;
+    private Vector2[,] _arrayGridPosElements;
+    private bool[,] _arrayGridBool;
 
-    private Vector2 posActive;
-    private int indexBoolI;
-    private int indexBoolJ;
+    private Vector2 _posActive;
+    private int _indexBoolI;
+    private int _indexBoolJ;
+    private int _towerPrice;
     
+    private GridTowerControl _gridTowerControl;
     
     void Start()
     {
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         
-        arrayGridElements = new Vector2[lengtnGrid,widthGrid];
-        arrayControllGrid = new bool[lengtnGrid,widthGrid];
+        _gridTowerControl = gameObject.GetComponentInParent<GridTowerControl>();
+
         
-        for (int i = 0; i < arrayGridElements.GetLength(0); i++)
-        {
-            for (int j = 0; j < arrayGridElements.GetLength(1); j++)
-            {
-                arrayGridElements[i, j] = new Vector2( posGrid.x+i*spacingGrid, posGrid.y+j*spacingGrid);
-                arrayControllGrid[i, j] = true;
-            }
-        }
+        _arrayGridPosElements = _gridTowerControl.GetPosValueInGrid();
+        _arrayGridBool = _gridTowerControl.GetBoolValueInGrid();
+        
+        _entityStorage = _entityManager.CreateEntityQuery(
+            typeof(StorageDataComponent)).GetSingletonEntity();
+        _entitySimpleTower = _entityManager.GetComponentData<StorageDataComponent>(_entityStorage).SimpleTowerPrefab;
+        _entityFireTower = _entityManager.GetComponentData<StorageDataComponent>(_entityStorage).FireTowerPrefab;
     }
 
     private void Update()
@@ -54,29 +52,41 @@ public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Instantiate(TowerImgPrefab);
+        _greenSquare = gameObject.GetComponentInParent<GridTowerControl>().GreenSquare;
+        _redSquare = gameObject.GetComponentInParent<GridTowerControl>().RedSquare;
+        _arrayGridBool = _gridTowerControl.GetBoolValueInGrid();
+        _towerPrice = GetComponent<BankTowerInShop>().TowerData.Price;
+        _coins = _entityManager.GetComponentData<StorageDataComponent>(_entityStorage).Coins;
+        if (_coins>=_towerPrice)
+        {
+            var towerIcon = GetComponent<BankTowerInShop>().TowerData.Icon;
+            TowerImgPrefab.GetComponent<SpriteRenderer>().sprite = towerIcon;
+            Instantiate(TowerImgPrefab);
+        }
     }
-
+    
     public void OnDrag(PointerEventData eventData)
     {
+        if (_coins<_towerPrice) return;
+        
         Vector2 dragPoint = Camera.main.ScreenToWorldPoint( Input.mousePosition );
         var roundHit = new Vector2(Mathf.Round(dragPoint.x), Mathf.Round(dragPoint.y));
 
-        for (int i = 0; i < arrayGridElements.GetLength(0); i++)
+        for (int i = 0; i < _arrayGridPosElements.GetLength(0); i++)
         {
-            for (int j = 0; j < arrayGridElements.GetLength(1); j++)
+            for (int j = 0; j < _arrayGridPosElements.GetLength(1); j++)
             {
-                if (arrayGridElements[i, j] == roundHit && arrayControllGrid[i, j])
+                if (_arrayGridPosElements[i, j] == roundHit && _arrayGridBool[i, j])
                 {
-                    posActive = arrayGridElements[i, j];
-                    GreenSquare.transform.position = new Vector3(posActive.x, posActive.y, 0);
-                    indexBoolI = i;
-                    indexBoolJ = j;
+                    _posActive = _arrayGridPosElements[i, j];
+                    _greenSquare.transform.position = new Vector3(_posActive.x, _posActive.y, 0);
+                    _indexBoolI = i;
+                    _indexBoolJ = j;
                 }
-                if (arrayGridElements[i, j] == roundHit && !arrayControllGrid[i, j])
+                if (_arrayGridPosElements[i, j] == roundHit && !_arrayGridBool[i, j])
                 {
-                    posActive = arrayGridElements[i, j];
-                    RedSquare.transform.position = new Vector3(posActive.x, posActive.y, 0);
+                    _posActive = _arrayGridPosElements[i, j];
+                    _redSquare.transform.position = new Vector3(_posActive.x, _posActive.y, 0);
                 }
             }
         }
@@ -84,26 +94,39 @@ public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        GreenSquare.transform.position = new Vector3(100, 100, 0);
-        if (RedSquare.transform.position.x != 100) return;
+        if (_coins<_towerPrice) return;
+        
+        _greenSquare.transform.position = new Vector3(100, 100, 0);
+        if (_redSquare.transform.position.x != 100) return;
         
         Vector2 worldPoint = Camera.main.ScreenToWorldPoint( Input.mousePosition );
         RaycastHit2D hit = Physics2D.Raycast( worldPoint, Vector2.zero );
         if ( hit.collider != null )
         {
-            _posSpawn = new float3(posActive.x, posActive.y, 0);
-            _entityStorage = _entityManager.CreateEntityQuery(
-                typeof(StoragePrefabsComponent)).GetSingletonEntity();
-            
-            _entityTower = _entityManager.GetComponentData<StoragePrefabsComponent>(_entityStorage).TowerPrefab;
+            _posSpawn = new float3(_posActive.x, _posActive.y, 0);
             
             var towerUniformScaleTransform = new UniformScaleTransform
                 { Position = _posSpawn, Scale = 0.5f };
             var setSpawnTowerPosition = new LocalToWorldTransform
                 { Value = towerUniformScaleTransform };
-            _entityManager.SetComponentData(_entityTower, setSpawnTowerPosition);
-            _entityManager.Instantiate(_entityTower);
-            arrayControllGrid[indexBoolI, indexBoolJ] = false;
+            
+            var towerData = GetComponent<BankTowerInShop>().TowerData;
+            if (towerData.NameTower == "SimpleTower")
+            {
+                _entityManager.SetComponentData(_entitySimpleTower, setSpawnTowerPosition);
+                _entityManager.Instantiate(_entitySimpleTower);
+                
+            }
+            if (towerData.NameTower == "FireTower")
+            {
+                _entityManager.SetComponentData(_entityFireTower, setSpawnTowerPosition);
+                _entityManager.Instantiate(_entityFireTower);
+            }
+            
+            var storageComponent = new StorageDataComponent {Coins = _coins-_towerPrice};
+            _entityManager.SetComponentData( _entityStorage, storageComponent);
+
+            _arrayGridBool = _gridTowerControl.SetBoolValueInGrid(_indexBoolI, _indexBoolJ);
         }
     }
 

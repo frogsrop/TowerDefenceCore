@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 public class ShopWindowController : MonoBehaviour
 {
-    private Animator anim;
-    private Image img;
-    private bool IsOpened = false;
+    private Animator _anim;
+    private Image _img;
+    private bool _isOpened = false;
     [SerializeField]
     private Sprite iconOpen;
     [SerializeField]
@@ -14,24 +14,24 @@ public class ShopWindowController : MonoBehaviour
 
     private void Start()
     {
-        anim = GetComponent<Animator>();
-        img = GetComponent<Image>();
+        _anim = GetComponent<Animator>();
+        _img = GetComponent<Image>();
     }
 
-    public void ControllShopPanel()
+    public void ControlShopPanel()
     {
-        if (!IsOpened)
+        if (!_isOpened)
         {
-            IsOpened = true;
-            anim.SetBool("IsOpened", true);
-            img.sprite = iconClose;
+            _isOpened = true;
+            _anim.SetBool("IsOpened", true);
+            _img.sprite = iconClose;
             panel.GetComponent<Animator>().SetBool("IsOpened", true);
         }
         else
         {
-            IsOpened = false;
-            anim.SetBool("IsOpened", false);
-            img.sprite = iconOpen;
+            _isOpened = false;
+            _anim.SetBool("IsOpened", false);
+            _img.sprite = iconOpen;
             panel.GetComponent<Animator>().SetBool("IsOpened", false);
         }
     }
