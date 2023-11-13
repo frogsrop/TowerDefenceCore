@@ -12,10 +12,11 @@ class CastleAuthoringBaker : Baker<CastleAuthoring>
 {
     public override void Bake(CastleAuthoring authoring)
     {
-        AddComponent<CastleComponent>();
-        
-        DynamicBuffer<WayPointsComponent> path = AddBuffer<WayPointsComponent>();
-        foreach(var point in authoring.Path)
+        var castleEntity = GetEntity(TransformUsageFlags.Dynamic);
+        AddComponent<CastleComponent>(castleEntity);
+
+        DynamicBuffer<WayPointsComponent> path = AddBuffer<WayPointsComponent>(castleEntity);
+        foreach (var point in authoring.Path)
         {
             WayPointsComponent wp = default;
             wp.Value = point;

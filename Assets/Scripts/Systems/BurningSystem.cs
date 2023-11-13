@@ -11,23 +11,18 @@ public partial struct BurningSystem : ISystem
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-        //Debug.Log("BurningSystem - OnCreate");
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         var queries = new NativeArray<ComponentType>(3, Allocator.Temp);
         queries[0] = ComponentType.ReadOnly<BurningComponent>();
         queries[1] = ComponentType.ReadOnly<EnemyHpComponent>();
         queries[2] = ComponentType.ReadOnly<TimerComponent>();
         _queryBurningComponent = state.GetEntityQuery(queries);
-        new OffBurningComponentJob{Ecb = ecb}.Run(_queryBurningComponent);
+        new OffBurningComponentJob { Ecb = ecb }.Run(_queryBurningComponent);
     }
-
-    //[BurstCompile]
-    public void OnDestroy(ref SystemState state) { }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        //Debug.Log("BurningSystem - OnUpdate");
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         new BurningJob { Ecb = ecb }.Run(_queryBurningComponent);
         state.Dependency.Complete();
@@ -36,15 +31,14 @@ public partial struct BurningSystem : ISystem
     }
 }
 
-[BurstCompile]
+//[BurstCompile]
 public partial struct BurningJob : IJobEntity
 {
     public EntityCommandBuffer Ecb;
 
-    [BurstCompile]
+    //[BurstCompile]
     private void Execute(Entity entity, ref BurningComponent damage, ref EnemyHpComponent hp, ref TimerComponent timer)
     {
-        //Debug.Log("BurningSystem - BurningJob");
         var timerBurning = damage.Timer;
 
         if (!timer.Trigger)
@@ -67,7 +61,6 @@ public partial struct BurningJob : IJobEntity
     }
 }
 
-
 [BurstCompile]
 public partial struct OffBurningComponentJob : IJobEntity
 {
@@ -75,7 +68,6 @@ public partial struct OffBurningComponentJob : IJobEntity
 
     private void Execute(Entity entity, ref BurningComponent damage)
     {
-        //Debug.Log("BurningSystem - OffBurningComponentJob");
         Ecb.SetComponentEnabled<BurningComponent>(entity, false); /*TODO: when a creep spawns*/
     }
 }

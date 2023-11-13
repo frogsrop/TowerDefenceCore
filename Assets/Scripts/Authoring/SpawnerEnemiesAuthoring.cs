@@ -8,13 +8,17 @@ class SpawnerEnemiesAuthoring : MonoBehaviour
     public float SpeedSpawn = 2;
 }
 
-class TestSpawnerBaker : Baker<SpawnerEnemiesAuthoring>
+class SpawnerBaker : Baker<SpawnerEnemiesAuthoring>
 {
     public override void Bake(SpawnerEnemiesAuthoring enemiesAuthoring)
     {
-        AddComponent(new SpawnerEnemiesComponent { EnemyPrefab = GetEntity(enemiesAuthoring.EnemyPrefab), 
-            SpeedSpawn = enemiesAuthoring.SpeedSpawn });
-        AddComponent(new SpawnCountEnemiesComponent { Count = 0 });
-        AddComponent<TimerComponent>();
+        var spawnerEntity = GetEntity(TransformUsageFlags.Dynamic);
+        AddComponent(spawnerEntity, new SpawnerEnemiesComponent
+        {
+            EnemyPrefab = GetEntity(enemiesAuthoring.EnemyPrefab, TransformUsageFlags.Dynamic),
+            SpeedSpawn = enemiesAuthoring.SpeedSpawn
+        });
+        AddComponent(spawnerEntity, new SpawnCountEnemiesComponent { Count = 0 });
+        AddComponent<TimerComponent>(spawnerEntity);
     }
 }

@@ -11,18 +11,18 @@ public partial struct DieEnemiesSystem : ISystem
     private EntityQuery _queryEnemies;
     private EntityQuery _queryStorage;
     private Entity _entityStorage;
-    
+
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
+        var queriesEnemies = new NativeArray<ComponentType>(2, Allocator.Temp);
+        queriesEnemies[0] = ComponentType.ReadOnly<DamageComponent>();
+        queriesEnemies[1] = ComponentType.ReadOnly<EnemyHpComponent>();
         _queryStorage = state.GetEntityQuery(
-            ComponentType.ReadWrite<StorageDataComponent>());//.GetSingletonEntity()
-        _queryEnemies = state.GetEntityQuery(ComponentType.ReadWrite<EnemyHpComponent>());
+            ComponentType.ReadWrite<StorageDataComponent>()); 
+        _queryEnemies = state.GetEntityQuery(queriesEnemies);
     }
-    public void OnDestroy(ref SystemState state)
-    {
-    }
-
+    
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
@@ -42,14 +42,14 @@ public partial struct DieEnemiesSystem : ISystem
     }
 }
 
-[BurstCompile]
+//[BurstCompile]
 partial struct DieEnemiesJob : IJobEntity
 {
     public EntityCommandBuffer Ecb;
     public Entity EntityStorage;
     public int CoinsBalance;
 
-    public void Execute(Entity entity, ref EnemyHpComponent enemyHp, in LocalToWorldTransform enemyTransform)
+    public void Execute(Entity entity, ref EnemyHpComponent enemyHp)
     {
         if (enemyHp.Hp <= 0)
         {

@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 //using NUnit.Framework;
 
 public class ShowFPS : MonoBehaviour
@@ -15,7 +16,7 @@ public class ShowFPS : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _medianFpsText;
     [SerializeField] private TextMeshProUGUI _diffFpsText;
 
-    private bool startTest = false;
+    private bool _startTest = false;
     
     private int _fpsCount;
     private float _poolingTime = 1f;
@@ -37,7 +38,7 @@ public class ShowFPS : MonoBehaviour
 
     private void Update()
     {
-        if (_stopFps >= 30 || !startTest) return;
+        if (_stopFps >= 30 || !_startTest) return;
 
         _time += Time.deltaTime;
         _fpsCount++;
@@ -58,9 +59,9 @@ public class ShowFPS : MonoBehaviour
 
     public void StartOnButtonSpawn()
     {
-        startTest = true;
+        _startTest = true;
     }
-    
+
     private void UpdateDiffMinMaxFps()
     {
         var diff = Mathf.RoundToInt(_fpsArray.Max()) - Mathf.RoundToInt(_fpsArray.Min());
@@ -69,8 +70,8 @@ public class ShowFPS : MonoBehaviour
             _diffMinMaxFps = diff;
             _diffFpsText.text = "DIFF: " + _diffMinMaxFps;
         }
-        
     }
+
     private void UpdateMedianFps()
     {
         var sortedPNumbers = _fpsArray.OrderBy(r => r).ToArray();
@@ -92,6 +93,7 @@ public class ShowFPS : MonoBehaviour
         {
             _fpsArray.RemoveAt(0);
         }
+
         _meanFpsText.text = "FPS: " + Mathf.RoundToInt(_fps);
     }
 

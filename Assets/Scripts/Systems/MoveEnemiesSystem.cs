@@ -8,27 +8,23 @@ using UnityEngine;
 [BurstCompile]
 public partial struct MoveEnemiesSystem : ISystem
 {
-    
     private EntityQuery _queryEnemies;
     private EntityQuery _queryCastles;
-    
+
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-        var nativeArrayEnemies = new NativeArray<ComponentType>(2, Allocator.Temp);
-        nativeArrayEnemies[0] = ComponentType.ReadOnly<SpeedComponent>();
-        nativeArrayEnemies[1] = ComponentType.ReadOnly<EnemyIdComponent>();
-        _queryEnemies = state.GetEntityQuery(nativeArrayEnemies);
-        var nativeArrayCastles = new NativeArray<ComponentType>(3, Allocator.Temp);
-        nativeArrayCastles[0] = ComponentType.ReadWrite<CastleComponent>();
-        nativeArrayCastles[1] = ComponentType.ReadOnly<LocalToWorldTransform>();
-        nativeArrayCastles[2] = ComponentType.ReadOnly<WayPointsComponent>();
-        _queryCastles = state.GetEntityQuery(nativeArrayCastles);
-    }
-
-    [BurstCompile]
-    public void OnDestroy(ref SystemState state)
-    {
+        var queryEnemies = new NativeArray<ComponentType>(4, Allocator.Temp);
+        queryEnemies[0] = ComponentType.ReadOnly<LocalTransform>();
+        queryEnemies[1] = ComponentType.ReadOnly<DirectionComponent>();
+        queryEnemies[2] = ComponentType.ReadOnly<TargetIdComponent>();
+        queryEnemies[3] = ComponentType.ReadOnly<SpeedComponent>();
+        _queryEnemies = state.GetEntityQuery(queryEnemies);
+        var queryCastles = new NativeArray<ComponentType>(3, Allocator.Temp);
+        queryCastles[0] = ComponentType.ReadWrite<CastleComponent>();
+        queryCastles[1] = ComponentType.ReadOnly<LocalTransform>();
+        queryCastles[2] = ComponentType.ReadOnly<WayPointsComponent>();
+        _queryCastles = state.GetEntityQuery(queryCastles);
     }
 
     [BurstCompile]
@@ -36,22 +32,22 @@ public partial struct MoveEnemiesSystem : ISystem
     {
         var dt = SystemAPI.Time.DeltaTime;
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        
+
         var castleEntityArray = _queryCastles.ToEntityArray(Allocator.TempJob);
         var dynamicBuffer = state.EntityManager.GetBuffer<WayPointsComponent>(castleEntityArray[0]);
-        
+
         var floatArray = new NativeArray<float3>(dynamicBuffer.Length, Allocator.TempJob);
         for (int i = 0; i < dynamicBuffer.Length; i++)
         {
             floatArray[i] = dynamicBuffer[i].Value;
         }
-        
+
         new MoveEnemyJob
         {
             Dt = dt,
             Ecb = ecb,
-            PathArray= floatArray,
-            CastleTransforms = _queryCastles.ToComponentDataArray<LocalToWorldTransform>(Allocator.TempJob),
+            PathArray = floatArray,
+            CastleTransforms = _queryCastles.ToComponentDataArray<LocalTransform>(Allocator.TempJob),
             CastleHealth = _queryCastles.ToComponentDataArray<CastleComponent>(Allocator.TempJob),
             CastleEntityArray = castleEntityArray
         }.Run(_queryEnemies);
@@ -61,18 +57,18 @@ public partial struct MoveEnemiesSystem : ISystem
     }
 }
 
-[BurstCompile]
+//[BurstCompile]
 partial struct MoveEnemyJob : IJobEntity
 {
     public float Dt;
     public EntityCommandBuffer Ecb;
     public NativeArray<float3> PathArray;
-    public NativeArray<LocalToWorldTransform> CastleTransforms;
+    public NativeArray<LocalTransform> CastleTransforms;
     public NativeArray<CastleComponent> CastleHealth;
     public NativeArray<Entity> CastleEntityArray;
 
-    public void Execute(Entity entity, TransformAspect transform, ref DirectionComponent dir, 
-        ref TargetIdComponent target, in SpeedComponent speed)
+    public void Execute(Entity entity, ref LocalTransform transform, ref DirectionComponent dir,
+        ref TargetIdComponent target, ref SpeedComponent speed)
     {
         // for test Scene
         // if ((transform.Position.x > 5 && dir.Direction > 0) ||
@@ -86,24 +82,22 @@ partial struct MoveEnemyJob : IJobEntity
             var direction = math.normalize(PathArray[target.Id] - transform.Position);
             transform.Position += direction * Dt * speed.Value;
             var distance = math.distancesq(transform.Position, PathArray[target.Id]);
-            if (distance<0.1) target.Id++;
+            if (distance < 0.1) target.Id++;
         }
         else
         {
             var castleTransform = CastleTransforms[0];
-            var direction = math.normalize(castleTransform.Value.Position - transform.Position);
+            var direction = math.normalize(castleTransform.Position - transform.Position);
             transform.Position += direction * Dt * speed.Value;
-            var distance = math.distancesq(transform.Position, castleTransform.Value.Position);
+            var distance = math.distancesq(transform.Position, castleTransform.Position);
             if (distance < 0.1)
             {
-                var castleHealth = new CastleComponent { PassedEnemies = CastleHealth[0].PassedEnemies+1}; 
+                var castleHealth = new CastleComponent { PassedEnemies = CastleHealth[0].PassedEnemies + 1 };
                 Ecb.SetComponent(CastleEntityArray[0], castleHealth);
                 Ecb.DestroyEntity(entity);
             }
         }
     }
-    
-    
 }
 // old path system
 

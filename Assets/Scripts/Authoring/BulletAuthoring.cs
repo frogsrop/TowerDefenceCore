@@ -11,15 +11,18 @@ class BulletAuthoring : MonoBehaviour
 
 class BulletBaker : Baker<BulletAuthoring>
 {
+        
     public override void Bake(BulletAuthoring authoring)
     {
-        AddComponent<TargetIdComponent>();
+        var bulletEntity = GetEntity(TransformUsageFlags.Dynamic);
+        AddComponent<TargetIdComponent>(bulletEntity);
         var list = new FixedList128Bytes<int>();
         foreach (var effect in authoring.ListSo)
         {
             list.Add(effect.Id);
         }
-        AddComponent(new BulletComponent { ListEffects = list });
-        AddComponent(new SpeedComponent {Value = authoring.Speed});
+
+        AddComponent(bulletEntity, new BulletComponent { ListEffects = list });
+        AddComponent(bulletEntity, new SpeedComponent { Value = authoring.Speed });
     }
 }

@@ -4,5 +4,5 @@ using Unity.Entities;
 
 public struct BulletComponent : IComponentData
 {
-    public FixedList128Bytes<int> ListEffects; 
+    public FixedList128Bytes<int> ListEffects;
 }

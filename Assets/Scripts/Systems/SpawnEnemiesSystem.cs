@@ -10,34 +10,37 @@ using UnityEngine;
 public partial struct SpawnEnemiesSystem : ISystem
 {
     private EntityQuery _querySpawners;
-    
+
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-        _querySpawners = state.GetEntityQuery(ComponentType.ReadWrite<SpawnerEnemiesComponent>());
-    }
-    public void OnDestroy(ref SystemState state)
-    {
+        var queries = new NativeArray<ComponentType>(4, Allocator.Temp);
+        queries[0] = ComponentType.ReadOnly<SpawnerEnemiesComponent>();
+        queries[1] = ComponentType.ReadOnly<SpawnCountEnemiesComponent>();
+        queries[2] = ComponentType.ReadOnly<LocalTransform>();
+        queries[3] = ComponentType.ReadOnly<TimerComponent>();
+        _querySpawners = state.GetEntityQuery(queries);
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        new TestSpawnJob { Ecb = ecb }.Run(_querySpawners);
+        new SpawnJob { Ecb = ecb }.Run(_querySpawners);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
     }
 }
 
-[BurstCompile]
-partial struct TestSpawnJob : IJobEntity
+//[BurstCompile]
+partial struct SpawnJob : IJobEntity
 {
     public EntityCommandBuffer Ecb;
 
-    public void Execute(Entity entity, ref SpawnerEnemiesComponent spawnerEnemies, ref SpawnCountEnemiesComponent countEnemiesComponent,ref TimerComponent timerComponent, 
-        in LocalToWorldTransform spawnerTransform)
+    public void Execute(Entity entity, ref SpawnerEnemiesComponent spawnerEnemies,
+        ref SpawnCountEnemiesComponent countEnemiesComponent, ref TimerComponent timerComponent,
+        ref LocalTransform spawnerTransform)
     {
         if (!timerComponent.Condition)
             Ecb.SetComponent(entity, new TimerComponent
@@ -45,17 +48,15 @@ partial struct TestSpawnJob : IJobEntity
                 Condition = true, Trigger = false, Time = spawnerEnemies.SpeedSpawn, Delay = spawnerEnemies.SpeedSpawn
             });
         if (!timerComponent.Trigger) return;
-        
+
         var newEnemy = Ecb.Instantiate(spawnerEnemies.EnemyPrefab);
-        var enemySpawnPosition = new float3(spawnerTransform.Value.Position.x+ 0.5f,
-            spawnerTransform.Value.Position.y,
-            spawnerTransform.Value.Position.z);
-        var enemySpawnUniformScaleTransform = new UniformScaleTransform
+        var enemySpawnPosition = new float3(spawnerTransform.Position.x + 0.5f,
+            spawnerTransform.Position.y,
+            spawnerTransform.Position.z);
+        var setSpawnPosition = new LocalTransform
             { Position = enemySpawnPosition, Scale = 0.2f };
-        var setSpawnPosition = new LocalToWorldTransform
-            { Value = enemySpawnUniformScaleTransform };
-        
-      
+
+
         Ecb.SetComponent(newEnemy, setSpawnPosition);
         var enemyId = new EnemyIdComponent { Id = countEnemiesComponent.Count };
         Ecb.SetComponent(newEnemy, enemyId);

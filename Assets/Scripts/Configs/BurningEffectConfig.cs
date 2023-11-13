@@ -9,6 +9,6 @@ public class BurningEffectConfig : AbstractEffectConfig
 
     public override void AppendToBuffer(Entity entity, EntityCommandBuffer ecb)
     {
-        ecb.AppendToBuffer(entity, new BurningBufferElement{Id = Id});
+        ecb.AppendToBuffer(entity, new BurningBufferElement { Id = Id });
     }
 }

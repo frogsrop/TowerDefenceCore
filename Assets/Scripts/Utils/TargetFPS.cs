@@ -2,17 +2,16 @@ using UnityEngine;
 
 public class TargetFps : MonoBehaviour
 {
-    [SerializeField]
-    private int target = 60;
+    [SerializeField] private int Target = 60;
 
     void Awake()
     {
-        Application.targetFrameRate = target;
+        Application.targetFrameRate = Target;
     }
 
     void Update()
     {
-        if (Application.targetFrameRate != target)
-            Application.targetFrameRate = target;
+        if (Application.targetFrameRate != Target)
+            Application.targetFrameRate = Target;
     }
 }

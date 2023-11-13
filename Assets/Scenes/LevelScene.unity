@@ -340,9 +340,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e620867b65f705b439a54d8143d18f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iconOpen: {fileID: 21300000, guid: efd5be051f2714e44b79eab1ea7ba281, type: 3}
-  iconClose: {fileID: 21300000, guid: 901049d46c7ee4342bba4d0b0c773092, type: 3}
-  panel: {fileID: 282860147}
+  IconOpen: {fileID: 21300000, guid: efd5be051f2714e44b79eab1ea7ba281, type: 3}
+  IconClose: {fileID: 21300000, guid: 901049d46c7ee4342bba4d0b0c773092, type: 3}
+  Panel: {fileID: 282860147}
 --- !u!95 &940040697
 Animator:
   serializedVersion: 5
@@ -663,7 +663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2f476543e0823a45b78baadb4045e01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coinsText: {fileID: 1277170061}
+  CoinsText: {fileID: 1277170061}
 --- !u!114 &1277170061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1247,7 +1247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4f789cfb0cc7e429453c749483f137, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: 60
+  Target: 60
 --- !u!114 &2066429653
 MonoBehaviour:
   m_ObjectHideFlags: 0

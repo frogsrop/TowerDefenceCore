@@ -5,9 +5,9 @@ using UnityEngine;
 public class DamageEffectConfig : AbstractEffectConfig
 {
     public int Damage;
-    
+
     public override void AppendToBuffer(Entity entity, EntityCommandBuffer ecb)
     {
-        ecb.AppendToBuffer(entity, new DamageBufferElement{Id = Id});
+        ecb.AppendToBuffer(entity, new DamageBufferElement { Id = Id });
     }
 }

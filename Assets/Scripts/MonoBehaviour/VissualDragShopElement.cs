@@ -11,4 +11,4 @@ public class VissualDragShopElement : MonoBehaviour
             Destroy(gameObject);
         }
     }
-}    
+}

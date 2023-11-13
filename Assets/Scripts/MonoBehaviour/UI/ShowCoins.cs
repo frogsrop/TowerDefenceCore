@@ -1,14 +1,15 @@
 using TMPro;
 using UnityEngine;
 using Unity.Entities;
+
 public class ShowCoins : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _coinsText;
-    
+
     private EntityManager _entityManager;
     private Entity _entityStorage;
-    
-    
+
+
     void Start()
     {
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;

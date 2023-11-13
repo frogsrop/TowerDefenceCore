@@ -13,11 +13,12 @@ class PayManagerBaker : Baker<StorageDataAuthoring>
 {
     public override void Bake(StorageDataAuthoring authoring)
     {
-        AddComponent(new StorageDataComponent
+        var storageEntity = GetEntity(TransformUsageFlags.Dynamic);
+        AddComponent(storageEntity, new StorageDataComponent
         {
-            SimpleTowerPrefab = GetEntity(authoring.SimpleTowerPrefab),
-            FireTowerPrefab = GetEntity(authoring.FireTowerPrefab),
-            EnemyPrefab = GetEntity(authoring.EnemyPrefab),
+            SimpleTowerPrefab = GetEntity(authoring.SimpleTowerPrefab, TransformUsageFlags.Dynamic),
+            FireTowerPrefab = GetEntity(authoring.FireTowerPrefab, TransformUsageFlags.Dynamic),
+            EnemyPrefab = GetEntity(authoring.EnemyPrefab, TransformUsageFlags.Dynamic),
             Coins = authoring.Coins
         });
     }

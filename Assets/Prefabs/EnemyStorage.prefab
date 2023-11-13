@@ -44,5 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6929adffc7b8f84dab9cf1243058b3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TowerPrefab: {fileID: 7056713013877562141, guid: b9453c84cc3cd0d4aac021d88fb43c0f, type: 3}
+  SimpleTowerPrefab: {fileID: 7056713013877562141, guid: 60f0ffbb949d5e045a106a1946649e97, type: 3}
+  FireTowerPrefab: {fileID: 7056713013877562141, guid: b9453c84cc3cd0d4aac021d88fb43c0f, type: 3}
   EnemyPrefab: {fileID: 5024274864085140636, guid: e84e5fde29947df41b2cdc629ca40579, type: 3}
+  Coins: 50
