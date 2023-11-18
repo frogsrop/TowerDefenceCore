@@ -303,9 +303,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TowerData: {fileID: 11400000, guid: a9b755a4849d80d4f89195ff13f32052, type: 2}
-  NameText: {fileID: 4253038528922993415}
-  PriceText: {fileID: 5779339816714416658}
-  IconSprite: {fileID: 2991713875697871721}
+  _nameText: {fileID: 4253038528922993415}
+  _priceText: {fileID: 5779339816714416658}
+  _iconSprite: {fileID: 2991713875697871721}
 --- !u!114 &5376906142580630327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0854dd1e95b349dc978a8da4a30f7319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TowerImgPrefab: {fileID: 6478238751360883004, guid: d8fdf534218ef6646892488b1adecb89, type: 3}
+  _towerImgPrefab: {fileID: 6478238751360883004, guid: d8fdf534218ef6646892488b1adecb89, type: 3}
 --- !u!1 &8408588729383091838
 GameObject:
   m_ObjectHideFlags: 0

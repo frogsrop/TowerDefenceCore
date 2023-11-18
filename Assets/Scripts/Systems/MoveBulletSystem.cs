@@ -69,7 +69,8 @@ public partial struct MoveBulletJob : IJobEntity
             bulletTransform.Position += direction * Dt * bulletSpeed.Value;
             var distance = math.distancesq(bulletTransform.Position, enemyTransform.Position);
             if (!(distance < 0.1f)) return;
-            Ecb.DestroyEntity(entity);
+            //Ecb.DestroyEntity(entity);
+            Ecb.AddComponent(entity, new DestroyComponent());
             foreach (var effect in bulletInfo.ListEffects)
             {
                 if (mapping.ContainsKey(effect))
@@ -80,11 +81,11 @@ public partial struct MoveBulletJob : IJobEntity
         }
         else
         {
-            Ecb.DestroyEntity(entity);
+            //Ecb.DestroyEntity(entity);
+            Ecb.AddComponent(entity, new DestroyComponent());
         }
     }
 
-    [BurstCompile]
     private int IndexOf(NativeArray<EnemyIdComponent> array, int id)
     {
         for (var i = 0; i < array.Length; i++)

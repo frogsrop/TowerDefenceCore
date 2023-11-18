@@ -340,9 +340,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e620867b65f705b439a54d8143d18f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IconOpen: {fileID: 21300000, guid: efd5be051f2714e44b79eab1ea7ba281, type: 3}
-  IconClose: {fileID: 21300000, guid: 901049d46c7ee4342bba4d0b0c773092, type: 3}
-  Panel: {fileID: 282860147}
+  _iconOpen: {fileID: 21300000, guid: efd5be051f2714e44b79eab1ea7ba281, type: 3}
+  _iconClose: {fileID: 21300000, guid: 901049d46c7ee4342bba4d0b0c773092, type: 3}
+  _panel: {fileID: 282860147}
 --- !u!95 &940040697
 Animator:
   serializedVersion: 5
@@ -663,7 +663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2f476543e0823a45b78baadb4045e01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CoinsText: {fileID: 1277170061}
+  _coinsText: {fileID: 1277170061}
 --- !u!114 &1277170061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1068,10 +1068,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94a09f10af6033b4eb520b1838e06cad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LengthGrid: 2
-  WidthGrid: 3
-  SpacingGrid: 2
-  PosGrid: {x: -1, y: -3}
+  _lengthGrid: 2
+  _widthGrid: 3
+  _spacingGrid: 2
+  _posGrid: {x: -1, y: -3}
   GreenSquare: {fileID: 702561709}
   RedSquare: {fileID: 1961233369}
 --- !u!114 &1842154196
@@ -1086,9 +1086,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cff4945314a4eb468376c74f0fde720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Grid: {fileID: 1842154192}
-  Pref: {fileID: 2640021603061490396, guid: 938d45e2e675e5e4c818137d69294a2e, type: 3}
-  MyScriptableObjects:
+  _grid: {fileID: 1842154192}
+  _pref: {fileID: 2640021603061490396, guid: 938d45e2e675e5e4c818137d69294a2e, type: 3}
+  _myScriptableObjects:
   - {fileID: 11400000, guid: a9b755a4849d80d4f89195ff13f32052, type: 2}
   - {fileID: 11400000, guid: 0acdd6d0e13c90b47b8d27c4ffa3ae00, type: 2}
 --- !u!1 &1917877805
