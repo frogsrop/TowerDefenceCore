@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-public struct Tower : IComponentData
+public struct TowerComponent : IComponentData
 {
     public Entity BulletPrefab;
 }

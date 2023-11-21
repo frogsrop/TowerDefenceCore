@@ -8,30 +8,29 @@ using UnityEngine;
 [BurstCompile]
 public partial struct MoveBulletSystem : ISystem
 {
-    private EntityQuery queryTargetId;
-    private EntityQuery queryEnemy;
+    private EntityQuery _queryTargetId;
+    private EntityQuery _queryEnemy;
 
     public void OnCreate(ref SystemState state)
     {
-        queryTargetId = state.GetEntityQuery(ComponentType.ReadOnly<TargetIdComponent>());
-        var nativeArray = new NativeArray<ComponentType>(4, Allocator.Temp);
-        nativeArray[0] = ComponentType.ReadOnly<EnemyIdComponent>();
-        nativeArray[1] = ComponentType.ReadOnly<LocalToWorldTransform>();
-        nativeArray[2] = ComponentType.ReadOnly<DamageBufferElement>();
-        nativeArray[3] = ComponentType.ReadOnly<BurningBufferElement>();
-        queryEnemy = state.GetEntityQuery(nativeArray);
-    }
-
-    [BurstCompile]
-    public void OnDestroy(ref SystemState state)
-    {
+        var queryBullet = new NativeArray<ComponentType>(4, Allocator.Temp);
+        queryBullet[0] = ComponentType.ReadOnly<LocalTransform>();
+        queryBullet[1] = ComponentType.ReadOnly<TargetIdComponent>();
+        queryBullet[2] = ComponentType.ReadOnly<BulletComponent>();
+        queryBullet[3] = ComponentType.ReadOnly<SpeedComponent>();
+        _queryTargetId = state.GetEntityQuery(queryBullet);
+        var queryEnemies = new NativeArray<ComponentType>(4, Allocator.Temp);
+        queryEnemies[0] = ComponentType.ReadOnly<EnemyIdComponent>();
+        queryEnemies[1] = ComponentType.ReadOnly<LocalTransform>();
+        queryEnemies[2] = ComponentType.ReadOnly<DamageBufferElement>();
+        queryEnemies[3] = ComponentType.ReadOnly<BurningBufferElement>();
+        _queryEnemy = state.GetEntityQuery(queryEnemies);
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        //Debug.Log("MoveBulletSystem - OnUpdate");
-        var enemyIds = queryEnemy.ToComponentDataArray<EnemyIdComponent>(Allocator.TempJob);
+        var enemyIds = _queryEnemy.ToComponentDataArray<EnemyIdComponent>(Allocator.TempJob);
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         var dt = SystemAPI.Time.DeltaTime;
         if (enemyIds.Length <= 0) return;
@@ -40,9 +39,9 @@ public partial struct MoveBulletSystem : ISystem
             Dt = dt,
             Ecb = ecb,
             EnemyIds = enemyIds,
-            EnemyTransforms = queryEnemy.ToComponentDataArray<LocalToWorldTransform>(Allocator.TempJob),
-            EnemyEntityArray = queryEnemy.ToEntityArray(Allocator.TempJob)
-        }.Run(queryTargetId);
+            EnemyTransforms = _queryEnemy.ToComponentDataArray<LocalTransform>(Allocator.TempJob),
+            EnemyEntityArray = _queryEnemy.ToEntityArray(Allocator.TempJob)
+        }.Run(_queryTargetId);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
@@ -54,25 +53,24 @@ public partial struct MoveBulletJob : IJobEntity
     public float Dt;
     public EntityCommandBuffer Ecb;
     public NativeArray<EnemyIdComponent> EnemyIds;
-    public NativeArray<LocalToWorldTransform> EnemyTransforms;
+    public NativeArray<LocalTransform> EnemyTransforms;
     public NativeArray<Entity> EnemyEntityArray;
-
-    private void Execute(ref LocalToWorldTransform bulletTransform, in TargetIdComponent bullet,
-        in BulletComponent bulletInfo, in Entity entity)
+    
+    private void Execute(Entity entity, ref LocalTransform bulletTransform, in TargetIdComponent bullet,
+        in BulletComponent bulletInfo, ref SpeedComponent bulletSpeed)
     {
-        
-        //Debug.Log("MoveBulletSystem - MoveBulletJob");
-        var mapping = AbstractEffectConfig.Mapping; 
+        var mapping = AbstractEffectConfig.Mapping;
         var enemyIndex = IndexOf(EnemyIds, bullet.Id);
         if (enemyIndex != -1)
         {
             var enemyTransform = EnemyTransforms[enemyIndex];
             var enemyEntity = EnemyEntityArray[enemyIndex];
-            var direction = math.normalize(enemyTransform.Value.Position - bulletTransform.Value.Position);
-            bulletTransform.Value.Position += direction * Dt * 10;
-            var distance = math.distancesq(bulletTransform.Value.Position, enemyTransform.Value.Position);
+            var direction = math.normalize(enemyTransform.Position - bulletTransform.Position);
+            bulletTransform.Position += direction * Dt * bulletSpeed.Value;
+            var distance = math.distancesq(bulletTransform.Position, enemyTransform.Position);
             if (!(distance < 0.1f)) return;
-            Ecb.DestroyEntity(entity);
+            //Ecb.DestroyEntity(entity);
+            Ecb.AddComponent(entity, new DestroyComponent());
             foreach (var effect in bulletInfo.ListEffects)
             {
                 if (mapping.ContainsKey(effect))
@@ -83,11 +81,11 @@ public partial struct MoveBulletJob : IJobEntity
         }
         else
         {
-            Ecb.DestroyEntity(entity);
+            //Ecb.DestroyEntity(entity);
+            Ecb.AddComponent(entity, new DestroyComponent());
         }
     }
 
-    [BurstCompile]
     private int IndexOf(NativeArray<EnemyIdComponent> array, int id)
     {
         for (var i = 0; i < array.Length; i++)

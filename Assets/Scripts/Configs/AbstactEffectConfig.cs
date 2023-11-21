@@ -4,17 +4,16 @@ using UnityEngine;
 
 public abstract class AbstractEffectConfig : ScriptableObject
 {
-    public static readonly Dictionary<int, AbstractEffectConfig> Mapping = new(); //прописали ссылку создающую словарь
-    private static int _curId; //текущий айди, общее значение для всех экземпляров класса
-    public int Id { get; private set; } //прописываемый айди
+    public static readonly Dictionary<int, AbstractEffectConfig> Mapping = new();
+    private static int _curId;
+    public int Id { get; private set; }
 
-    private void OnEnable() //при включении
+    private void OnEnable()
     {
-        Id = _curId; //Айди приравнивается текущий айди
-        _curId++; //текущий айди увеличивается
-        Mapping[Id] = this; //создается словарь
+        Id = _curId;
+        _curId++;
+        Mapping[Id] = this;
     }
 
     public abstract void AppendToBuffer(Entity entity, EntityCommandBuffer ecb);
-
 }

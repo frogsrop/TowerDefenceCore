@@ -5,4 +5,3 @@ public struct DamageBufferElement : IBufferElementData
 {
     public int Id;
 }
-
