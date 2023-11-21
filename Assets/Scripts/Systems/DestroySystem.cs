@@ -10,9 +10,7 @@ public partial struct DestroySystem : ISystem
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-        var query = new NativeArray<ComponentType>(1, Allocator.Temp);
-        query[0] = ComponentType.ReadOnly<DestroyComponent>();
-        _queryDestroy = state.GetEntityQuery(query);
+        _queryDestroy = state.GetEntityQuery(ComponentType.ReadOnly<DestroyComponent>());
     }
 
     [BurstCompile]

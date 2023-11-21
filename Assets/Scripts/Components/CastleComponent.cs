@@ -4,5 +4,4 @@ using UnityEngine;
 
 public struct CastleComponent : IComponentData
 {
-    public int PassedEnemies;
 }

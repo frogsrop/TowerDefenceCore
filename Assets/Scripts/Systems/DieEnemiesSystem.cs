@@ -18,18 +18,17 @@ public partial struct DieEnemiesSystem : ISystem
         var queriesEnemies = new NativeArray<ComponentType>(2, Allocator.Temp);
         queriesEnemies[0] = ComponentType.ReadOnly<DamageComponent>();
         queriesEnemies[1] = ComponentType.ReadOnly<EnemyHpComponent>();
-        _queryStorage = state.GetEntityQuery(
-            ComponentType.ReadWrite<StorageDataComponent>()); 
         _queryEnemies = state.GetEntityQuery(queriesEnemies);
+        _queryStorage = state.GetEntityQuery(
+            ComponentType.ReadWrite<StorageCoinsComponent>());
     }
     
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
+        _entityStorage = _queryStorage.GetSingletonEntity();
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        var entityStorageArray = _queryStorage.ToEntityArray(Allocator.TempJob);
-        _entityStorage = entityStorageArray[0];
-        var coins = state.EntityManager.GetComponentData<StorageDataComponent>(_entityStorage).Coins;
+        var coins = state.EntityManager.GetComponentData<StorageCoinsComponent>(_entityStorage).Coins;
         new DieEnemiesJob
         {
             Ecb = ecb,
@@ -54,7 +53,7 @@ partial struct DieEnemiesJob : IJobEntity
         if (enemyHp.Hp <= 0)
         {
             Ecb.DestroyEntity(entity);
-            var loot = new StorageDataComponent { Coins = CoinsBalance + 5 };
+            var loot = new StorageCoinsComponent { Coins = CoinsBalance + 5 };
             Ecb.SetComponent(EntityStorage, loot);
         }
     }

@@ -1,10 +1,9 @@
 using TMPro;
-using UnityEngine;
 using Unity.Entities;
-
-public class ShowCoins : MonoBehaviour
+using UnityEngine;
+public class ShowLevelHp : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _coinsText;
+    [SerializeField] private TextMeshProUGUI _levelHpText;
 
     private EntityManager _entityManager;
     private Entity _entityStorage;
@@ -14,11 +13,11 @@ public class ShowCoins : MonoBehaviour
     {
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         _entityStorage = _entityManager.CreateEntityQuery(
-            typeof(StorageCoinsComponent)).GetSingletonEntity();
+            typeof(StorageLevelHpComponent)).GetSingletonEntity();
     }
 
     void Update()
     {
-        _coinsText.text = _entityManager.GetComponentData<StorageCoinsComponent>(_entityStorage).Coins.ToString();
+        _levelHpText.text = _entityManager.GetComponentData<StorageLevelHpComponent>(_entityStorage).LevelHp.ToString();
     }
 }

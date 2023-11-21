@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Collections;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -33,15 +34,17 @@ public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
         _gridTowerControl = gameObject.GetComponentInParent<GridTowerControl>();
-
-
         _arrayGridPosElements = _gridTowerControl.GetPosValueInGrid();
         _arrayGridBool = _gridTowerControl.GetBoolValueInGrid();
-
+        // var queryStorage = new NativeArray<ComponentType>(3, Allocator.Temp);
+        // queryStorage[0] = ComponentType.ReadOnly<StorageEntitiesComponent>();
+        // queryStorage[1] = ComponentType.ReadOnly<StorageCoinsComponent>();
+        // queryStorage[2] = ComponentType.ReadOnly<StorageLevelHpComponent>();
+        
         _entityStorage = _entityManager.CreateEntityQuery(
-            typeof(StorageDataComponent)).GetSingletonEntity();
-        _entitySimpleTower = _entityManager.GetComponentData<StorageDataComponent>(_entityStorage).SimpleTowerPrefab;
-        _entityFireTower = _entityManager.GetComponentData<StorageDataComponent>(_entityStorage).FireTowerPrefab;
+            typeof(StorageEntitiesComponent)).GetSingletonEntity();
+        _entitySimpleTower = _entityManager.GetComponentData<StorageEntitiesComponent>(_entityStorage).SimpleTowerPrefab;
+        _entityFireTower = _entityManager.GetComponentData<StorageEntitiesComponent>(_entityStorage).FireTowerPrefab;
     }
 
     private void Update()
@@ -56,7 +59,7 @@ public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         _redSquare = gameObject.GetComponentInParent<GridTowerControl>().RedSquare;
         _arrayGridBool = _gridTowerControl.GetBoolValueInGrid();
         _towerPrice = GetComponent<BankTowerInShop>().TowerData.Price;
-        _coins = _entityManager.GetComponentData<StorageDataComponent>(_entityStorage).Coins;
+        _coins = _entityManager.GetComponentData<StorageCoinsComponent>(_entityStorage).Coins;
         if (_coins >= _towerPrice)
         {
             var towerIcon = GetComponent<BankTowerInShop>().TowerData.Icon;
@@ -122,7 +125,7 @@ public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 _entityManager.Instantiate(_entityFireTower);
             }
 
-            var storageComponent = new StorageDataComponent { Coins = _coins - _towerPrice };
+            var storageComponent = new StorageCoinsComponent { Coins = _coins - _towerPrice };
             _entityManager.SetComponentData(_entityStorage, storageComponent);
 
             _arrayGridBool = _gridTowerControl.SetBoolValueInGrid(_indexBoolI, _indexBoolJ);

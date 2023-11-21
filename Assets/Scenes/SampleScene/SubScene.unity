@@ -350,16 +350,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6125607054029064072, guid: 8a829a80c39e70f48b219a5ab01c7105, type: 3}
       propertyPath: m_Name
-      value: EnemyStorage
+      value: EntityStorage
       objectReference: {fileID: 0}
     - target: {fileID: 6614212751984463938, guid: 8a829a80c39e70f48b219a5ab01c7105, type: 3}
-      propertyPath: FireTowerPrefab
-      value: 
-      objectReference: {fileID: 7056713013877562141, guid: b9453c84cc3cd0d4aac021d88fb43c0f, type: 3}
-    - target: {fileID: 6614212751984463938, guid: 8a829a80c39e70f48b219a5ab01c7105, type: 3}
-      propertyPath: SimpleTowerPrefab
-      value: 
-      objectReference: {fileID: 7056713013877562141, guid: 60f0ffbb949d5e045a106a1946649e97, type: 3}
+      propertyPath: LevelHp
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
