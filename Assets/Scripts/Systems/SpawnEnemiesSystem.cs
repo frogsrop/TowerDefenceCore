@@ -3,8 +3,6 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
-
 
 [BurstCompile]
 public partial struct SpawnEnemiesSystem : ISystem
@@ -51,11 +49,10 @@ partial struct SpawnJob : IJobEntity
 
         var newEnemy = Ecb.Instantiate(spawnerEnemies.EnemyPrefab);
         var enemySpawnPosition = new float3(spawnerTransform.Position.x + 0.5f,
-            spawnerTransform.Position.y,
+            spawnerTransform.Position.y - 0.3f,
             spawnerTransform.Position.z);
         var setSpawnPosition = new LocalTransform
-            { Position = enemySpawnPosition, Scale = 0.2f };
-
+            { Position = enemySpawnPosition, Scale = 0.5f };
 
         Ecb.SetComponent(newEnemy, setSpawnPosition);
         var enemyId = new EnemyIdComponent { Id = countEnemiesComponent.Count };

@@ -9,7 +9,7 @@ using UnityEngine;
 public partial struct SpawnBulletSystem : ISystem
 {
     private EntityQuery _queryEnemies;
-    private EntityQuery _towerQuery;
+    private EntityQuery _queryTower;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state)
@@ -19,7 +19,7 @@ public partial struct SpawnBulletSystem : ISystem
         towersQuery[1] = ComponentType.ReadOnly<LocalTransform>();
         towersQuery[2] = ComponentType.ReadOnly<TowerComponent>();
         towersQuery[3] = ComponentType.ReadOnly<TowerSpeedAttack>();
-        _towerQuery = state.GetEntityQuery(towersQuery);
+        _queryTower = state.GetEntityQuery(towersQuery);
         var enemiesQuery = new NativeArray<ComponentType>(2, Allocator.Temp);
         enemiesQuery[0] = ComponentType.ReadOnly<EnemyIdComponent>();
         enemiesQuery[1] = ComponentType.ReadOnly<LocalTransform>();
@@ -33,11 +33,9 @@ public partial struct SpawnBulletSystem : ISystem
 
         if (enemyIds.Length == 0) return;
 
-        var enemyTransforms = _queryEnemies.ToComponentDataArray<LocalTransform>(Allocator.TempJob);
-
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-
-        new SpawnBulletJob { Transforms = enemyTransforms, EnemyIds = enemyIds, Ecb = ecb }.Run(_towerQuery);
+        var enemyTransforms = _queryEnemies.ToComponentDataArray<LocalTransform>(Allocator.TempJob);
+        new SpawnBulletJob { Transforms = enemyTransforms, EnemyIds = enemyIds, Ecb = ecb }.Run(_queryTower);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();

@@ -20,5 +20,6 @@ class SpawnerBaker : Baker<SpawnerEnemiesAuthoring>
         });
         AddComponent(spawnerEntity, new SpawnCountEnemiesComponent { Count = 0 });
         AddComponent<TimerComponent>(spawnerEntity);
+        AddComponent<OffSceneComponent>(spawnerEntity);
     }
 }

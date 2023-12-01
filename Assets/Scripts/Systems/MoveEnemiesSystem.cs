@@ -11,7 +11,6 @@ public partial struct MoveEnemiesSystem : ISystem
     private EntityQuery _queryEnemies;
     private EntityQuery _queryCastles;
     private EntityQuery _queryStorage;
-    private Entity _entityStorage;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state)
@@ -35,25 +34,27 @@ public partial struct MoveEnemiesSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        _entityStorage = _queryStorage.GetSingletonEntity();
+        var entityStorage = _queryStorage.GetSingletonEntity();
+        var castleEntity = _queryCastles.ToEntityArray(Allocator.TempJob); //TODO: Add many castles
+        if (castleEntity.Length == 0) return;
         var dt = SystemAPI.Time.DeltaTime;
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-
-        var castleEntityArray = _queryCastles.ToEntityArray(Allocator.TempJob);
-        var dynamicBuffer = state.EntityManager.GetBuffer<WayPointsComponent>(castleEntityArray[0]);
+        
+        var dynamicBuffer = state.EntityManager.GetBuffer<WayPointsComponent>(castleEntity[0]);
         var floatArray = new NativeArray<float3>(dynamicBuffer.Length, Allocator.TempJob);
         for (int i = 0; i < dynamicBuffer.Length; i++)
         {
             floatArray[i] = dynamicBuffer[i].Value;
         }
-        var levelHp = state.EntityManager.GetComponentData<StorageLevelHpComponent>(_entityStorage).LevelHp;
+        var levelHp = state.EntityManager.GetComponentData<StorageLevelHpComponent>(entityStorage).LevelHp;
+        var castleTransforms = state.EntityManager.GetComponentData<LocalTransform>(castleEntity[0]).Position;
         new MoveEnemyJob
         {
             Dt = dt,
             Ecb = ecb,
             PathArray = floatArray,
-            CastleTransforms = _queryCastles.ToComponentDataArray<LocalTransform>(Allocator.TempJob),
-            EntityStorage = _entityStorage,
+            CastleTransforms = castleTransforms,
+            EntityStorage = entityStorage,
             LevelHp = levelHp
         }.Run(_queryEnemies);
         state.Dependency.Complete();
@@ -68,7 +69,7 @@ partial struct MoveEnemyJob : IJobEntity
     public float Dt;
     public EntityCommandBuffer Ecb;
     public NativeArray<float3> PathArray;
-    public NativeArray<LocalTransform> CastleTransforms;
+    public float3 CastleTransforms;
     
     public Entity EntityStorage;
     public int LevelHp;
@@ -92,10 +93,11 @@ partial struct MoveEnemyJob : IJobEntity
         }
         else
         {
-            var castleTransform = CastleTransforms[0];
-            var direction = math.normalize(castleTransform.Position - transform.Position);
+            var finishPosition = new float3(CastleTransforms.x, CastleTransforms.y - 0.5f,
+                CastleTransforms.z);
+            var direction = math.normalize(finishPosition - transform.Position);
             transform.Position += direction * Dt * speed.Value;
-            var distance = math.distancesq(transform.Position, castleTransform.Position);
+            var distance = math.distancesq(transform.Position, finishPosition);
             if (distance < 0.1)
             {
                 var levelHpResult = new StorageLevelHpComponent { LevelHp = LevelHp - 1 };

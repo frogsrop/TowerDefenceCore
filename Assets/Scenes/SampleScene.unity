@@ -1503,7 +1503,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4f789cfb0cc7e429453c749483f137, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: 60
+  Target: 60
 --- !u!1 &528117103
 GameObject:
   m_ObjectHideFlags: 0
@@ -5567,10 +5567,10 @@ MonoBehaviour:
   _quantityTowersMenu: {fileID: 313997116}
   _quantityEnemiesMenu: {fileID: 816326597}
   _speedShootMenu: {fileID: 363152263}
-  MinSpawnX: -8
-  MaxSpawnX: 8
-  MinSpawnY: -4
-  MaxSpawnY: 2
+  _minSpawnX: -8
+  _maxSpawnX: 8
+  _minSpawnY: -4
+  _maxSpawnY: 2
 --- !u!114 &1984034055
 MonoBehaviour:
   m_ObjectHideFlags: 0

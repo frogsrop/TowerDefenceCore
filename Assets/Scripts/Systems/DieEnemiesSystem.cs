@@ -10,7 +10,6 @@ public partial struct DieEnemiesSystem : ISystem
 {
     private EntityQuery _queryEnemies;
     private EntityQuery _queryStorage;
-    private Entity _entityStorage;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state)
@@ -26,13 +25,15 @@ public partial struct DieEnemiesSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        _entityStorage = _queryStorage.GetSingletonEntity();
+        if (_queryStorage.GetSingletonEntity() == null) return;
+        
+        var entityStorage = _queryStorage.GetSingletonEntity();
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        var coins = state.EntityManager.GetComponentData<StorageCoinsComponent>(_entityStorage).Coins;
+        var coins = state.EntityManager.GetComponentData<StorageCoinsComponent>(entityStorage).Coins;
         new DieEnemiesJob
         {
             Ecb = ecb,
-            EntityStorage = _entityStorage,
+            EntityStorage = entityStorage,
             CoinsBalance = coins
         }.Run(_queryEnemies);
         state.Dependency.Complete();
@@ -41,7 +42,7 @@ public partial struct DieEnemiesSystem : ISystem
     }
 }
 
-//[BurstCompile]
+[BurstCompile]
 partial struct DieEnemiesJob : IJobEntity
 {
     public EntityCommandBuffer Ecb;

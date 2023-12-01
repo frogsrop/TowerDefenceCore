@@ -69,7 +69,6 @@ public partial struct MoveBulletJob : IJobEntity
             bulletTransform.Position += direction * Dt * bulletSpeed.Value;
             var distance = math.distancesq(bulletTransform.Position, enemyTransform.Position);
             if (!(distance < 0.1f)) return;
-            //Ecb.DestroyEntity(entity);
             Ecb.AddComponent(entity, new DestroyComponent());
             foreach (var effect in bulletInfo.ListEffects)
             {
@@ -81,7 +80,6 @@ public partial struct MoveBulletJob : IJobEntity
         }
         else
         {
-            //Ecb.DestroyEntity(entity);
             Ecb.AddComponent(entity, new DestroyComponent());
         }
     }

@@ -1,13 +1,18 @@
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class StorageDataAuthoring : MonoBehaviour
 {
+    public int Coins = 50;
+    public int LevelHp = 5;
     public GameObject SimpleTowerPrefab;
     public GameObject FireTowerPrefab;
     public GameObject EnemyPrefab;
-    public int Coins = 50;
-    public int LevelHp = 10;
+    public GameObject CastlePrefab;
+    public GameObject SpawnerPrefab;
+    public float3 SpawnerPos = new (-7.6f, -3, 0);
+    public float3 CastlePos = new (1, 3, 0);
 }
 
 class PayManagerBaker : Baker<StorageDataAuthoring>
@@ -19,7 +24,17 @@ class PayManagerBaker : Baker<StorageDataAuthoring>
         {
             SimpleTowerPrefab = GetEntity(authoring.SimpleTowerPrefab, TransformUsageFlags.Dynamic),
             FireTowerPrefab = GetEntity(authoring.FireTowerPrefab, TransformUsageFlags.Dynamic),
-            EnemyPrefab = GetEntity(authoring.EnemyPrefab, TransformUsageFlags.Dynamic)
+            EnemyPrefab = GetEntity(authoring.EnemyPrefab, TransformUsageFlags.Dynamic),
+            SpawnerPrefab = GetEntity(authoring.SpawnerPrefab, TransformUsageFlags.Dynamic),
+            CastlePrefab = GetEntity(authoring.CastlePrefab, TransformUsageFlags.Dynamic)
+        });
+        AddComponent(storageEntity, new StoragePositionCastleComponent
+        { 
+            Position = authoring.CastlePos
+        });
+        AddComponent(storageEntity, new StoragePositionSpawnerComponent
+        { 
+            Position = authoring.SpawnerPos
         });
         AddComponent(storageEntity, new StorageLevelHpComponent
         {
@@ -29,5 +44,6 @@ class PayManagerBaker : Baker<StorageDataAuthoring>
         {
             Coins = authoring.Coins
         });
+        AddComponent(storageEntity, new StorageEditSceneComponent());
     }
 }
