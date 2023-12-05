@@ -6,13 +6,14 @@ public class StorageDataAuthoring : MonoBehaviour
 {
     public int Coins = 50;
     public int LevelHp = 5;
+    public int WaveLength = 10;
+    public float3 SpawnerPos = new (-7.6f, -3, 0);
+    public float3 CastlePos = new (1, 3, 0);
     public GameObject SimpleTowerPrefab;
     public GameObject FireTowerPrefab;
     public GameObject EnemyPrefab;
     public GameObject CastlePrefab;
     public GameObject SpawnerPrefab;
-    public float3 SpawnerPos = new (-7.6f, -3, 0);
-    public float3 CastlePos = new (1, 3, 0);
 }
 
 class PayManagerBaker : Baker<StorageDataAuthoring>
@@ -36,6 +37,11 @@ class PayManagerBaker : Baker<StorageDataAuthoring>
         { 
             Position = authoring.SpawnerPos
         });
+        AddComponent(storageEntity, new StorageWaveDataComponent
+        {
+            WaveLength = authoring.WaveLength,
+            FullWaveLength = authoring.WaveLength
+        });
         AddComponent(storageEntity, new StorageLevelHpComponent
         {
             LevelHp = authoring.LevelHp
@@ -44,6 +50,7 @@ class PayManagerBaker : Baker<StorageDataAuthoring>
         {
             Coins = authoring.Coins
         });
-        AddComponent(storageEntity, new StorageEditSceneComponent());
+        //AddComponent(storageEntity, new StorageStatusStartLevelComponent());
+        AddComponent(storageEntity, new StorageStatusLevelComponent());
     }
 }

@@ -47,6 +47,7 @@ public partial struct MoveEnemiesSystem : ISystem
             floatArray[i] = dynamicBuffer[i].Value;
         }
         var levelHp = state.EntityManager.GetComponentData<StorageLevelHpComponent>(entityStorage).LevelHp;
+        var waveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(entityStorage).WaveLength;
         var castleTransforms = state.EntityManager.GetComponentData<LocalTransform>(castleEntity[0]).Position;
         new MoveEnemyJob
         {
@@ -55,7 +56,8 @@ public partial struct MoveEnemiesSystem : ISystem
             PathArray = floatArray,
             CastleTransforms = castleTransforms,
             EntityStorage = entityStorage,
-            LevelHp = levelHp
+            LevelHp = levelHp,
+            WaveLength = waveLength
         }.Run(_queryEnemies);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
@@ -73,17 +75,11 @@ partial struct MoveEnemyJob : IJobEntity
     
     public Entity EntityStorage;
     public int LevelHp;
+    public int WaveLength;
 
     public void Execute(Entity entity, ref LocalTransform transform, ref DirectionComponent dir,
         ref TargetIdComponent target, ref SpeedComponent speed)
     {
-        // for test Scene
-        // if ((transform.Position.x > 5 && dir.Direction > 0) ||
-        //     (transform.Position.x < -5 && dir.Direction < 0))
-        // {
-        //     dir.Direction *= -1;
-        // }
-
         if (target.Id < PathArray.Length)
         {
             var direction = math.normalize(PathArray[target.Id] - transform.Position);
@@ -100,11 +96,19 @@ partial struct MoveEnemyJob : IJobEntity
             var distance = math.distancesq(transform.Position, finishPosition);
             if (distance < 0.1)
             {
+                var newWaveLength = new StorageWaveDataComponent { WaveLength = WaveLength - 1 };
                 var levelHpResult = new StorageLevelHpComponent { LevelHp = LevelHp - 1 };
                 Ecb.SetComponent(EntityStorage, levelHpResult);
+                Ecb.SetComponent(EntityStorage, newWaveLength);
                 Ecb.DestroyEntity(entity);
             }
         }
+        // for test Scene
+        // if ((transform.Position.x > 5 && dir.Direction > 0) ||
+        //     (transform.Position.x < -5 && dir.Direction < 0))
+        // {
+        //     dir.Direction *= -1;
+        // }
     }
 }
 // old path system

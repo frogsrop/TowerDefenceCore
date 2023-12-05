@@ -4,20 +4,20 @@ using Unity.Entities;
 using Unity.Transforms;
 
 [BurstCompile]
-public partial struct FirstLevelSystem : ISystem
+public partial struct StartFirstLevelSystem : ISystem
 {
     private EntityQuery _queryStorage;
 
     public void OnCreate(ref SystemState state)
     {
         _queryStorage = state.GetEntityQuery(
-            ComponentType.ReadWrite<StorageEditSceneComponent>());
+            ComponentType.ReadWrite<StorageStatusLevelComponent>());
     }
 
     public void OnUpdate(ref SystemState state)
     {
         var entityStorage = _queryStorage.GetSingletonEntity();
-        var statusStart = state.EntityManager.GetComponentData<StorageEditSceneComponent>(entityStorage).Reset;
+        var statusStart = state.EntityManager.GetComponentData<StorageStatusLevelComponent>(entityStorage).Start;
         if (statusStart)
         {
             var ecb = new EntityCommandBuffer(Allocator.TempJob);
@@ -52,7 +52,7 @@ partial struct StartLevelJob : IJobEntity
             { Position = castlePos.Position, Scale = 0.15f };
         Ecb.SetComponent(castleEntity, setCastlePosition);
         
-        var statusStart = new StorageEditSceneComponent { Reset = false };
+        var statusStart = new StorageStatusLevelComponent { Start = false };
         Ecb.SetComponent(EntityStorage, statusStart);
     }
 }

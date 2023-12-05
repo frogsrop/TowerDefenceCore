@@ -25,16 +25,16 @@ public partial struct DieEnemiesSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        if (_queryStorage.GetSingletonEntity() == null) return;
-        
         var entityStorage = _queryStorage.GetSingletonEntity();
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         var coins = state.EntityManager.GetComponentData<StorageCoinsComponent>(entityStorage).Coins;
+        var waveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(entityStorage).WaveLength;
         new DieEnemiesJob
         {
             Ecb = ecb,
             EntityStorage = entityStorage,
-            CoinsBalance = coins
+            CoinsBalance = coins,
+            WaveLength = waveLength
         }.Run(_queryEnemies);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
@@ -48,6 +48,7 @@ partial struct DieEnemiesJob : IJobEntity
     public EntityCommandBuffer Ecb;
     public Entity EntityStorage;
     public int CoinsBalance;
+    public int WaveLength;
 
     public void Execute(Entity entity, ref EnemyHpComponent enemyHp)
     {
@@ -55,7 +56,9 @@ partial struct DieEnemiesJob : IJobEntity
         {
             Ecb.DestroyEntity(entity);
             var loot = new StorageCoinsComponent { Coins = CoinsBalance + 5 };
+            var newWaveLength = new StorageWaveDataComponent { WaveLength = WaveLength - 1 };
             Ecb.SetComponent(EntityStorage, loot);
+            Ecb.SetComponent(EntityStorage, newWaveLength);
         }
     }
 }

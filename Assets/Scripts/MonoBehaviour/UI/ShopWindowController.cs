@@ -5,7 +5,7 @@ public class ShopWindowController : MonoBehaviour
 {
     private Animator _anim;
     private Image _img;
-    private bool _isOpened = false;
+    private bool _isOpened;
     [SerializeField] private Sprite _iconOpen;
     [SerializeField] private Sprite _iconClose;
     [SerializeField] private GameObject _panel;

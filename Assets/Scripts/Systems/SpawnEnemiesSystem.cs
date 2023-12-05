@@ -8,6 +8,8 @@ using Unity.Transforms;
 public partial struct SpawnEnemiesSystem : ISystem
 {
     private EntityQuery _querySpawners;
+    private EntityQuery _queryStorage;
+    private Entity _entityStorage;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state)
@@ -18,13 +20,20 @@ public partial struct SpawnEnemiesSystem : ISystem
         queries[2] = ComponentType.ReadOnly<LocalTransform>();
         queries[3] = ComponentType.ReadOnly<TimerComponent>();
         _querySpawners = state.GetEntityQuery(queries);
+        _queryStorage = state.GetEntityQuery(ComponentType.ReadWrite<StorageWaveDataComponent>());
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
+        _entityStorage = _queryStorage.GetSingletonEntity();
+        var startWaveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(_entityStorage).WaveLength;   
+        var stopWave = state.EntityManager.GetComponentData<StorageWaveDataComponent>(_entityStorage).StopWave;
+        var statusLevel = state.EntityManager.GetComponentData<StorageStatusLevelComponent>(_entityStorage).Stop;
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        new SpawnJob { Ecb = ecb }.Run(_querySpawners);
+        if(stopWave || statusLevel) return;
+        
+        new SpawnJob { Ecb = ecb, StartWaveLength = startWaveLength, Storage = _entityStorage }.Run(_querySpawners);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
@@ -35,11 +44,20 @@ public partial struct SpawnEnemiesSystem : ISystem
 partial struct SpawnJob : IJobEntity
 {
     public EntityCommandBuffer Ecb;
+    public int StartWaveLength;
+    public Entity Storage;
 
     public void Execute(Entity entity, ref SpawnerEnemiesComponent spawnerEnemies,
         ref SpawnCountEnemiesComponent countEnemiesComponent, ref TimerComponent timerComponent,
         ref LocalTransform spawnerTransform)
     {
+        if (StartWaveLength == 0)
+        {
+            var stopWave = new StorageWaveDataComponent {WaveLength = StartWaveLength, StopWave = true};
+            Ecb.SetComponent(Storage, stopWave);
+            return;
+        }
+        
         if (!timerComponent.Condition)
             Ecb.SetComponent(entity, new TimerComponent
             {
@@ -58,5 +76,6 @@ partial struct SpawnJob : IJobEntity
         var enemyId = new EnemyIdComponent { Id = countEnemiesComponent.Count };
         Ecb.SetComponent(newEnemy, enemyId);
         countEnemiesComponent.Count++;
+        
     }
 }

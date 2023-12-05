@@ -48,7 +48,7 @@ MonoBehaviour:
   MaxHp: 20
   Id: 0
   Direction: 5
-  Speed: 1
+  Speed: 2
 --- !u!212 &-4855927981908853667
 SpriteRenderer:
   m_ObjectHideFlags: 0
