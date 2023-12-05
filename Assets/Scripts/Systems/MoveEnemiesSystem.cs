@@ -47,6 +47,7 @@ public partial struct MoveEnemiesSystem : ISystem
             floatArray[i] = dynamicBuffer[i].Value;
         }
         var levelHp = state.EntityManager.GetComponentData<StorageLevelHpComponent>(entityStorage).LevelHp;
+        var startWaveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(entityStorage).StartWaveLength;
         var waveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(entityStorage).WaveLength;
         var castleTransforms = state.EntityManager.GetComponentData<LocalTransform>(castleEntity[0]).Position;
         new MoveEnemyJob
@@ -57,7 +58,8 @@ public partial struct MoveEnemiesSystem : ISystem
             CastleTransforms = castleTransforms,
             EntityStorage = entityStorage,
             LevelHp = levelHp,
-            WaveLength = waveLength
+            WaveLength = waveLength,
+            StartWaveLength = startWaveLength
         }.Run(_queryEnemies);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
@@ -76,6 +78,7 @@ partial struct MoveEnemyJob : IJobEntity
     public Entity EntityStorage;
     public int LevelHp;
     public int WaveLength;
+    public int StartWaveLength;
 
     public void Execute(Entity entity, ref LocalTransform transform, ref DirectionComponent dir,
         ref TargetIdComponent target, ref SpeedComponent speed)
@@ -96,7 +99,8 @@ partial struct MoveEnemyJob : IJobEntity
             var distance = math.distancesq(transform.Position, finishPosition);
             if (distance < 0.1)
             {
-                var newWaveLength = new StorageWaveDataComponent { WaveLength = WaveLength - 1 };
+                var newWaveLength = new StorageWaveDataComponent { WaveLength = WaveLength - 1, 
+                    StartWaveLength = StartWaveLength };
                 var levelHpResult = new StorageLevelHpComponent { LevelHp = LevelHp - 1 };
                 Ecb.SetComponent(EntityStorage, levelHpResult);
                 Ecb.SetComponent(EntityStorage, newWaveLength);

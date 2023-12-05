@@ -273,7 +273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6614212751984463938, guid: 8a829a80c39e70f48b219a5ab01c7105, type: 3}
       propertyPath: WaveLength
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6614212751984463938, guid: 8a829a80c39e70f48b219a5ab01c7105, type: 3}
       propertyPath: CastlePrefab

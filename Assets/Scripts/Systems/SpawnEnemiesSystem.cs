@@ -3,6 +3,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using UnityEngine;
 
 [BurstCompile]
 public partial struct SpawnEnemiesSystem : ISystem
@@ -27,13 +28,15 @@ public partial struct SpawnEnemiesSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         _entityStorage = _queryStorage.GetSingletonEntity();
-        var startWaveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(_entityStorage).WaveLength;   
+        var startWaveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(_entityStorage).StartWaveLength;  
+        var waveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(_entityStorage).WaveLength;
         var stopWave = state.EntityManager.GetComponentData<StorageWaveDataComponent>(_entityStorage).StopWave;
         var statusLevel = state.EntityManager.GetComponentData<StorageStatusLevelComponent>(_entityStorage).Stop;
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         if(stopWave || statusLevel) return;
         
-        new SpawnJob { Ecb = ecb, StartWaveLength = startWaveLength, Storage = _entityStorage }.Run(_querySpawners);
+        new SpawnJob { Ecb = ecb, StartWaveLength = startWaveLength,WaveLength = waveLength, Storage = _entityStorage }
+            .Run(_querySpawners);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
@@ -45,15 +48,17 @@ partial struct SpawnJob : IJobEntity
 {
     public EntityCommandBuffer Ecb;
     public int StartWaveLength;
+    public int WaveLength;
     public Entity Storage;
 
     public void Execute(Entity entity, ref SpawnerEnemiesComponent spawnerEnemies,
         ref SpawnCountEnemiesComponent countEnemiesComponent, ref TimerComponent timerComponent,
         ref LocalTransform spawnerTransform)
     {
-        if (StartWaveLength == 0)
+        if (StartWaveLength <= countEnemiesComponent.Count)
         {
-            var stopWave = new StorageWaveDataComponent {WaveLength = StartWaveLength, StopWave = true};
+            var stopWave = new StorageWaveDataComponent {WaveLength = WaveLength, StartWaveLength = StartWaveLength, 
+                StopWave = true};
             Ecb.SetComponent(Storage, stopWave);
             return;
         }

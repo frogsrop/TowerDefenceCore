@@ -40,7 +40,7 @@ class PayManagerBaker : Baker<StorageDataAuthoring>
         AddComponent(storageEntity, new StorageWaveDataComponent
         {
             WaveLength = authoring.WaveLength,
-            FullWaveLength = authoring.WaveLength
+            StartWaveLength = authoring.WaveLength
         });
         AddComponent(storageEntity, new StorageLevelHpComponent
         {

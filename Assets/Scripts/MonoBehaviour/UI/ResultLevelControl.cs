@@ -18,7 +18,7 @@ public class ResultLevelControl : MonoBehaviour
         _queryStorage = _entityManager.CreateEntityQuery(typeof(StorageStatusLevelComponent));
         _entityStorage = _queryStorage.GetSingletonEntity();
         _startLevelHp = _entityManager.GetComponentData<StorageLevelHpComponent>(_entityStorage).LevelHp;
-        _startWaveLength = _entityManager.GetComponentData<StorageWaveDataComponent>(_entityStorage).FullWaveLength;
+        _startWaveLength = _entityManager.GetComponentData<StorageWaveDataComponent>(_entityStorage).StartWaveLength;
         _startCoins = _entityManager.GetComponentData<StorageCoinsComponent>(_entityStorage).Coins;
     }
 
@@ -44,7 +44,7 @@ public class ResultLevelControl : MonoBehaviour
         _entityManager.World.GetExistingSystemManaged<SimulationSystemGroup>().Enabled = true;
         var entityStorage = _queryStorage.GetSingletonEntity();
         var conditionComponent = new StorageLevelHpComponent { LevelHp = _startLevelHp };
-        var waveLength = new StorageWaveDataComponent { WaveLength = _startWaveLength };
+        var waveLength = new StorageWaveDataComponent { WaveLength = _startWaveLength, StartWaveLength = _startWaveLength};
         var coins = new StorageCoinsComponent { Coins = _startCoins };
         var statusLevel = new StorageStatusLevelComponent { Reset = true, Stop = true};
         _entityManager.SetComponentData(entityStorage, conditionComponent);
