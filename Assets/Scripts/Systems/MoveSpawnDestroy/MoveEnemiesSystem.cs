@@ -24,7 +24,7 @@ public partial struct MoveEnemiesSystem : ISystem
         var queryCastles = new NativeArray<ComponentType>(3, Allocator.Temp);
         queryCastles[0] = ComponentType.ReadWrite<CastleComponent>();
         queryCastles[1] = ComponentType.ReadOnly<LocalTransform>();
-        queryCastles[2] = ComponentType.ReadOnly<WayPointsComponent>();
+        queryCastles[2] = ComponentType.ReadOnly<WayPointsBufferElements>();
         _queryCastles = state.GetEntityQuery(queryCastles);
         _queryStorage = state.GetEntityQuery(
             ComponentType.ReadWrite<StorageLevelHpComponent>());
@@ -40,7 +40,7 @@ public partial struct MoveEnemiesSystem : ISystem
         var dt = SystemAPI.Time.DeltaTime;
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         
-        var dynamicBuffer = state.EntityManager.GetBuffer<WayPointsComponent>(castleEntity[0]);
+        var dynamicBuffer = state.EntityManager.GetBuffer<WayPointsBufferElements>(castleEntity[0]);
         var floatArray = new NativeArray<float3>(dynamicBuffer.Length, Allocator.TempJob);
         for (int i = 0; i < dynamicBuffer.Length; i++)
         {

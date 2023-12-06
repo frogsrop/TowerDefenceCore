@@ -18,8 +18,7 @@ public partial struct DieEnemiesSystem : ISystem
         queriesEnemies[0] = ComponentType.ReadOnly<DamageComponent>();
         queriesEnemies[1] = ComponentType.ReadOnly<EnemyHpComponent>();
         _queryEnemies = state.GetEntityQuery(queriesEnemies);
-        _queryStorage = state.GetEntityQuery(
-            ComponentType.ReadWrite<StorageCoinsComponent>());
+        _queryStorage = state.GetEntityQuery(ComponentType.ReadWrite<StorageCoinsComponent>());
     }
     
     [BurstCompile]

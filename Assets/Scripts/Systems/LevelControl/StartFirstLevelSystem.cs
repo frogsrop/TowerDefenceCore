@@ -3,17 +3,25 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
 
+//TODO: You can make a SO in which the positions of the spawner and castle will be stored.
+//I think it should still store the points of the path that the wave follows,
+//or you will have to make a separate castle prefab for each level.
+//We will not do prefabs, so we will also need to prescribe that these points are read into the castle.
+//Perhaps this will be revised when adding multiple mob paths.
+
 [BurstCompile]
 public partial struct StartFirstLevelSystem : ISystem
 {
     private EntityQuery _queryStorage;
 
+    [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
         _queryStorage = state.GetEntityQuery(
             ComponentType.ReadWrite<StorageStatusLevelComponent>());
     }
 
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         var entityStorage = _queryStorage.GetSingletonEntity();
