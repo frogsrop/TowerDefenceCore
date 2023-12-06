@@ -41,7 +41,7 @@ public partial struct MoveEnemiesSystem : ISystem
 
         var dynamicBuffer = state.EntityManager.GetBuffer<WayPointsBufferElements>(castleEntity[0]);
         var floatArray = new NativeArray<float3>(dynamicBuffer.Length, Allocator.TempJob);
-        for (int i = 0; i < dynamicBuffer.Length; i++)
+        for (var i = 0; i < dynamicBuffer.Length; i++)
         {
             floatArray[i] = dynamicBuffer[i].Value;
         }
@@ -81,7 +81,7 @@ partial struct MoveEnemyJob : IJobEntity
     public int WaveLength;
     public int StartWaveLength;
 
-    public void Execute(Entity entity, ref LocalTransform transform, ref DirectionComponent dir,
+    private void Execute(Entity entity, ref LocalTransform transform, ref DirectionComponent dir,
         ref TargetIdComponent target, ref SpeedComponent speed)
     {
         if (target.Id < PathArray.Length)
@@ -98,18 +98,16 @@ partial struct MoveEnemyJob : IJobEntity
             var direction = math.normalize(finishPosition - transform.Position);
             transform.Position += direction * Dt * speed.Value;
             var distance = math.distancesq(transform.Position, finishPosition);
-            if (distance < 0.1)
+            if (distance > 0.1) return;
+            var newWaveLength = new StorageWaveDataComponent
             {
-                var newWaveLength = new StorageWaveDataComponent
-                {
-                    WaveLength = WaveLength - 1,
-                    StartWaveLength = StartWaveLength
-                };
-                var levelHpResult = new StorageLevelHpComponent { LevelHp = LevelHp - 1 };
-                Ecb.SetComponent(EntityStorage, levelHpResult);
-                Ecb.SetComponent(EntityStorage, newWaveLength);
-                Ecb.DestroyEntity(entity);
-            }
+                WaveLength = WaveLength - 1,
+                StartWaveLength = StartWaveLength
+            };
+            var levelHpResult = new StorageLevelHpComponent { LevelHp = LevelHp - 1 };
+            Ecb.SetComponent(EntityStorage, levelHpResult);
+            Ecb.SetComponent(EntityStorage, newWaveLength);
+            Ecb.DestroyEntity(entity);
         }
         // for test Scene
         // if ((transform.Position.x > 5 && dir.Direction > 0) ||

@@ -53,19 +53,17 @@ partial struct DieEnemiesJob : IJobEntity
     public int WaveLength;
     public int StartWaveLength;
 
-    public void Execute(Entity entity, ref EnemyHpComponent enemyHp)
+    private void Execute(Entity entity, ref EnemyHpComponent enemyHp)
     {
-        if (enemyHp.Hp <= 0)
+        if (enemyHp.Hp > 0) return;
+        Ecb.DestroyEntity(entity);
+        var loot = new StorageCoinsComponent { Coins = CoinsBalance + 5 };
+        var newWaveLength = new StorageWaveDataComponent
         {
-            Ecb.DestroyEntity(entity);
-            var loot = new StorageCoinsComponent { Coins = CoinsBalance + 5 };
-            var newWaveLength = new StorageWaveDataComponent
-            {
-                WaveLength = WaveLength - 1,
-                StartWaveLength = StartWaveLength
-            };
-            Ecb.SetComponent(EntityStorage, loot);
-            Ecb.SetComponent(EntityStorage, newWaveLength);
-        }
+            WaveLength = WaveLength - 1,
+            StartWaveLength = StartWaveLength
+        };
+        Ecb.SetComponent(EntityStorage, loot);
+        Ecb.SetComponent(EntityStorage, newWaveLength);
     }
 }

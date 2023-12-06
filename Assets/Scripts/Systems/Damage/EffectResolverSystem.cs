@@ -41,7 +41,7 @@ public partial struct DamageResolverJob : IJobEntity
 
         int lfold(NativeArray<DamageBufferElement>.Enumerator en)
         {
-            int res = 0;
+            var res = 0;
             while (en.MoveNext())
             {
                 var damage = (DamageEffectConfig)mapping[en.Current.Id];

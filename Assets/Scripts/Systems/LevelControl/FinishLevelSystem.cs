@@ -14,7 +14,7 @@ public partial struct FinishLevelSystem : ISystem
         _queryStorage = state.GetEntityQuery(ComponentType.ReadWrite<StorageLevelHpComponent>());
         _queryEnemies = state.GetEntityQuery(ComponentType.ReadWrite<EnemyIdComponent>());
     }
-
+    
     public void OnUpdate(ref SystemState state)
     {
         var entityStorage = _queryStorage.GetSingletonEntity();
@@ -30,13 +30,12 @@ public partial struct FinishLevelSystem : ISystem
             state.EntityManager.SetComponentData(entityStorage, victoryStatusLevel);
         }
 
+
         //lose
         var loseStatusLevel = new StorageStatusLevelComponent { Lose = true, Stop = true };
         var levelHp = state.EntityManager.GetComponentData<StorageLevelHpComponent>(entityStorage).LevelHp;
-        if (levelHp <= 0)
-        {
-            simulationSystemGroup.Enabled = false;
-            state.EntityManager.SetComponentData(entityStorage, loseStatusLevel);
-        }
+        if (levelHp > 0) return;
+        simulationSystemGroup.Enabled = false;
+        state.EntityManager.SetComponentData(entityStorage, loseStatusLevel);
     }
 }

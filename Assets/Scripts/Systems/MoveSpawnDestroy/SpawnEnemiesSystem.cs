@@ -52,7 +52,7 @@ partial struct SpawnJob : IJobEntity
     public int WaveLength;
     public Entity Storage;
 
-    public void Execute(Entity entity, ref SpawnerEnemiesComponent spawnerEnemies,
+    private void Execute(Entity entity, ref SpawnerEnemiesComponent spawnerEnemies,
         ref SpawnCountEnemiesComponent countEnemiesComponent, ref TimerComponent timerComponent,
         ref LocalTransform spawnerTransform)
     {

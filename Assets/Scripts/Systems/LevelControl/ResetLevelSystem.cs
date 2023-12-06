@@ -20,14 +20,12 @@ public partial struct ResetLevelSystem : ISystem
     {
         var entityStorage = _queryStorage.GetSingletonEntity();
         var statusReset = state.EntityManager.GetComponentData<StorageStatusLevelComponent>(entityStorage).Reset;
-
-        if (statusReset)
-        {
-            var simulationSystemGroup = state.EntityManager.World.GetExistingSystemManaged<SimulationSystemGroup>();
-            simulationSystemGroup.Enabled = true;
-            var statusLevel = new StorageStatusLevelComponent { Stop = true };
-            state.EntityManager.SetComponentData(entityStorage, statusLevel);
-            state.EntityManager.DestroyEntity(_queryOffScene);
-        }
+        if (!statusReset) return;
+        
+        var simulationSystemGroup = state.EntityManager.World.GetExistingSystemManaged<SimulationSystemGroup>();
+        simulationSystemGroup.Enabled = true;
+        var statusLevel = new StorageStatusLevelComponent { Stop = true };
+        state.EntityManager.SetComponentData(entityStorage, statusLevel);
+        state.EntityManager.DestroyEntity(_queryOffScene);
     }
 }
