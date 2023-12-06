@@ -24,11 +24,10 @@ public partial struct MoveEnemiesSystem : ISystem
         var queryCastles = new NativeArray<ComponentType>(3, Allocator.Temp);
         queryCastles[0] = ComponentType.ReadWrite<CastleComponent>();
         queryCastles[1] = ComponentType.ReadOnly<LocalTransform>();
-        queryCastles[2] = ComponentType.ReadOnly<WayPointsComponent>();
+        queryCastles[2] = ComponentType.ReadOnly<WayPointsBufferElements>();
         _queryCastles = state.GetEntityQuery(queryCastles);
         _queryStorage = state.GetEntityQuery(
             ComponentType.ReadWrite<StorageLevelHpComponent>());
-
     }
 
     [BurstCompile]
@@ -39,15 +38,17 @@ public partial struct MoveEnemiesSystem : ISystem
         if (castleEntity.Length == 0) return;
         var dt = SystemAPI.Time.DeltaTime;
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        
-        var dynamicBuffer = state.EntityManager.GetBuffer<WayPointsComponent>(castleEntity[0]);
+
+        var dynamicBuffer = state.EntityManager.GetBuffer<WayPointsBufferElements>(castleEntity[0]);
         var floatArray = new NativeArray<float3>(dynamicBuffer.Length, Allocator.TempJob);
         for (int i = 0; i < dynamicBuffer.Length; i++)
         {
             floatArray[i] = dynamicBuffer[i].Value;
         }
+
         var levelHp = state.EntityManager.GetComponentData<StorageLevelHpComponent>(entityStorage).LevelHp;
-        var startWaveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(entityStorage).StartWaveLength;
+        var startWaveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(entityStorage)
+            .StartWaveLength;
         var waveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(entityStorage).WaveLength;
         var castleTransforms = state.EntityManager.GetComponentData<LocalTransform>(castleEntity[0]).Position;
         new MoveEnemyJob
@@ -74,7 +75,7 @@ partial struct MoveEnemyJob : IJobEntity
     public EntityCommandBuffer Ecb;
     public NativeArray<float3> PathArray;
     public float3 CastleTransforms;
-    
+
     public Entity EntityStorage;
     public int LevelHp;
     public int WaveLength;
@@ -99,8 +100,11 @@ partial struct MoveEnemyJob : IJobEntity
             var distance = math.distancesq(transform.Position, finishPosition);
             if (distance < 0.1)
             {
-                var newWaveLength = new StorageWaveDataComponent { WaveLength = WaveLength - 1, 
-                    StartWaveLength = StartWaveLength };
+                var newWaveLength = new StorageWaveDataComponent
+                {
+                    WaveLength = WaveLength - 1,
+                    StartWaveLength = StartWaveLength
+                };
                 var levelHpResult = new StorageLevelHpComponent { LevelHp = LevelHp - 1 };
                 Ecb.SetComponent(EntityStorage, levelHpResult);
                 Ecb.SetComponent(EntityStorage, newWaveLength);

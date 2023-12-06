@@ -55,7 +55,7 @@ public partial struct MoveBulletJob : IJobEntity
     public NativeArray<EnemyIdComponent> EnemyIds;
     public NativeArray<LocalTransform> EnemyTransforms;
     public NativeArray<Entity> EnemyEntityArray;
-    
+
     private void Execute(Entity entity, ref LocalTransform bulletTransform, in TargetIdComponent bullet,
         in BulletComponent bulletInfo, ref SpeedComponent bulletSpeed)
     {

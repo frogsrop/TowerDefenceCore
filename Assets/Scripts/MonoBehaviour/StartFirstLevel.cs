@@ -5,7 +5,7 @@ public class StartFirstLevel : MonoBehaviour
 {
     private EntityManager _entityManager;
     private EntityQuery _queryStorage;
-    
+
     void Start()
     {
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;

@@ -18,10 +18,9 @@ public partial struct DieEnemiesSystem : ISystem
         queriesEnemies[0] = ComponentType.ReadOnly<DamageComponent>();
         queriesEnemies[1] = ComponentType.ReadOnly<EnemyHpComponent>();
         _queryEnemies = state.GetEntityQuery(queriesEnemies);
-        _queryStorage = state.GetEntityQuery(
-            ComponentType.ReadWrite<StorageCoinsComponent>());
+        _queryStorage = state.GetEntityQuery(ComponentType.ReadWrite<StorageCoinsComponent>());
     }
-    
+
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
@@ -29,7 +28,8 @@ public partial struct DieEnemiesSystem : ISystem
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         var coins = state.EntityManager.GetComponentData<StorageCoinsComponent>(entityStorage).Coins;
         var waveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(entityStorage).WaveLength;
-        var startWaveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(entityStorage).StartWaveLength;
+        var startWaveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(entityStorage)
+            .StartWaveLength;
         new DieEnemiesJob
         {
             Ecb = ecb,
@@ -59,8 +59,11 @@ partial struct DieEnemiesJob : IJobEntity
         {
             Ecb.DestroyEntity(entity);
             var loot = new StorageCoinsComponent { Coins = CoinsBalance + 5 };
-            var newWaveLength = new StorageWaveDataComponent { WaveLength = WaveLength - 1,
-                StartWaveLength = StartWaveLength };
+            var newWaveLength = new StorageWaveDataComponent
+            {
+                WaveLength = WaveLength - 1,
+                StartWaveLength = StartWaveLength
+            };
             Ecb.SetComponent(EntityStorage, loot);
             Ecb.SetComponent(EntityStorage, newWaveLength);
         }

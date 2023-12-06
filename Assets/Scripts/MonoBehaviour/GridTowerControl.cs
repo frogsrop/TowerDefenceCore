@@ -29,7 +29,7 @@ public class GridTowerControl : MonoBehaviour
             }
         }
     }
-    
+
     public bool[,] GetBoolValueInGrid()
     {
         return _arrayGridBool;

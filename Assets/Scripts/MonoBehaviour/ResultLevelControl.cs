@@ -11,7 +11,7 @@ public class ResultLevelControl : MonoBehaviour
     private int _startLevelHp;
     private int _startWaveLength;
     private int _startCoins;
-    
+
     void Start()
     {
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -22,18 +22,19 @@ public class ResultLevelControl : MonoBehaviour
         _startCoins = _entityManager.GetComponentData<StorageCoinsComponent>(_entityStorage).Coins;
     }
 
-    
+
     void Update()
     {
         var realHp = _entityManager.GetComponentData<StorageLevelHpComponent>(_entityStorage).LevelHp;
         var status = _entityManager.GetComponentData<StorageStatusLevelComponent>(_entityStorage);
         if (status.Reset) return;
-        
+
         if (status.Lose)
         {
             LoseLevel.SetActive(true);
         }
-        if (status.Victory && realHp>0)
+
+        if (status.Victory && realHp > 0)
         {
             VictoryLevel.SetActive(true);
         }
@@ -44,9 +45,10 @@ public class ResultLevelControl : MonoBehaviour
         _entityManager.World.GetExistingSystemManaged<SimulationSystemGroup>().Enabled = true;
         var entityStorage = _queryStorage.GetSingletonEntity();
         var conditionComponent = new StorageLevelHpComponent { LevelHp = _startLevelHp };
-        var waveLength = new StorageWaveDataComponent { WaveLength = _startWaveLength, StartWaveLength = _startWaveLength};
+        var waveLength = new StorageWaveDataComponent
+            { WaveLength = _startWaveLength, StartWaveLength = _startWaveLength };
         var coins = new StorageCoinsComponent { Coins = _startCoins };
-        var statusLevel = new StorageStatusLevelComponent { Reset = true, Stop = true};
+        var statusLevel = new StorageStatusLevelComponent { Reset = true, Stop = true };
         _entityManager.SetComponentData(entityStorage, conditionComponent);
         _entityManager.SetComponentData(entityStorage, waveLength);
         _entityManager.SetComponentData(entityStorage, coins);

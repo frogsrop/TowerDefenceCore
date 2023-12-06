@@ -19,6 +19,7 @@ public class ShowWaveLength : MonoBehaviour
 
     void Update()
     {
-        _waveLength.text = _entityManager.GetComponentData<StorageWaveDataComponent>(_entityStorage).WaveLength.ToString();
+        _waveLength.text = _entityManager.GetComponentData<StorageWaveDataComponent>(_entityStorage).WaveLength
+            .ToString();
     }
 }

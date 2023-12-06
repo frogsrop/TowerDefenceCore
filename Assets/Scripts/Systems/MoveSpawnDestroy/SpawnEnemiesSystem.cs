@@ -28,14 +28,15 @@ public partial struct SpawnEnemiesSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         _entityStorage = _queryStorage.GetSingletonEntity();
-        var startWaveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(_entityStorage).StartWaveLength;  
+        var startWaveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(_entityStorage)
+            .StartWaveLength;
         var waveLength = state.EntityManager.GetComponentData<StorageWaveDataComponent>(_entityStorage).WaveLength;
         var stopWave = state.EntityManager.GetComponentData<StorageWaveDataComponent>(_entityStorage).StopWave;
         var statusLevel = state.EntityManager.GetComponentData<StorageStatusLevelComponent>(_entityStorage).Stop;
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        if(stopWave || statusLevel) return;
-        
-        new SpawnJob { Ecb = ecb, StartWaveLength = startWaveLength,WaveLength = waveLength, Storage = _entityStorage }
+        if (stopWave || statusLevel) return;
+
+        new SpawnJob { Ecb = ecb, StartWaveLength = startWaveLength, WaveLength = waveLength, Storage = _entityStorage }
             .Run(_querySpawners);
         state.Dependency.Complete();
         ecb.Playback(state.EntityManager);
@@ -57,12 +58,15 @@ partial struct SpawnJob : IJobEntity
     {
         if (StartWaveLength <= countEnemiesComponent.Count)
         {
-            var stopWave = new StorageWaveDataComponent {WaveLength = WaveLength, StartWaveLength = StartWaveLength, 
-                StopWave = true};
+            var stopWave = new StorageWaveDataComponent
+            {
+                WaveLength = WaveLength, StartWaveLength = StartWaveLength,
+                StopWave = true
+            };
             Ecb.SetComponent(Storage, stopWave);
             return;
         }
-        
+
         if (!timerComponent.Condition)
             Ecb.SetComponent(entity, new TimerComponent
             {
@@ -81,6 +85,5 @@ partial struct SpawnJob : IJobEntity
         var enemyId = new EnemyIdComponent { Id = countEnemiesComponent.Count };
         Ecb.SetComponent(newEnemy, enemyId);
         countEnemiesComponent.Count++;
-        
     }
 }
