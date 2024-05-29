@@ -48,3 +48,4 @@ MonoBehaviour:
   FireTowerPrefab: {fileID: 7056713013877562141, guid: b9453c84cc3cd0d4aac021d88fb43c0f, type: 3}
   EnemyPrefab: {fileID: 5024274864085140636, guid: e84e5fde29947df41b2cdc629ca40579, type: 3}
   Coins: 50
+  LevelHp: 3

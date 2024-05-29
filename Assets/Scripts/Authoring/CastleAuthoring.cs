@@ -14,11 +14,12 @@ class CastleAuthoringBaker : Baker<CastleAuthoring>
     {
         var castleEntity = GetEntity(TransformUsageFlags.Dynamic);
         AddComponent<CastleComponent>(castleEntity);
+        AddComponent<OffSceneComponent>(castleEntity);
 
-        DynamicBuffer<WayPointsComponent> path = AddBuffer<WayPointsComponent>(castleEntity);
+        DynamicBuffer<WayPointsBufferElements> path = AddBuffer<WayPointsBufferElements>(castleEntity);
         foreach (var point in authoring.Path)
         {
-            WayPointsComponent wp = default;
+            WayPointsBufferElements wp = default;
             wp.Value = point;
             path.Add(wp);
         }

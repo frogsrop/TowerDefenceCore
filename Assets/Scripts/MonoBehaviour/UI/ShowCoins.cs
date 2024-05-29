@@ -14,11 +14,11 @@ public class ShowCoins : MonoBehaviour
     {
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         _entityStorage = _entityManager.CreateEntityQuery(
-            typeof(StorageDataComponent)).GetSingletonEntity();
+            typeof(StorageCoinsComponent)).GetSingletonEntity();
     }
 
     void Update()
     {
-        _coinsText.text = _entityManager.GetComponentData<StorageDataComponent>(_entityStorage).Coins.ToString();
+        _coinsText.text = _entityManager.GetComponentData<StorageCoinsComponent>(_entityStorage).Coins.ToString();
     }
 }

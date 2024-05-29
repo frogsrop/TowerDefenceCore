@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Collections;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -33,21 +34,32 @@ public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
         _gridTowerControl = gameObject.GetComponentInParent<GridTowerControl>();
-
-
         _arrayGridPosElements = _gridTowerControl.GetPosValueInGrid();
         _arrayGridBool = _gridTowerControl.GetBoolValueInGrid();
-
+        
         _entityStorage = _entityManager.CreateEntityQuery(
-            typeof(StorageDataComponent)).GetSingletonEntity();
-        _entitySimpleTower = _entityManager.GetComponentData<StorageDataComponent>(_entityStorage).SimpleTowerPrefab;
-        _entityFireTower = _entityManager.GetComponentData<StorageDataComponent>(_entityStorage).FireTowerPrefab;
+            typeof(StorageEntitiesComponent)).GetSingletonEntity();
+        _entitySimpleTower = _entityManager.GetComponentData<StorageEntitiesComponent>(_entityStorage).SimpleTowerPrefab;
+        _entityFireTower = _entityManager.GetComponentData<StorageEntitiesComponent>(_entityStorage).FireTowerPrefab;
     }
 
     private void Update()
     {
         _towerImgPrefab.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
             Input.mousePosition.y, 1));
+        
+        //releasing the grid when the level is restarted
+        var statusLevel = _entityManager.GetComponentData<StorageStatusLevelComponent>(_entityStorage).Stop;
+        if (statusLevel)
+        {
+            for (int i = 0; i < _arrayGridPosElements.GetLength(0); i++)
+            {
+                for (int j = 0; j < _arrayGridPosElements.GetLength(1); j++)
+                {
+                    _gridTowerControl.SetBoolValueInGrid(i, j, true);
+                }
+            }
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -56,7 +68,7 @@ public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         _redSquare = gameObject.GetComponentInParent<GridTowerControl>().RedSquare;
         _arrayGridBool = _gridTowerControl.GetBoolValueInGrid();
         _towerPrice = GetComponent<BankTowerInShop>().TowerData.Price;
-        _coins = _entityManager.GetComponentData<StorageDataComponent>(_entityStorage).Coins;
+        _coins = _entityManager.GetComponentData<StorageCoinsComponent>(_entityStorage).Coins;
         if (_coins >= _towerPrice)
         {
             var towerIcon = GetComponent<BankTowerInShop>().TowerData.Icon;
@@ -96,12 +108,10 @@ public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public void OnEndDrag(PointerEventData eventData)
     {
         if (_coins < _towerPrice) return;
-
         _greenSquare.transform.position = new Vector3(100, 100, 0);
-        if (_redSquare.transform.position.x != 100) return;
-
         Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+        
         if (hit.collider != null)
         {
             _posSpawn = new float3(_posActive.x, _posActive.y, 0);
@@ -122,10 +132,10 @@ public class DragShopElement : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 _entityManager.Instantiate(_entityFireTower);
             }
 
-            var storageComponent = new StorageDataComponent { Coins = _coins - _towerPrice };
+            var storageComponent = new StorageCoinsComponent { Coins = _coins - _towerPrice };
             _entityManager.SetComponentData(_entityStorage, storageComponent);
 
-            _arrayGridBool = _gridTowerControl.SetBoolValueInGrid(_indexBoolI, _indexBoolJ);
+            _arrayGridBool = _gridTowerControl.SetBoolValueInGrid(_indexBoolI, _indexBoolJ, false);
         }
     }
 }
