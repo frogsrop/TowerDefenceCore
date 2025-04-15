@@ -16,7 +16,6 @@ class BulletBaker : Baker<BulletAuthoring>
     {
         var bulletEntity = GetEntity(TransformUsageFlags.Dynamic);
         AddComponent<TargetIdComponent>(bulletEntity);
-        AddComponent<OffSceneComponent>(bulletEntity);
         var list = new FixedList128Bytes<int>();
         foreach (var effect in authoring.ListSo)
         {
