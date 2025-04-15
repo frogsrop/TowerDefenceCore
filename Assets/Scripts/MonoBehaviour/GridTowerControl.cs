@@ -40,9 +40,9 @@ public class GridTowerControl : MonoBehaviour
         return _arrayGridPosElements;
     }
 
-    public bool[,] SetBoolValueInGrid(int indexBoolI, int indexBoolJ, bool status)
+    public bool[,] SetBoolValueInGrid(int indexBoolI, int indexBoolJ)
     {
-        _arrayGridBool[indexBoolI, indexBoolJ] = status;
+        _arrayGridBool[indexBoolI, indexBoolJ] = false;
         return _arrayGridBool;
     }
 }

@@ -17,8 +17,6 @@ public class EnemyBaker : Baker<EnemyAuthoring>
     public override void Bake(EnemyAuthoring authoring)
     {
         var enemyEntity = GetEntity(TransformUsageFlags.Dynamic);
-        
-        AddComponent<OffSceneComponent>(enemyEntity);
         AddComponent(enemyEntity, new EnemyHpComponent { Hp = authoring.MaxHp, MaxHp = authoring.MaxHp });
         AddComponent(enemyEntity, new DirectionComponent { Direction = authoring.Direction });
         AddComponent(enemyEntity, new EnemyIdComponent { Id = authoring.Id });

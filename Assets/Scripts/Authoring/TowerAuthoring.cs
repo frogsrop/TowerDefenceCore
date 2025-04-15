@@ -15,7 +15,5 @@ class TowerBaker : Baker<TowerAuthoring>
         AddComponent(towerEntity, new TowerComponent { BulletPrefab = GetEntity(authoring.BulletPrefab, TransformUsageFlags.Dynamic) });
         AddComponent(towerEntity, new TowerSpeedAttack { Value = authoring.TowerSpeedAttack });
         AddComponent<TimerComponent>(towerEntity);
-        
-        AddComponent<OffSceneComponent>(towerEntity);
     }
 }
